@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TaskStatusSeeder extends Seeder
+class ProjectStatusSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,17 +18,12 @@ class TaskStatusSeeder extends Seeder
         $statuses = [];
 
         $nameStatus = [
-            'Новая',
-            'В работе',
-            'Выполненная',
-            'Завершенная',
-            'Ожидание ответа',
-            'Отложенная',
-            'Отмененная',
-            'Доработка описания задачи',
+            'Активный',
+            'Завершенный',
+            'Черновик',
         ];
 
-        for ($i = 0; $i < 8; $i++) {
+        for ($i =0; $i < 3; $i++){
             $statuses[] = [
                 'name' => $nameStatus[$i],
                 'created_at' => now(),
@@ -36,6 +31,6 @@ class TaskStatusSeeder extends Seeder
             ];
         }
 
-        DB::table('task_statuses')->insert($statuses);
+        DB::table('project_statuses')->insert($statuses);
     }
 }

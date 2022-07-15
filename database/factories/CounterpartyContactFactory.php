@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Contact;
+use App\Models\Counterparty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class CounterpartyContactFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'contact_id' => $this->faker->randomElement(Contact::select('id')->get()),
+            'counterparty_id' => $this->faker->randomElement(Counterparty::select('id')->get()),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

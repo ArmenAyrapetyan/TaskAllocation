@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Source;
+use App\Models\SpecialGroup;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +20,18 @@ class ContactFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'post' => $this->faker->word(),
+            'source_id' => $this->faker->randomElement(Source::select('id')->get()),
+            'special_grope_id' => $this->faker->randomElement(SpecialGroup::select('id')->get()),
+            'user_id' => $this->faker->randomElement(User::select('id')->get()),
+            'phone' => $this->faker->phoneNumber(),
+            'email' => $this->faker->email(),
+            'telegram' => $this->faker->firstName(),
+            'vk_url' => $this->faker->url(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

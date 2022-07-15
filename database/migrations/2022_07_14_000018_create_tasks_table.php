@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('time_planned');
             $table->integer('time_spend')->nullable();
             $table->date('date_start');
-            $table->integer('date_end');
+            $table->date('date_end');
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->foreignId('status_id')->constrained('task_statuses')->cascadeOnDelete();
             $table->timestamps();

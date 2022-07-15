@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('counterparty_id')->constrained('counterparties')->cascadeOnDelete();
             $table->foreignId('group_id')->constrained('project_groups')->cascadeOnDelete();
-            $table->foreignId('type_id')->constrained('project_types')->cascadeOnDelete();
             $table->foreignId('status_id')->constrained('project_statuses')->cascadeOnDelete();
             $table->timestamps();
         });
