@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,4 +42,50 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->first_name . ' ' . $this->last_name
+        );
+    }
+
+    public function systemRole()
+    {
+        return $this->belongsTo(SystemRole::class, 'system_role_id', 'id');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'user_id');
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'user_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Messages::class, 'user_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(TaskUser::class, 'user_id');
+    }
+
+    public function avatar(){
+        return $this->morphOne(File::class, 'fileable');
+    }
+
+    public function groups()
+    {
+        $this->belongsToMany(Group::class, 'user_groups');
+    }
+
+    //TODO спросить сработает ли такая связь
+    public function accesses() {
+        return $this->hasMany(AccessUser::class, 'user_id');
+    }
 }

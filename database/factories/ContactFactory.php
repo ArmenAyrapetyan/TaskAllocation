@@ -24,7 +24,7 @@ class ContactFactory extends Factory
             'last_name' => $this->faker->lastName(),
             'post' => $this->faker->word(),
             'source_id' => $this->faker->randomElement(Source::select('id')->get()),
-            'special_grope_id' => $this->faker->randomElement(SpecialGroup::select('id')->get()),
+            'special_group_id' => $this->faker->randomElement(SpecialGroup::select('id')->get()),
             'user_id' => $this->faker->randomElement(User::select('id')->get()),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->email(),

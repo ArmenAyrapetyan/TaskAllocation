@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class AccessGroup extends Model
 {
     use HasFactory;
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id', 'id');
+    }
 }

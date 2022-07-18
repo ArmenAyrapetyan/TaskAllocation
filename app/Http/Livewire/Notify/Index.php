@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Notify;
 
+use App\Models\Project;
 use Livewire\Component;
 
 class Index extends Component

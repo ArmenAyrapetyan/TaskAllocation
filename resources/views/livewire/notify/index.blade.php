@@ -12,15 +12,14 @@
                                 <span class="badge bg-primary rounded-pill">14</span>
                             </div>
                         </div>
-
                     </button>
                 </li>
             @endfor
         </ul>
     </div>
-    <div class="float-end bg-white w-75 mw-75 h-100">
+    <div class="float-end bg-white w-75 mw-75 h-100 position-relative">
         @for($i = 0; $i < count($types); $i++)
-        <div class="tab-pane fade @if($i == 0) show active @endif" id="{{$types[$i]}}" role="tabpanel" aria-labelledby="{{$types[$i]}}-tab">
+        <div class="tab-pane fade @if($i == 0) show active @endif position-absolute" id="{{$types[$i]}}" role="tabpanel" aria-labelledby="{{$types[$i]}}-tab">
             {{ $types[$i] }}</div>
         @endfor
     </div>
