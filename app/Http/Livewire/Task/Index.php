@@ -22,29 +22,17 @@ class Index extends Component
 
     public function getAll()
     {
-        $this->tasks = Task::all();
+        $this->emit('getAll');
     }
 
     public function sortByStatus($id)
     {
-        $this->tasks = Task::where('status_id', $id);
+        $this->emit('sortByStatus', $id);
     }
 
     public function sortByProjectGroup($id)
     {
-        $tasks = Task::all();
-
-        foreach ($tasks as $key => $task){
-            if (!$task->project){
-                $tasks->forget($key);
-            }
-
-            if ($task->project->id != $id){
-                $tasks->forget($key);
-            }
-        }
-
-        $this->tasks = $tasks;
+        $this->emit('sortByProjectGroup', $id);
     }
 
     public function render()

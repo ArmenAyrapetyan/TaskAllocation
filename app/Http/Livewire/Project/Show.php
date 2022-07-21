@@ -10,7 +10,8 @@ class Show extends Component
     public $projects;
 
     protected $listeners = [
-        'checkProject'
+        'checkProject',
+        'getAllProjects',
     ];
 
     public function checkProject($id, $isStatus = false)
@@ -20,6 +21,11 @@ class Show extends Component
         } else {
             $this->projects = Project::where('group_id', $id)->get();
         }
+    }
+
+    public function getAllProjects()
+    {
+        $this->projects = Project::all();
     }
 
     public function mount()

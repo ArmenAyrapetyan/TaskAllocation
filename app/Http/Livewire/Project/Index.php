@@ -18,6 +18,11 @@ class Index extends Component
         $this->emit('checkProject', $id, $isStatus);
     }
 
+    public function getAllProjects()
+    {
+        $this->emit('getAllProjects');
+    }
+
     public function mount()
     {
         $this->projects = Project::orderBy('name')->get();
