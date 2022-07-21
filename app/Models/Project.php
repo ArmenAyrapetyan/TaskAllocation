@@ -2,12 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Project extends AllAccess
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'user_id',
+        'counterparty_id',
+        'group_id',
+        'status_id',
+    ];
+
+    public function countTasks(): Attribute
+    {
+        return Attribute::make(
+          get: fn ($value) => $this->tasks()->count(),
+        );
+    }
 
     public function tasks()
     {

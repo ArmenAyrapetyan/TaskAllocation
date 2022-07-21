@@ -9,19 +9,18 @@ class TaskUser extends Model
 {
     use HasFactory;
 
-    public function getUsers()
+    public function user()
     {
-        return $this->hasMany(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function getTask()
+    public function task()
     {
-        return $this->hasOne(Task::class, 'task_id');
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 
-    //TODO уточнить это
-    public function getRole()
+    public function role()
     {
-        return $this->belongsTo(TaskRole::class, 'role_id', 'id');
+        return $this->belongsTo(TaskRole::class, 'task_role_id', 'id');
     }
 }

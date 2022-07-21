@@ -1,31 +1,54 @@
 <div>
     <div class="float-start bg-light p-2 h-100 w-25 mw-25">
-        <ul class="list-group nav-tabs" id="myTab" role="tablist">
-            @foreach($projects as $project)
-                <li class="nav-item list-group-item d-flex justify-content-between align-items-start"
-                    role="presentation">
-                    <button class="btn w-100 p-1" id="{{$project->name}}-tab"
-                            data-bs-toggle="tab" data-bs-target="#{{$project->name}}"
-                            type="button" role="tab" aria-controls="home" aria-selected="true">
-                        <div class="d-flex">
-                            <p class="col-10 m-0">{{$project->name}}</p>
-                            <div class="col-2">
-                                <span class="badge bg-primary rounded-pill">{{ count($project->tasks) }}</span>
-                            </div>
-                        </div>
-                    </button>
-                </li>
-            @endforeach
-        </ul>
+        <div class="accordion" id="accordionExample">
+            <ul class="list-group nav-tabs" id="myTab" role="tablist">
+                <p>Статусы</p>
+                @foreach($statuses as $status)
+                    <li class="nav-item list-group-item d-flex justify-content-between align-items-start"
+                        role="presentation">
+                        <button class="btn"
+                                wire:click="checkProject({{$status->id}}, {{true}})">{{$status->name}}</button>
+                    </li>
+                @endforeach
+                <p>Группы</p>
+                @foreach($groups as $group)
+                    <li class="nav-item list-group-item d-flex justify-content-between align-items-start"
+                        role="presentation">
+                        <button class="btn"
+                                wire:click="checkProject({{$group->id}}, {{false}})">
+                            <p>{{ $group->name }}</p>
+                            <span class="badge rounded-pill bg-secondary">{{ $group->count_projects }}</span>
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
+
     <div class="float-end bg-white w-75 mw-75 h-100 position-relative">
-        @foreach($projects as $project)
-                <div class="tab-pane fade position-absolute" id="{{$project->name}}"
-                     role="tabpanel" aria-labelledby="{{$project->name}}-tab">
-                    @foreach($project->tasks as $task)
-                    <p>{{$task->name}}</p>
-                    @endforeach
+
+        <!-- Кнопка-триггер модального окна -->
+        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Создать проект
+        </button>
+
+        <!-- Модальное окно -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Создание проекта</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        @livewire('project.create')
+                    </div>
                 </div>
-        @endforeach
+            </div>
+        </div>
+
+        @livewire('project.show')
+
     </div>
 </div>

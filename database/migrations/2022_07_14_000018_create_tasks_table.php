@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->longText('description');
-            $table->integer('time_planned');
+            $table->integer('time_planned')->nullable();
             $table->integer('time_spend')->nullable();
             $table->date('date_start');
             $table->date('date_end');
-            $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
             $table->foreignId('status_id')->constrained('task_statuses')->cascadeOnDelete();
             $table->timestamps();
         });

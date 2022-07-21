@@ -3,22 +3,26 @@
 namespace App\Http\Livewire\Project;
 
 use App\Models\Project;
+use App\Models\ProjectGroup;
+use App\Models\ProjectStatus;
 use Livewire\Component;
 
 class Index extends Component
 {
-    public $types = [
-        'project1',
-        'project2',
-        'project3',
-        'project4',
-    ];
-
     public $projects;
+    public $groups;
+    public $statuses;
+
+    public function checkProject($id, $isStatus = false)
+    {
+        $this->emit('checkProject', $id, $isStatus);
+    }
 
     public function mount()
     {
-        $this->projects = Project::all();
+        $this->projects = Project::orderBy('name')->get();
+        $this->groups = ProjectGroup::all();
+        $this->statuses = ProjectStatus::all();
     }
 
     public function render()
