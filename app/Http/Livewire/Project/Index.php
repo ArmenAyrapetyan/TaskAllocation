@@ -28,6 +28,7 @@ class Index extends Component
         $this->projects = Project::orderBy('name')->get();
         $this->groups = ProjectGroup::all();
         $this->statuses = ProjectStatus::all();
+        session()->put('curPage', 'project.index');
     }
 
     public function render()

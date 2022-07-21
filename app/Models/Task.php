@@ -9,6 +9,17 @@ class Task extends AllAccess
 {
     use HasFactory;
 
+    protected $fillable = [
+      'name',
+      'description',
+      'project_id',
+      'status_id',
+      'time_planned',
+      'time_spend',
+      'date_start',
+      'date_end',
+    ];
+
     public function users()
     {
         return $this->hasMany(TaskUser::class, 'task_id');

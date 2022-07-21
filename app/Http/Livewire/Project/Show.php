@@ -21,16 +21,19 @@ class Show extends Component
         } else {
             $this->projects = Project::where('group_id', $id)->get();
         }
+        session()->put('curPage', 'project.index');
     }
 
     public function getAllProjects()
     {
         $this->projects = Project::all();
+        session()->put('curPage', 'project.index');
     }
 
     public function mount()
     {
         $this->projects = Project::all();
+        session()->put('curPage', 'project.index');
     }
 
     public function render()

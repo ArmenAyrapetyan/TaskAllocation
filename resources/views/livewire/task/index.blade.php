@@ -47,7 +47,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
                     <div class="modal-body">
-
+                        @livewire('task.create')
                     </div>
                 </div>
             </div>

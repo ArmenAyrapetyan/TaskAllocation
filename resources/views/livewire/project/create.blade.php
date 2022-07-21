@@ -1,7 +1,8 @@
-<form action="">
+<div>
     <div class="form-floating mb-3">
         <input wire:model="name" name="name" type="text"
-               class="form-control @isset($name) is-valid @endisset @error('name') is-invalid @enderror"
+               class="form-control @isset($name) @if($name != '') is-valid @else is-invalid @endif @endisset
+               @error('name') is-invalid @enderror"
                id="floatingInput">
         <label for="floatingInput">Имя проекта</label>
         @error('name')
@@ -10,7 +11,8 @@
 
     <div class="form-floating mb-3">
         <textarea wire:model="description" name="description"
-                  class="form-control @isset($description) is-valid @endisset @error('description') is-invalid @enderror"
+                  class="form-control @isset($description) @if($description != '') is-valid @else is-invalid @endif @endisset
+                  @error('description') is-invalid @enderror"
                   id="floatingInput"></textarea>
         <label for="floatingInput">Описание</label>
         @error('description')
@@ -60,4 +62,4 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
         <button @if(session('success'))  @endif wire:click="saveProject()" type="button" class="btn btn-primary">Сохранить проект</button>
     </div>
-</form>
+</div>

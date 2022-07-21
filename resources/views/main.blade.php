@@ -2,29 +2,10 @@
 
 @section('content')
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="notification" role="tabpanel" aria-labelledby="notification-tab">
-            @livewire('notify.index')
+        @foreach($pages as $key => $page)
+        <div class="tab-pane fade @if($page['view'] == $curPage) show active @endif" id="{{$key}}" role="tabpanel" aria-labelledby="{{$key}}-tab">
+            @livewire($page['view'])
         </div>
-        <div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab">
-            @livewire('cart.index')
-        </div>
-        <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
-            @livewire('project.index')
-        </div>
-        <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
-            @livewire('task.index')
-        </div>
-        <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
-            @livewire('report.index')
-        </div>
-        <div class="tab-pane fade" id="passwords" role="tabpanel" aria-labelledby="passwords-tab">
-            @livewire('password.index')
-        </div>
-        <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-            @livewire('contacts.index')
-        </div>
-        <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-            @livewire('staff.index')
-        </div>
+        @endforeach
     </div>
 @endsection

@@ -18,6 +18,7 @@ class Index extends Component
         $this->tasks = Task::all();
         $this->statuses = TaskStatus::all();
         $this->projectGroups = ProjectGroup::all();
+        session()->put('curPage', 'task.index');
     }
 
     public function getAll()
