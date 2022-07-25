@@ -125,7 +125,7 @@
                                     <div class="image">
                                         <img
                                             src="https://proprikol.ru/wp-content/uploads/2020/02/porodistye-sobaki-krasivye-kartinki-19.jpg"
-                                            class="rounded-circle" width="100" height="100"/>
+                                            class="rounded-circle" width="100" height="100">
                                     </div>
 
                                     <div class="ps-2">
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                            @livewire('task.message')
+                            @livewire('task.message', key($task->id))
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
