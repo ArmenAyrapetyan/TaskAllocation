@@ -9,12 +9,12 @@ class Messages extends Model
 {
     use HasFactory;
 
-    public function getUser()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function getTask()
+    public function task()
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
     }

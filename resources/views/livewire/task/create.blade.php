@@ -83,6 +83,6 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button @if(session('success'))  @endif wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить проект</button>
+        <button @if(session('success'))  @endif wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить задучу</button>
     </div>
 </div>

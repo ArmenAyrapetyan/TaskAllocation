@@ -3,13 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
-use App\Models\TaskRole;
-use App\Models\TaskUser;
-use App\Models\User;
+use Faker\Provider\Lorem;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TaskUserSeeder extends Seeder
+class MessagesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,24 +17,22 @@ class TaskUserSeeder extends Seeder
     public function run()
     {
         $tasks = Task::all();
-        $users = User::all()->count();
-        $roles = TaskRole::all();
 
-        $taskusers = [];
-
+        $messages = [];
 
         foreach ($tasks as $task) {
-            foreach ($roles as $role) {
-                $taskusers[] = [
+            $users = $task->users;
+            foreach ($users as $user) {
+                $messages[] = [
+                    'text' => Lorem::text(),
+                    'user_id' => $user->user_id,
                     'task_id' => $task->id,
-                    'user_id' => random_int(1, $users),
-                    'task_role_id' => $role->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
             }
         }
 
-        DB::table('task_users')->insert($taskusers);
+        DB::table('messages')->insert($messages);
     }
 }

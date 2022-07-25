@@ -32,27 +32,6 @@
 
     <div class="float-end bg-white w-75 mw-75 h-100 position-relative">
 
-        <!-- Кнопка-триггер модального окна -->
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#createTask">
-            Создать задачу
-        </button>
-
-        <!-- Модальное окно -->
-        <div class="modal fade" id="createTask" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="createTaskLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createTaskLabel">Создание задачи</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                    </div>
-                    <div class="modal-body">
-                        @livewire('task.create')
-                    </div>
-                </div>
-            </div>
-        </div>
-
         @livewire('task.show')
 
     </div>

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             TaskSeeder::class,
             TaskUserSeeder::class,
+            MessagesSeeder::class,
         ]);
     }
 }

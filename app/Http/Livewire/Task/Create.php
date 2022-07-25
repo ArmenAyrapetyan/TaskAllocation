@@ -58,6 +58,18 @@ class Create extends Component
         $this->dispatchBrowserEvent('closeModal');
     }
 
+    public function clear()
+    {
+        $this->name = null;
+        $this->description = null;
+        $this->project_id = null;
+        $this->status_id = null;
+        $this->time_planned = null;
+        $this->time_spend = null;
+        $this->date_start = null;
+        $this->date_end = null;
+    }
+
     public function mount()
     {
         $this->projects = Project::all();

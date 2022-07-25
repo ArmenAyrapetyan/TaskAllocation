@@ -24,26 +24,25 @@ class Show extends Component
     public function getAll()
     {
         $this->tasks = Task::all();
-        session()->put('curPage', 'project.index');
+        session()->put('curPage', 'task.index');
     }
 
     public function sortByStatus($id)
     {
         $this->tasks = Task::where('status_id', $id)->get();
-        session()->put('curPage', 'project.index');
+        session()->put('curPage', 'task.index');
     }
 
     public function sortByProjectGroup($id)
     {
         $tasks = Task::has('project')->orderBy('project_id')->get();
 
-
         foreach ($tasks as $key => $task){
             if ($task->project->group_id != $id){
                 $tasks->forget($key);
             }
         }
-        session()->put('curPage', 'project.index');
+        session()->put('curPage', 'task.index');
 
         $this->tasks = $tasks;
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Project;
 
 use App\Models\Project;
+use App\Models\User;
 use Livewire\Component;
 
 class Show extends Component
@@ -17,22 +18,22 @@ class Show extends Component
     public function checkProject($id, $isStatus = false)
     {
         if ($isStatus){
-            $this->projects = Project::where('status_id', $id)->get();
+            $this->projects = Project::where('status_id', $id)->orderBy('name')->get();
         } else {
-            $this->projects = Project::where('group_id', $id)->get();
+            $this->projects = Project::where('group_id', $id)->orderBy('name')->get();
         }
         session()->put('curPage', 'project.index');
     }
 
     public function getAllProjects()
     {
-        $this->projects = Project::all();
+        $this->projects = Project::orderBy('name')->get();
         session()->put('curPage', 'project.index');
     }
 
     public function mount()
     {
-        $this->projects = Project::all();
+        $this->projects = Project::orderBy('name')->get();
         session()->put('curPage', 'project.index');
     }
 

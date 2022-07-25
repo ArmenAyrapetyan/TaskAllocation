@@ -10,6 +10,14 @@ class ProjectGroup extends Model
 {
     use HasFactory;
 
+    const GROUP_TRANSACT = 1;
+    const GROUP_DEVELOP = 2;
+    const GROUP_AD = 3;
+    const GROUP_DOCUMENTS = 4;
+    const GROUP_AMADO = 5;
+    const GROUP_ARCHIVE = 6;
+    const GROUP_BASE = 7;
+
     public function countProject(): Attribute
     {
         return Attribute::make(
