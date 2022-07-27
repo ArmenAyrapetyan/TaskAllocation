@@ -47,7 +47,7 @@ class Create extends Component
         Project::create([
             'name' => $this->name,
             'description' => $this->description,
-            'user_id' => 1,
+            'user_id' => auth()->user()->id,
             'counterparty_id' => $this->counterparty,
             'group_id' => $this->group,
             'status_id' => $this->status,

@@ -91,9 +91,16 @@
                         <div class="modal-body">
                             <div class="d-flex flex-row mt-1">
                                 <div class="image">
-                                    <img
-                                        src="https://proprikol.ru/wp-content/uploads/2020/02/porodistye-sobaki-krasivye-kartinki-19.jpg"
-                                        class="rounded-circle" width="100" height="100"/>
+                                    @foreach($task->users as $user)
+                                        @if($user->task_role_id == 1)
+                                            @if($user->user->avatar)
+                                                <img src="{{asset($user->user->avatar->path)}}" class="rounded-circle" width="100"
+                                                     height="100">
+                                            @else
+                                                <img src="storage/images/imguser.png" class="rounded-circle" width="100" height="100">
+                                            @endif
+                                        @endif
+                                    @endforeach
                                 </div>
 
                                 <div class="ps-2">
@@ -123,9 +130,12 @@
                             @foreach($task->messages as $message)
                                 <div class="d-flex flex-row mt-1">
                                     <div class="image">
-                                        <img
-                                            src="https://proprikol.ru/wp-content/uploads/2020/02/porodistye-sobaki-krasivye-kartinki-19.jpg"
-                                            class="rounded-circle" width="100" height="100">
+                                        @if($message->user->avatar)
+                                            <img src="{{asset($message->user->avatar->path)}}" class="rounded-circle" width="100"
+                                                 height="100">
+                                        @else
+                                            <img src="storage/images/imguser.png" class="rounded-circle" width="100" height="100">
+                                        @endif
                                     </div>
 
                                     <div class="ps-2">
@@ -140,7 +150,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                            @livewire('task.message', key($task->id))
+                            @livewire('task.message', ['id' => $task->id] ,key($task->id))
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>

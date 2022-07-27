@@ -26,7 +26,7 @@
 
 <script>
     window.addEventListener('closeModal', event => {
-        $("#staticBackdrop").modal('hide');
+        $(".modal-backdrop").modal('hide');
     })
 </script>
 </body>

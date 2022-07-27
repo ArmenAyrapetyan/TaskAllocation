@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
-class File extends Model
+class RegisterToken extends Model
 {
-    protected $fillable = [
-      'path',
-      'fileable_id',
-      'fileable_type',
-      'is_avatar',
-    ];
-
     use HasFactory;
+
+    protected $fillable = [
+        'token',
+        'isActive',
+        'rate_per_hour',
+    ];
 }

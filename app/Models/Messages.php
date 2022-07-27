@@ -9,6 +9,12 @@ class Messages extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'text',
+        'user_id',
+        'task_id'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

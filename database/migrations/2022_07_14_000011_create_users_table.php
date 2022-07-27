@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SystemRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('third_name');
             $table->integer('rate_per_hour');
-            $table->foreignId('system_role_id')->constrained('system_roles')->cascadeOnDelete();
+            $table->foreignId('system_role_id')->default(SystemRole::SYSROLE_USER)->constrained('system_roles')->cascadeOnDelete();
             $table->string('login');
             $table->string('password');
             $table->string('email')->unique();

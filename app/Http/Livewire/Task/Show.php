@@ -16,10 +16,16 @@ class Show extends Component
     }
 
     protected $listeners = [
-      'getAll',
-      'sortByStatus',
-      'sortByProjectGroup',
+        'getAll',
+        'sortByStatus',
+        'sortByProjectGroup',
+        'refreshShow',
     ];
+
+    public function refreshShow()
+    {
+        return;
+    }
 
     public function getAll()
     {
@@ -37,8 +43,8 @@ class Show extends Component
     {
         $tasks = Task::has('project')->orderBy('project_id')->get();
 
-        foreach ($tasks as $key => $task){
-            if ($task->project->group_id != $id){
+        foreach ($tasks as $key => $task) {
+            if ($task->project->group_id != $id) {
                 $tasks->forget($key);
             }
         }

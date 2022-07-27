@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Task;
 
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\TaskRole;
 use App\Models\TaskStatus;
+use App\Models\TaskUser;
 use Livewire\Component;
 
 class Create extends Component
@@ -14,6 +16,8 @@ class Create extends Component
         $time_planned, $time_spend,
         $date_start, $date_end,
         $project_id, $status_id;
+
+    public $response;
 
     protected $rules = [
         'name' => 'required',
@@ -43,7 +47,7 @@ class Create extends Component
     {
         $this->validate();
 
-        Task::create([
+        $newTask = Task::create([
             'name' => $this->name,
             'description' => $this->description,
             'project_id' => $this->project_id,
@@ -54,8 +58,17 @@ class Create extends Component
             'date_end' => $this->date_end,
         ]);
 
+        if ($newTask) {
+            TaskUser::create([
+                'task_id' => $newTask->id,
+                'user_id' => auth()->user()->id,
+                'task_role_id' => TaskRole::ROLE_CREATOR,
+            ]);
+            $this->response = "Задача создана";
+        } else
+            $this->response = "Ошибка создания задачи";
+
         $this->clear();
-        $this->dispatchBrowserEvent('closeModal');
     }
 
     public function clear()

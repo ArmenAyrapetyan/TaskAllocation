@@ -8,6 +8,8 @@ use Livewire\Component;
 class Message extends Component
 {
     public $message;
+    public $taskId;
+    public $response;
 
     protected $rules = [
       'message' => 'required',
@@ -17,12 +19,22 @@ class Message extends Component
         'message.required' => 'Заполните сообщение для его отправки',
     ];
 
+    public function mount($id)
+    {
+        $this->response = null;
+        $this->taskId = $id;
+    }
+
     public function createMessage()
     {
-        dd($this->message);
-//        Messages::create([
-//
-//        ]);
+        $newMessage = Messages::create([
+            'text' => $this->message,
+            'user_id' => auth()->user()->id,
+            'task_id' => $this->taskId,
+        ]);
+
+        $this->dispatchBrowserEvent('closeModal');
+        $this->emit('refreshShow');
     }
 
     public function render()

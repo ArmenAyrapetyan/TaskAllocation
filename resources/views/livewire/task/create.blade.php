@@ -83,6 +83,13 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button @if(session('success'))  @endif wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить задучу</button>
+        <button @if(session('success'))  @endif wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить задачу</button>
     </div>
+
+    @if($response != "")
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <p>{{ $response }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    @endif
 </div>
