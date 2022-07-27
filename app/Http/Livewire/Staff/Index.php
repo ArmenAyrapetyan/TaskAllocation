@@ -2,16 +2,28 @@
 
 namespace App\Http\Livewire\Staff;
 
+use App\Models\Group;
 use Livewire\Component;
 
 class Index extends Component
 {
-    public $types = [
-        'staff1',
-        'staff2',
-        'staff3',
-        'staff4',
-    ];
+    public $staffGroup;
+    public $test;
+
+    public function mount()
+    {
+        $this->staffGroup = Group::all();
+    }
+
+    public function getAllStaff()
+    {
+        $this->emit('getAllStaff');
+    }
+
+    public function getGroupStaff($id)
+    {
+        $this->emit('getGroupStaff', $id);
+    }
 
     public function render()
     {

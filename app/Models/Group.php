@@ -28,6 +28,6 @@ class Group extends Model
 
     public function access()
     {
-        $this->hasOne(AccessGroup::class, 'group_id');
+        return $this->hasOne(AccessGroup::class, 'group_id');
     }
 }

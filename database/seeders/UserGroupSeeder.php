@@ -2,9 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Group;
+use App\Models\User;
 use App\Models\UserGroup;
+use Faker\Provider\Lorem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class UserGroupSeeder extends Seeder
 {
@@ -15,6 +20,17 @@ class UserGroupSeeder extends Seeder
      */
     public function run()
     {
-        UserGroup::factory(50)->create();
+        $users = User::all();
+        $groupsId = Group::select('id')->get()->toArray();
+        $insert = [];
+
+        foreach ($users as $user){
+            $insert[] = [
+                'user_id' => $user->id,
+                'group_id' => $groupsId[random_int(1, count($groupsId))]['id'],
+            ];
+        }
+
+        DB::table('user_groups')->insert($insert);
     }
 }
