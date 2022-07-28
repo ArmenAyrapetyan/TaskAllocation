@@ -27,10 +27,8 @@ class Create extends Component
 
     protected $messages = [
         'name.required' => 'Введите имя',
-
         'description.required' => 'Заполните описание',
         'description.max' => 'Слишком много символов',
-
         'group.required' => 'Выберите группу проекта',
         'status.required' => 'Выберите статус проекта',
     ];
@@ -55,6 +53,7 @@ class Create extends Component
 
         $this->clear();
         $this->dispatchBrowserEvent('closeModal');
+        $this->emit('refreshSort');
     }
 
     private function clear()

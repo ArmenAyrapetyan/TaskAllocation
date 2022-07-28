@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Counterparty extends AllAccess
 {
@@ -26,6 +25,6 @@ class Counterparty extends AllAccess
 
     public function contacts()
     {
-        return $this->hasMany(CounterpartyContact::class, 'counterparty_id');
+        return $this->belongsToMany(Contact::class, 'counterparty_contacts');
     }
 }

@@ -26,6 +26,6 @@ class Contact extends Model
 
     public function counterparty()
     {
-        return $this->hasOne(CounterpartyContact::class, 'contact_id');
+        return $this->belongsToMany(Counterparty::class, 'counterparty_contacts');
     }
 }

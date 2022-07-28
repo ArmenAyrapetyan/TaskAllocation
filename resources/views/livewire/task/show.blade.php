@@ -94,10 +94,11 @@
                                     @foreach($task->users as $user)
                                         @if($user->task_role_id == 1)
                                             @if($user->user->avatar)
-                                                <img src="{{asset($user->user->avatar->path)}}" class="rounded-circle" width="100"
-                                                     height="100">
+                                                <img src="{{asset($user->user->avatar->path)}}" class="rounded-circle"
+                                                     width="100" height="100" alt="">
                                             @else
-                                                <img src="storage/images/imguser.png" class="rounded-circle" width="100" height="100">
+                                                <img src="storage/images/imguser.png" class="rounded-circle" width="100"
+                                                     height="100" alt="">
                                             @endif
                                         @endif
                                     @endforeach
@@ -131,10 +132,11 @@
                                 <div class="d-flex flex-row mt-1">
                                     <div class="image">
                                         @if($message->user->avatar)
-                                            <img src="{{asset($message->user->avatar->path)}}" class="rounded-circle" width="100"
-                                                 height="100">
+                                            <img src="{{asset($message->user->avatar->path)}}" class="rounded-circle"
+                                                 width="100" height="100" alt="">
                                         @else
-                                            <img src="storage/images/imguser.png" class="rounded-circle" width="100" height="100">
+                                            <img src="storage/images/imguser.png" class="rounded-circle" width="100"
+                                                 height="100" alt="">
                                         @endif
                                     </div>
 

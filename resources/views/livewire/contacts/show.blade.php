@@ -3,35 +3,35 @@
         <div class="row">
             @foreach($contacts as $contact)
             <div class="col-xl-6 col-lg-7 col-md-12">
-                <div class="card profile-header">
+                <div class="m-1 card profile-header">
                     <div class="body">
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-12">
-                                <div class="profile-image float-md-right">
-                                    <img width="180" height="180" src="storage/images/imguser.png" alt="">
+                                <div class="profile-image float-md-right m-1">
+                                    <img width="160" height="160" src="storage/images/imguser.png" alt="">
                                 </div>
                             </div>
                             <div class="col-lg-8 col-md-8 col-12">
-                                <h4 class="m-t-0 m-b-0">{{ $contact->first_name }} {{ $contact->last_name }}</h4>
-                                <span class="job_post">Должность:
+                                <h5 class="m-t-0 m-b-0">{{ $contact->first_name }} {{ $contact->last_name }}</h5>
+                                <span class="mb-1 job_post">Должность:
                                     @if($contact->post)
                                         {{$contact->post}}
                                     @else
                                         Должность не указана
                                     @endif
                                 </span>
-                                <p>Был добавлен из {{ $contact->source->name }}</p>
-                                <p>Номер телефона: {{$contact->phone}}</p>
-                                <p>Почта: {{$contact->email}}</p>
+                                <p class="mb-1">Был добавлен из {{ $contact->source->name }}</p>
+                                <p class="mb-1">Номер телефона: {{$contact->phone}}</p>
+                                <p class="mb-1">{{$contact->email}}</p>
                                 @if($contact->telegram)
-                                    <p>Телеграмм &commat;{{$contact->telegram}}</p>
+                                    <p class="mb-1">Телеграмм &commat;{{$contact->telegram}}</p>
                                 @endif
                                 @if($contact->vk_url)
-                                    <a href="{{$contact->vk_url}}">Ссылка на вконтакте</a>
+                                    <a class="mb-1" href="{{$contact->vk_url}}">Ссылка на вконтакте</a>
                                 @endif
                                 <div>
-                                    <button class="btn btn-primary btn-round">Редактировать</button>
-                                    <button class="btn btn-danger btn-round btn-simple">Удалить</button>
+                                    <button class="mb-1 btn btn-primary btn-round">Редактировать</button>
+                                    <button class="mb-1 btn btn-danger btn-round btn-simple">Удалить</button>
                                 </div>
                             </div>
                         </div>
