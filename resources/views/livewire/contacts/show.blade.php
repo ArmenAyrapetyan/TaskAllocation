@@ -1,4 +1,31 @@
 <div>
+    <!-- Кнопка-триггер модального окна -->
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#createContact">
+        Создать Контакт
+    </button>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="createContact" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="createContactLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createContactLabel">Создание контакта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    @livewire('contacts.create')
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('closeContactCreate', event => {
+            $("#createContact").modal('hide');
+        })
+    </script>
+
     <div class="container profile-page">
         <div class="row">
             @foreach($contacts as $contact)
@@ -31,7 +58,7 @@
                                 @endif
                                 <div>
                                     <button class="mb-1 btn btn-primary btn-round">Редактировать</button>
-                                    <button class="mb-1 btn btn-danger btn-round btn-simple">Удалить</button>
+                                    <button wire:click="deleteContact({{$contact->id}})" class="mb-1 btn btn-danger btn-round btn-simple">Удалить</button>
                                 </div>
                             </div>
                         </div>

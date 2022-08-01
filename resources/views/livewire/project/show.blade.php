@@ -39,7 +39,7 @@
             </th>
         </tr>
         @foreach($projects as $project)
-            <tr data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="{{json_encode($project->get_info)}}">
+            <tr data-bs-toggle="modal" data-bs-target="#projectInfo" data-bs-whatever="{{json_encode($project->get_info)}}">
                 <th scope="row">
                     {{ $project->name }}
                 </th>
@@ -64,11 +64,11 @@
     </table>
 
     <!-- Модальное окно -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="projectInfo" tabindex="-1" aria-labelledby="projectInfoLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Подробнее о проекте</h5>
+                    <h5 class="modal-title" id="projectInfoLabel">Подробнее о проекте</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Закрыть"></button>
                 </div>
@@ -104,8 +104,8 @@
     </div>
 
     <script>
-        var exampleModal = document.getElementById('exampleModal')
-        exampleModal.addEventListener('show.bs.modal', function (event) {
+        var projectInfo = document.getElementById('projectInfo')
+        projectInfo.addEventListener('show.bs.modal', function (event) {
             // Кнопка, запускающая модальное окно
             var button = event.relatedTarget
             var body = document.querySelector('.container')
@@ -116,8 +116,8 @@
             // Извлекаю инфу
             var project = JSON.parse(button.getAttribute('data-bs-whatever'))
 
-            var modalTitle = exampleModal.querySelector('.modal-title')
-            modalTitle.textContent = 'Подробнее о проекте ' + project['name']
+            var modalTitle = projectInfo.querySelector('.modal-title')
+            modalTitle.textContent = 'Подробнее о проекте ' + project['project_name']
 
             var cont = document.createElement('div')
             cont.className = "row border-bottom cont"

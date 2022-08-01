@@ -27,7 +27,7 @@ class UserGroupSeeder extends Seeder
         foreach ($users as $user){
             $insert[] = [
                 'user_id' => $user->id,
-                'group_id' => $groupsId[random_int(1, count($groupsId))]['id'],
+                'group_id' => $groupsId[random_int(0, count($groupsId) - 1)]['id'],
             ];
         }
 

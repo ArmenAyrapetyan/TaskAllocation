@@ -35,7 +35,7 @@
     <div class="form-floating mb-3">
         <select wire:model="group" name="group"
                 class="form-control @isset($group) is-valid @endisset @error('group') is-invalid @enderror">
-            <option selected="" disabled="">Выберите группу проекта</option>
+            <option selected="" value="">Выберите группу проекта</option>
             @foreach($groups as $group)
                 <option value="{{ $group->id }}"> {{ $group->name }}</option>
             @endforeach
@@ -48,7 +48,7 @@
     <div class="form-floating mb-3">
         <select wire:model="status" name="status"
                 class="form-control @isset($status) is-valid @endisset @error('status') is-invalid @enderror">
-            <option selected="" disabled="">Выберите статус проекта</option>
+            <option selected="" value="">Выберите статус проекта</option>
             @foreach($statuses as $status)
                 <option value="{{ $status->id }}"> {{ $status->name }}</option>
             @endforeach

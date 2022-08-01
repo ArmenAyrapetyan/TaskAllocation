@@ -1,4 +1,31 @@
 <div>
+    <!-- Кнопка-триггер модального окна -->
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#createToken">
+        Создать Токен
+    </button>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="createToken" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="createTokenLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createTokenLabel">Создание токена</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    @livewire('staff.create-token')
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('closeTokenCreate', event => {
+            $("#createToken").modal('hide');
+        })
+    </script>
+
     <div class="container profile-page">
         <div class="row">
             @foreach($staff as $employee)

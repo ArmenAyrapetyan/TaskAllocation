@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('post');
+            $table->string('post')->nullable();
             $table->foreignId('source_id')->constrained('sources')->cascadeOnDelete();
             $table->foreignId('special_group_id')->constrained('special_groups')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('phone')->unique();
-            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('email');
             $table->string('telegram')->nullable();
             $table->string('vk_url')->nullable();
             $table->timestamps();

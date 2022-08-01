@@ -20,7 +20,7 @@ class LoginController extends Controller
             return redirect()->route('main');
         else
             return redirect()->route('login')->withErrors([
-                'Ошибка входа'
+                'error' => 'Ошибка авторизации, логин или пароль введены неверно',
             ]);
     }
 
@@ -28,7 +28,7 @@ class LoginController extends Controller
     {
         auth()->logout();
         return redirect()->route('login')->with([
-            'success' => 'выход выполнен успешно'
+            'success' => 'Выход выполнен успешно'
         ]);
     }
 }

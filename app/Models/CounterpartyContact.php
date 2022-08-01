@@ -9,6 +9,11 @@ class CounterpartyContact extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'contact_id',
+        'counterparty_id',
+    ];
+
     public function counterparty()
     {
         return $this->belongsTo(Counterparty::class, 'counterparty_id', 'id');

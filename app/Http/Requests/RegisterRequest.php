@@ -57,8 +57,8 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'first_name.required' => 'Вы не ввели фамилию',
-            'last_name.required' => 'Вы не ввели имя',
+            'first_name.required' => 'Вы не ввели имя',
+            'last_name.required' => 'Вы не ввели фамилию',
             'third_name.required' => 'Вы не ввели отчество',
             'register_token.required' => 'Для регистрации необходим токен',
             'register_token.token_active' => 'Токена не существует или срок его действия истек',
