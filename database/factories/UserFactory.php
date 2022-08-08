@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\SystemRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -18,11 +20,20 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->safeEmail(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'third_name' => $this->faker->lastName(),
+            'rate_per_hour' => $this->faker->numberBetween(100,700),
+            'system_role_id' => $this->faker->randomElement(SystemRole::select('id')->get()),
+            'telegram' => $this->faker->name,
+            'vk_url' => $this->faker->url(),
+            'phone' => $this->faker->phoneNumber(),
+            'password' => Hash::make('asdasdasd'),
+            'email' => $this->faker->email(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 
