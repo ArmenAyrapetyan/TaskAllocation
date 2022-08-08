@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('telegram')->nullable();
             $table->string('vk_url')->nullable();
+            $table->foreignId('counterparty_id')->nullable()->constrained('counterparties')->cascadeOnDelete();
             $table->timestamps();
         });
     }

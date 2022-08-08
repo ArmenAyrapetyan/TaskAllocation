@@ -8,49 +8,56 @@ use Livewire\Component;
 class Show extends Component
 {
     public $tasks;
+    public $isLastSortAll;
+    public $statusBool;
+    public $importId;
 
     public function mount()
     {
+        $this->isLastSortAll = true;
         $this->tasks = Task::all();
         session()->put('curPage', 'task.index');
     }
 
     protected $listeners = [
-        'getAll',
-        'sortByStatus',
-        'sortByProjectGroup',
+        'getAllTasks',
+        'sortTasks',
         'refreshShow',
     ];
 
     public function refreshShow()
     {
-        return;
+        $this->isLastSortAll
+            ? $this->getAll()
+            : $this->sortTasks($this->importId, $this->statusBool);
     }
 
-    public function getAll()
+    public function getAllTasks()
     {
         $this->tasks = Task::all();
-        session()->put('curPage', 'task.index');
+        $this->isLastSortAll = true;
+        $this->statusBool = null;
+        $this->importId = null;
     }
 
-    public function sortByStatus($id)
+    public function sortTasks($id, $isStatus = false)
     {
-        $this->tasks = Task::where('status_id', $id)->get();
-        session()->put('curPage', 'task.index');
-    }
+        if (!$isStatus){
+            $tasks = Task::has('project')->orderBy('project_id')->get();
 
-    public function sortByProjectGroup($id)
-    {
-        $tasks = Task::has('project')->orderBy('project_id')->get();
-
-        foreach ($tasks as $key => $task) {
-            if ($task->project->group_id != $id) {
-                $tasks->forget($key);
+            foreach ($tasks as $key => $task) {
+                if ($task->project->group_id != $id) {
+                    $tasks->forget($key);
+                }
             }
+            $this->tasks = $tasks;
         }
-        session()->put('curPage', 'task.index');
+        else
+            $this->tasks = Task::where('status_id', $id)->get();
 
-        $this->tasks = $tasks;
+        $this->isLastSortAll = false;
+        $this->statusBool = $isStatus;
+        $this->importId = $id;
     }
 
     public function render()

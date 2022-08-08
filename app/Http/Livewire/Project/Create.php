@@ -10,13 +10,14 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $counterparties, $groups, $statuses;
-
-    public $name,
-        $description,
-        $counterparty,
-        $group,
-        $status;
+    public $counterparties;
+    public $statuses;
+    public $groups;
+    public $name;
+    public $description;
+    public $counterparty;
+    public $group;
+    public $status;
 
     protected $rules = [
         'name' => 'required',

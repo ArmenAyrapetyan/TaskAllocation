@@ -22,7 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'third_name',
         'rate_per_hour',
         'system_role_id',
-        'login',
+        'telegram',
+        'vk_url',
+        'phone',
         'password',
         'email',
     ];
@@ -80,7 +82,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(TaskUser::class, 'user_id');
     }
 
-    public function avatar(){
+    public function avatar()
+    {
         return $this->morphOne(File::class, 'fileable');
     }
 
@@ -89,8 +92,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Group::class, 'user_groups');
     }
 
-    //TODO спросить сработает ли такая связь
-    public function accesses() {
+    public function accesses()
+    {
         return $this->hasMany(AccessUser::class, 'user_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,15 @@ class Contact extends Model
         'email',
         'telegram',
         'vk_url',
+        'counterparty_id',
     ];
+
+    public function fullName() : Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->first_name . ' ' . $this->last_name
+        );
+    }
 
     public function user()
     {
@@ -39,6 +48,6 @@ class Contact extends Model
 
     public function counterparty()
     {
-        return $this->belongsToMany(Counterparty::class, 'counterparty_contacts');
+        return $this->belongsTo(Counterparty::class, 'counterparty_id', 'id');
     }
 }

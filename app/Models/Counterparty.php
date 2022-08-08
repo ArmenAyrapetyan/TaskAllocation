@@ -8,6 +8,18 @@ class Counterparty extends AllAccess
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'phone',
+        'email',
+        'website_url',
+        'vk_url',
+        'telegram',
+        'is_manufacturer',
+        'special_group_id',
+        'source_id',
+    ];
+
     public function projects()
     {
         return $this->hasMany(Project::class, 'counterparty_id');

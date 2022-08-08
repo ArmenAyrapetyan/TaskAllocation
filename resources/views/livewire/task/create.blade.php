@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-floating mb-3">
-        <textarea wire:model="description" name="description"
+        <textarea wire:model="description" name="description" style="height: 200px"
                   class="form-control @isset($description) @if($description != '') is-valid @else is-invalid @endif @endisset
                   @error('description') is-invalid @enderror"
                   id="floatingInput"></textarea>
@@ -85,11 +85,4 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
         <button @if(session('success'))  @endif wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить задачу</button>
     </div>
-
-    @if($response != "")
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <p>{{ $response }}</p>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-    @endif
 </div>

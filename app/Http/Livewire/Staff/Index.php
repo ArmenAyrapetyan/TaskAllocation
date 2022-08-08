@@ -15,6 +15,11 @@ class Index extends Component
         $this->staffGroup = Group::all();
     }
 
+    public function getNewStaff()
+    {
+        $this->emit('getNewStaff');
+    }
+
     public function getAllStaff()
     {
         $this->emit('getAllStaff');

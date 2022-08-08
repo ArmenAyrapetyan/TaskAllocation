@@ -7,12 +7,13 @@ use Livewire\Component;
 
 class Message extends Component
 {
+    public $task_messages;
     public $message;
     public $taskId;
     public $response;
 
     protected $rules = [
-      'message' => 'required',
+        'message' => 'required',
     ];
 
     protected $messages = [
@@ -21,8 +22,15 @@ class Message extends Component
 
     public function mount($id)
     {
+        $this->task_messages = Messages::where('task_id', $id)->get();
         $this->response = null;
         $this->taskId = $id;
+    }
+
+    public function refreshMessages()
+    {
+        $this->message = 'Введите сообщение';
+        $this->task_messages = Messages::where('task_id', $this->taskId)->get();
     }
 
     public function createMessage()
@@ -33,8 +41,7 @@ class Message extends Component
             'task_id' => $this->taskId,
         ]);
 
-        $this->dispatchBrowserEvent('closeModal');
-        $this->emit('refreshShow');
+        $this->refreshMessages();
     }
 
     public function render()

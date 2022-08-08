@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Staff;
 use App\Models\Group;
 use App\Models\User;
 use Livewire\Component;
+use function PHPUnit\Framework\isEmpty;
 
 class Show extends Component
 {
@@ -16,9 +17,21 @@ class Show extends Component
     }
 
     protected $listeners = [
-      'getAllStaff',
-      'getGroupStaff',
+        'getAllStaff',
+        'getGroupStaff',
+        'getNewStaff',
     ];
+
+    public function getNewStaff()
+    {
+        $users = User::all();
+        foreach ($users as $key => $user){
+            if (count($user->groups) != 0){
+                $users->forget($key);
+            }
+        }
+        $this->staff = $users;
+    }
 
     public function getAllStaff()
     {

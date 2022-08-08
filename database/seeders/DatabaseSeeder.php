@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             UserGroupSeeder::class,
             ContactSeeder::class,
-            CounterpartyContactSeeder::class,
             ProjectSeeder::class,
             TaskSeeder::class,
             TaskUserSeeder::class,

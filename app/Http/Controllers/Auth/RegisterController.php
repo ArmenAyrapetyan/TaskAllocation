@@ -29,7 +29,7 @@ class RegisterController extends Controller
             'last_name' => $request->last_name,
             'third_name' => $request->third_name,
             'rate_per_hour' => $token->rate_per_hour,
-            'login' => $request->login,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'email' => $request->email,
         ]);

@@ -18,48 +18,6 @@ class Project extends AllAccess
         'status_id',
     ];
 
-    public function getInfo(): Attribute
-    {
-        $info = [];
-        $counterpartyName = "Нет контрагента";
-        if ($this->counterparty) {
-            $counterpartyName = $this->counterparty->name;
-        }
-
-        $taskInfo = [];
-
-        foreach ($this->tasks as $task) {
-            $users = [];
-            foreach ($task->users as $user){
-                $users[] = [
-                  'user_name' => $user->user->full_name,
-                  'user_role' => $user->role->name,
-                ];
-            }
-            $time_spend = "0 мин.";
-            if ($this->time_spend) {
-                $time_spend = $this->time_spend;
-            }
-            $taskInfo[] = [
-                'task_name' => $task->name,
-                'task_status' => $task->status->name,
-                'task_date_create' => date("d-m-Y", strtotime($task->created_at)),
-                'task_time_spend' => $time_spend,
-                'task_users' => $users,
-            ];
-        }
-
-        $info = [
-            'project_name' => $this->name,
-            'counterparty_name' => $counterpartyName,
-            'tasks' => $taskInfo
-        ];
-
-        return Attribute::make(
-            get: fn($value) => $info,
-        );
-    }
-
     public function countTasks(): Attribute
     {
         return Attribute::make(

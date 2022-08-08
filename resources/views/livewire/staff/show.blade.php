@@ -1,30 +1,24 @@
 <div>
     <!-- Кнопка-триггер модального окна -->
-    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#createToken">
+    <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Создать Токен
     </button>
 
     <!-- Модальное окно -->
-    <div class="modal fade" id="createToken" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="createTokenLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createTokenLabel">Создание токена</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Создание токена</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    @livewire('staff.create-token')
+                    @livewire('staff.create')
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        window.addEventListener('closeTokenCreate', event => {
-            $("#createToken").modal('hide');
-        })
-    </script>
 
     <div class="container profile-page">
         <div class="row">
@@ -36,9 +30,11 @@
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="m-1 profile-image float-md-right">
                                         @if($employee->avatar)
-                                            <img width="160" height="160" src="{{ $employee->avatar->path }}" alt="">
+                                            <img width="160" height="160" src="{{asset($employee->avatar->path)}}"
+                                                 alt="">
                                         @else
-                                            <img width="160" height="160" src="storage/images/imguser.png" alt="">
+                                            <img width="160" height="160" src="{{asset('storage/images/imguser.png')}}"
+                                                 alt="">
                                         @endif
                                     </div>
                                 </div>
@@ -50,12 +46,12 @@
                                             <li class="mb-1">{{ $group->name }}</li>
                                         @endforeach
                                     </ul>
-                                    {{--                                    <p>Номер телефона: {{$employee->phone}}</p>--}}
+                                    <p>Номер телефона: {{$employee->phone}}</p>
                                     <p class="mb-1">{{$employee->email}}</p>
-                                    <p class="mb-1">Заработок в час: {{$employee->rate_per_hour}}</p>
                                     <div>
-                                        <button class="mb-1 btn btn-primary btn-round">Редактировать</button>
-                                        <button class="mb-1 btn btn-danger btn-round btn-simple">Удалить</button>
+                                        <a href="{{route('staff.detail', $employee->id)}}">
+                                            <button class="mb-1 btn btn-primary btn-round">Подробнее</button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

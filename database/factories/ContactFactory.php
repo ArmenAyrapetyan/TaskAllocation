@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Counterparty;
 use App\Models\Source;
 use App\Models\SpecialGroup;
 use App\Models\User;
@@ -30,6 +31,7 @@ class ContactFactory extends Factory
             'email' => $this->faker->email(),
             'telegram' => $this->faker->firstName(),
             'vk_url' => $this->faker->url(),
+            'counterparty_id' => $this->faker->randomElement(Counterparty::select('id')->get()),
             'created_at' => now(),
             'updated_at' => now(),
         ];

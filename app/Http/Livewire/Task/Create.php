@@ -11,13 +11,16 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $projects, $statuses;
-    public $name, $description,
-        $time_planned, $time_spend,
-        $date_start, $date_end,
-        $project_id, $status_id;
-
-    public $response;
+    public $projects;
+    public $statuses;
+    public $name;
+    public $description;
+    public $time_planned;
+    public $time_spend;
+    public $date_start;
+    public $date_end;
+    public $project_id;
+    public $status_id;
 
     protected $rules = [
         'name' => 'required',
@@ -58,16 +61,14 @@ class Create extends Component
             'date_end' => $this->date_end,
         ]);
 
-        if ($newTask) {
-            TaskUser::create([
-                'task_id' => $newTask->id,
-                'user_id' => auth()->user()->id,
-                'task_role_id' => TaskRole::ROLE_CREATOR,
-            ]);
-            $this->response = "Задача создана";
-        } else
-            $this->response = "Ошибка создания задачи";
+        TaskUser::create([
+            'task_id' => $newTask->id,
+            'user_id' => auth()->user()->id,
+            'task_role_id' => TaskRole::ROLE_CREATOR,
+        ]);
 
+        $this->dispatchBrowserEvent('closeModal');
+        $this->emit('refreshShow');
         $this->clear();
     }
 

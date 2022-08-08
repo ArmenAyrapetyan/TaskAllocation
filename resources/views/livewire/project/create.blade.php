@@ -10,10 +10,11 @@
     </div>
 
     <div class="form-floating mb-3">
-        <textarea wire:model="description" name="description"
+        <textarea wire:model="description" name="description" style="height: 200px"
                   class="form-control @isset($description) @if($description != '') is-valid @else is-invalid @endif @endisset
                   @error('description') is-invalid @enderror"
-                  id="floatingInput"></textarea>
+                  id="floatingInput">
+        </textarea>
         <label for="floatingInput">Описание</label>
         @error('description')
         <div class="text-danger">{{ $message }}</div> @enderror
@@ -60,6 +61,8 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button @if(session('success'))  @endif wire:click="saveProject()" type="button" class="btn btn-primary">Сохранить проект</button>
+        <button wire:click="saveProject()" type="button" class="btn btn-primary">
+            Сохранить проект
+        </button>
     </div>
 </div>

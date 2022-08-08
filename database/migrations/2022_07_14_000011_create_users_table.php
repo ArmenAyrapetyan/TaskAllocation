@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('third_name');
             $table->integer('rate_per_hour');
             $table->foreignId('system_role_id')->default(SystemRole::SYSROLE_USER)->constrained('system_roles')->cascadeOnDelete();
-            $table->string('login');
+            $table->string('telegram')->nullable();
+            $table->string('vk_url')->nullable();
+            $table->string('phone')->unique();
             $table->string('password');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

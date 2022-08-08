@@ -33,21 +33,18 @@ class Show extends Component
         $this->isLastSortAll = false;
         $this->statusBool = $isStatus;
         $this->importId = $id;
-        session()->put('curPage', 'project.index');
     }
 
     public function getAllProjects()
     {
         $this->projects = Project::orderBy('name')->get();
         $this->isLastSortAll = true;
-        session()->put('curPage', 'project.index');
     }
 
     public function mount()
     {
         $this->projects = Project::orderBy('name')->get();
         $this->isLastSortAll = true;
-        session()->put('curPage', 'project.index');
     }
 
     public function render()

@@ -15,22 +15,16 @@ class Index extends Component
     {
         $this->statuses = TaskStatus::all();
         $this->projectGroups = ProjectGroup::all();
-        session()->put('curPage', 'task.index');
     }
 
-    public function getAll()
+    public function getAllTasks()
     {
-        $this->emit('getAll');
+        $this->emit('getAllTasks');
     }
 
-    public function sortByStatus($id)
+    public function sortTasks($id, $isStatus = false)
     {
-        $this->emit('sortByStatus', $id);
-    }
-
-    public function sortByProjectGroup($id)
-    {
-        $this->emit('sortByProjectGroup', $id);
+        $this->emit('sortTasks', $id, $isStatus);
     }
 
     public function render()
