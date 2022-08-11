@@ -52,7 +52,7 @@
                         @if($project->counterparty)
                             <a href="{{route('counterparty.detail', $project->counterparty->id)}}">{{$project->counterparty->name}}</a>
                         @else
-                            null
+                            Нет
                         @endif
                     </td>
                     <td>

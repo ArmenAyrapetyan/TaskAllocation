@@ -34,9 +34,14 @@ class Profile extends Component
         'avatar.required' => 'Вберите аватар'
     ];
 
-    public function changeAvatar()
+    public function updated()
     {
         $this->validate();
+        $this->changeAvatar();
+    }
+
+    public function changeAvatar()
+    {
         if ($this->user->avatar) {
             FileStorage::fileDelete($this->user->avatar->path);
             $this->user->avatar->delete();

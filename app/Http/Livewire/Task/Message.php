@@ -22,15 +22,19 @@ class Message extends Component
 
     public function mount($id)
     {
-        $this->task_messages = Messages::where('task_id', $id)->get();
+        $this->task_messages = Messages::where('task_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
         $this->response = null;
         $this->taskId = $id;
     }
 
     public function refreshMessages()
     {
-        $this->message = 'Введите сообщение';
-        $this->task_messages = Messages::where('task_id', $this->taskId)->get();
+        $this->message = null;
+        $this->task_messages = Messages::where('task_id', $this->taskId)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function createMessage()

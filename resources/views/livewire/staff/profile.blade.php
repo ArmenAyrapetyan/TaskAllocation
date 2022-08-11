@@ -4,21 +4,22 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        @if($user->avatar)
-                            <img src="{{asset($user->avatar->path)}}" alt="avatar"
-                                 class="rounded-circle img-fluid" style="width: 150px;">
-                        @else
-                            <img src="{{asset('storage/images/imguser.png')}}" alt="avatar"
-                                 class="rounded-circle img-fluid" style="width: 150px;">
-                        @endif
+                        <label for="changeAvatar">
+                            @if($user->avatar)
+                                <img src="{{asset($user->avatar->path)}}" alt="avatar" width="150" height="150"
+                                     class="rounded-circle img-fluid" style="object-fit: cover;">
+                            @else
+                                <img src="{{asset('storage/images/imguser.png')}}" alt="avatar" width="150" height="150"
+                                     class="rounded-circle img-fluid" style="object-fit: cover;">
+                            @endif
+                        </label>
                         <h5 class="my-3">{{$user->full_name}}</h5>
                         <p class="text-muted mb-1">{{$user->email}}</p>
                         <p class="text-muted mb-4">{{$user->phone}}</p>
                         <div class="d-flex justify-content-center mb-2">
-                            <form wire:submit.prevent="changeAvatar">
-                                <input class="m-2 form-control" type="file" wire:model="avatar">
+                            <form>
+                                <input id="changeAvatar" class="d-none m-2 form-control" type="file" wire:model="avatar">
                                 @error('avatar') <span class="text-danger">{{$message}}</span> @enderror
-                                <button type="submit" class="btn btn-outline-primary ms-1">Сменить аватар</button>
                             </form>
                         </div>
                     </div>
@@ -78,16 +79,19 @@
                         <hr>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">Изменить профиль</button>
+                                    data-bs-target="#staticBackdrop">Изменить профиль
+                            </button>
 
                             <!-- Модальное окно -->
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                 data-bs-keyboard="false" tabindex="-1"
                                  aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="staticBackdropLabel">Редактирование профиля</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Закрыть"></button>
                                         </div>
                                         <div class="modal-body">
                                             @livewire('staff.modify', ['id' => $user->id])
@@ -106,7 +110,7 @@
                                 </p>
                                 @foreach($user->tasks as $task)
                                     <hr>
-                                    <a href="{{route('task.detail', $task->task->id)}}">{{$task->task->name}}</a>
+                                    <a href="{{route('task.detail', $task->id)}}">{{$task->name}}</a>
                                 @endforeach
                             </div>
                         </div>

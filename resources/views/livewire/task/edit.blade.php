@@ -55,15 +55,6 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input wire:model="time_spend" name="time_spend" type="number"
-               class="form-control @isset($time_spend) is-valid @endisset @error('time_spend') is-invalid @enderror"
-               id="taskSpend" min="0" value="{{$time_spend}}">
-        <label for="taskSpend">Сколько времени было затрачено</label>
-        @error('time_spend')
-        <div class="text-danger">{{ $message }}</div> @enderror
-    </div>
-
-    <div class="form-floating mb-3">
         <input wire:model="date_start" name="date_start" type="date"
                class="form-control @isset($date_start) is-valid @endisset @error('date_start') is-invalid @enderror"
                id="taskStart" value="{{$date_start}}">

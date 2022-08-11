@@ -22,7 +22,6 @@ class TaskFactory extends Factory
             'name' => $this->faker->word(),
             'description' => $this->faker->text(),
             'time_planned' => $this->faker->numberBetween(40,600),
-            'time_spend' => null,
             'date_start' => now(),
             'date_end' => now()->addMonths(12),
             'project_id' => $this->faker->randomElement(Project::select('id')->get()),

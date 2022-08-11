@@ -47,7 +47,6 @@
                                         @endforeach
                                     </ul>
                                     <p>Номер телефона: {{$employee->phone}}</p>
-                                    <p class="mb-1">{{$employee->email}}</p>
                                     <div>
                                         <a href="{{route('staff.detail', $employee->id)}}">
                                             <button class="mb-1 btn btn-primary btn-round">Подробнее</button>

@@ -28,7 +28,7 @@ class Show extends Component
     public function refreshShow()
     {
         $this->isLastSortAll
-            ? $this->getAll()
+            ? $this->getAllTasks()
             : $this->sortTasks($this->importId, $this->statusBool);
     }
 

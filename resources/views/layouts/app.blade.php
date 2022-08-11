@@ -13,6 +13,7 @@
             integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/imask"></script>
     @livewireStyles
 </head>
 <body>
@@ -29,5 +30,6 @@
         $("#staticBackdrop").modal('hide');
     })
 </script>
+
 </body>
 </html>

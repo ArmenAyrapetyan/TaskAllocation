@@ -14,7 +14,7 @@ class TaskStatus extends Model
     const STATUS_DONE = 3;
     const STATUS_COMPLETED = 4;
     const STATUS_WAITINGRESPONSE = 5;
-    const STATUS_PENDING = 1;
-    const STATUS_CANCELLED = 1;
-    const STATUS_MODIFICATION = 1;
+    const STATUS_PENDING = 6;
+    const STATUS_CANCELLED = 7;
+    const STATUS_MODIFICATION = 8;
 }

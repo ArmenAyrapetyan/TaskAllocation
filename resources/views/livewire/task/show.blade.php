@@ -65,11 +65,7 @@
                     @endif
                 </td>
                 <td>
-                    @if($task->time_spend)
-                        {{$task->time_spend . ' мин.'}}
-                    @else
-                        0 мин.
-                    @endif
+                    {{$task->timeSpend()}} мин.
                 </td>
             </tr>
         @endforeach

@@ -1,6 +1,6 @@
 <div>
     <div class="mt-2 ms-2">
-        <p class="h2">{{$project->group->name . ' - ' . $project->name . ' ' . $project->status->name}}
+        <p class="h3">{{$project->group->name . ' - ' . $project->name . ' ' . $project->status->name}}
             @if($project->counterparty)
                 <a href="{{route('counterparty.detail', $project->counterparty->id)}}">{{$project->counterparty->name}}</a>
             @else
@@ -9,12 +9,12 @@
         </p>
     </div>
 
-    <div class="ms-3 mt-2">
+    <div class="ms-3 mt-3">
         <p class="h3">
             @if($project->user->avatar)
-                <img width="100" height="100" src="{{asset($project->user->avatar->path)}}" alt="user avatar">
+                <img height="100" src="{{asset($project->user->avatar->path)}}" alt="user avatar">
             @else
-                <img width="100" height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
+                <img height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
             @endif
             {{$project->user->full_name}}
         </p>
@@ -63,11 +63,7 @@
                         @endif
                     </td>
                     <td>
-                        @if($task->time_spend)
-                            {{$task->time_spend . ' мин.'}}
-                        @else
-                            0 мин.
-                        @endif
+                        {{$task->timeSpend()}} мин.
                     </td>
                     <td>
                         @if($task->time_planned)

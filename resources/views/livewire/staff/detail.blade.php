@@ -2,9 +2,9 @@
     <div class="ms-3 mt-2">
         <p class="h3">
             @if($employee->avatar)
-                <img width="100" height="100" src="{{asset($employee->avatar->path)}}" alt="user avatar">
+                <img height="100" src="{{asset($employee->avatar->path)}}" alt="user avatar">
             @else
-                <img width="100" height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
+                <img height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
             @endif
             {{$employee->full_name}}
         </p>
@@ -33,7 +33,7 @@
         <div class="list-group">
             @foreach($employee->tasks as $task)
                 <a class="list-group-item list-group-item-action"
-                   href="{{route('task.detail', $task->task->id)}}">{{$task->role->name}} - {{$task->task->name}}</a>
+                   href="{{route('task.detail', $task->id)}}">{{$task->status->name}} - {{$task->name}}</a>
             @endforeach
         </div>
     </div>
