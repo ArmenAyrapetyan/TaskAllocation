@@ -1,74 +1,74 @@
 <div>
     <div class="form-floating mb-3">
-        <input wire:model="name" name="name" type="text"
-               class="form-control @isset($name) @if($name != '') is-valid @else is-invalid @endif @endisset
-               @error('name') is-invalid @enderror" id="taskName" value="{{$name}}">
+        <input wire:model="task_data.name" name="task_data.name" type="text"
+               class="form-control @isset($task_data['name']) @if($task_data['name'] != '') is-valid @else is-invalid @endif @endisset
+               @error('task_data.name') is-invalid @enderror" id="taskName">
         <label for="taskName">Имя задачи</label>
-        @error('name')
+        @error('task_data.name')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="form-floating mb-3">
-        <textarea wire:model="description" name="description" style="height: 200px"
-                  class="form-control @isset($description) @if($description != '') is-valid @else is-invalid @endif @endisset
-                  @error('description') is-invalid @enderror" id="taskDeck">{{$description}}</textarea>
+        <textarea wire:model="task_data.description" name="task_data.description" style="height: 200px"
+                  class="form-control @isset($task_data['description']) @if($task_data['description'] != '') is-valid @else is-invalid @endif @endisset
+                  @error('task_data.description') is-invalid @enderror" id="taskDeck"></textarea>
         <label for="taskDeck">Описание</label>
-        @error('description')
+        @error('task_data.description')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="form-floating mb-3">
-        <select wire:model="project_id" name="project_id"
-                class="form-control @isset($project_id) is-valid @endisset @error('project_id') is-invalid @enderror">
+        <select wire:model="task_data.project_id" name="task_data.project_id"
+                class="form-control @isset($task_data['project_id']) is-valid @endisset @error('task_data.project_id') is-invalid @enderror">
             <option selected="" value="">Выберите проект</option>
             @foreach($projects as $project)
-                <option @if($project_id == $project->id) selected @endif
+                <option @if($task_data['project_id'] == $project->id) selected @endif
                     value="{{ $project->id }}"> {{ $project->name }}</option>
             @endforeach
         </select>
         <label>К какому проекту относится задача</label>
-        @error('projects')
+        @error('task_data.projects')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="form-floating mb-3">
-        <select wire:model="status_id" name="status_id"
-                class="form-control @isset($status_id) is-valid @endisset @error('status_id') is-invalid @enderror">
+        <select wire:model="task_data.status_id" name="task_data.status_id"
+                class="form-control @isset($task_data['status_id']) is-valid @endisset @error('task_data.status_id') is-invalid @enderror">
             <option selected="" value="">Выберите статус задачи</option>
             @foreach($statuses as $status)
-                <option @if($status_id == $status->id) selected @endif
+                <option @if($task_data['status_id'] == $status->id) selected @endif
                     value="{{ $status->id }}"> {{ $status->name }}</option>
             @endforeach
         </select>
         <label>Статус</label>
-        @error('status_id')
+        @error('task_data.status_id')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="form-floating mb-3">
-        <input wire:model="time_planned" name="time_planned" type="number"
-               class="form-control @isset($time_planned) is-valid @endisset @error('time_planned') is-invalid @enderror"
-               id="taskPlan" min="0" value="{{$time_planned}}">
+        <input wire:model="task_data.time_planned" name="task_data.time_planned" type="number"
+               class="form-control @isset($task_data['time_planned']) is-valid @endisset @error('task_data.time_planned') is-invalid @enderror"
+               id="taskPlan" min="0">
         <label for="taskPlan">Сколько времени планируется затратить</label>
-        @error('time_planned')
+        @error('task_data.time_planned')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="form-floating mb-3">
-        <input wire:model="date_start" name="date_start" type="date"
-               class="form-control @isset($date_start) is-valid @endisset @error('date_start') is-invalid @enderror"
-               id="taskStart" value="{{$date_start}}">
+        <input wire:model="task_data.date_start" name="task_data.date_start" type="date"
+               class="form-control @isset($task_data['date_start']) is-valid @endisset @error('task_data.date_start') is-invalid @enderror"
+               id="taskStart">
         <label for="taskStart">Дата начала выполнения задачи</label>
-        @error('date_start')
+        @error('task_data.date_start')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="form-floating mb-3">
-        <input wire:model="date_end" name="date_end" type="date"
-               class="form-control @isset($date_end) is-valid @endisset @error('date_end') is-invalid @enderror"
-               id="taskEnd" value="{{$date_end}}">
+        <input wire:model="task_data.date_end" name="task_data.date_end" type="date"
+               class="form-control @isset($task_data['date_end']) is-valid @endisset @error('task_data.date_end') is-invalid @enderror"
+               id="taskEnd">
         <label for="taskEnd">Дата конца выполнения задачи</label>
-        @error('date_end')
+        @error('task_data.date_end')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 

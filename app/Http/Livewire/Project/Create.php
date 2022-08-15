@@ -10,28 +10,25 @@ use Livewire\Component;
 
 class Create extends Component
 {
+    public $project_data;
     public $counterparties;
     public $statuses;
     public $groups;
-    public $name;
-    public $description;
-    public $counterparty;
-    public $group;
-    public $status;
 
     protected $rules = [
-        'name' => 'required',
-        'description' => 'required|max:600',
-        'group' => 'required',
-        'status' => 'required',
+        'project_data.name' => 'required',
+        'project_data.description' => 'required|max:600',
+        'project_data.counterparty_id' => 'required',
+        'project_data.group_id' => 'required',
+        'project_data.status_id' => 'required',
     ];
 
     protected $messages = [
-        'name.required' => 'Введите имя',
-        'description.required' => 'Заполните описание',
-        'description.max' => 'Слишком много символов',
-        'group.required' => 'Выберите группу проекта',
-        'status.required' => 'Выберите статус проекта',
+        'project_data.name.required' => 'Введите имя',
+        'project_data.description.required' => 'Заполните описание',
+        'project_data.description.max' => 'Слишком много символов',
+        'project_data.group_id.required' => 'Выберите группу проекта',
+        'project_data.status_id.required' => 'Выберите статус проекта',
     ];
 
     public function updated($input)
@@ -43,31 +40,18 @@ class Create extends Component
     {
         $this->validate();
 
-        Project::create([
-            'name' => $this->name,
-            'description' => $this->description,
-            'user_id' => auth()->user()->id,
-            'counterparty_id' => $this->counterparty,
-            'group_id' => $this->group,
-            'status_id' => $this->status,
-        ]);
+        Project::create($this->project_data);
 
-        $this->clear();
+        $this->project_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshSort');
     }
 
-    private function clear()
-    {
-        $this->name = null;
-        $this->description = null;
-        $this->counterparty = null;
-        $this->group = null;
-        $this->status = null;
-    }
-
     public function mount()
     {
+        $this->project_data = [
+          'user_id' => auth()->id(),
+        ];
         $this->counterparties = Counterparty::select('id', 'name')->get();
         $this->groups = ProjectGroup::select('id', 'name')->get();
         $this->statuses = ProjectStatus::select('id', 'name')->get();

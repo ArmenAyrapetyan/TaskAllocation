@@ -13,9 +13,9 @@
         <div class="d-flex flex-row mt-1">
             <div class="image">
                 @if($msg->user->avatar)
-                    <img src="{{asset($msg->user->avatar->path)}}" class="rounded-circle" width="40" height="40" alt="user avatar">
+                    <img src="{{asset($msg->user->avatar->path)}}" style="object-fit: cover;" class="rounded-circle" width="40" height="40" alt="user avatar">
                 @else
-                    <img src="{{asset('storage/images/imguser.png')}}" class="rounded-circle" width="40" height="40" alt="user avatar">
+                    <img src="{{asset('storage/images/imguser.png')}}" style="object-fit: cover;" class="rounded-circle" width="40" height="40" alt="user avatar">
                 @endif
             </div>
 

@@ -23,9 +23,9 @@
             @foreach($task->users as $user)
                 @if($user->task_role_id == 1)
                     @if($user->user->avatar)
-                        <img width="100" height="100" src="{{asset($user->user->avatar->path)}}" alt="user avatar">
+                        <img width="100" height="100" style="object-fit: cover;" src="{{asset($user->user->avatar->path)}}" alt="user avatar">
                     @else
-                        <img width="100" height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
+                        <img width="100" height="100" style="object-fit: cover;" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
                     @endif
                     <a href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a>
                 @endif

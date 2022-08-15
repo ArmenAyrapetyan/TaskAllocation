@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Counterparty;
-use Illuminate\Http\Request;
-
 class CounterpartyController extends Controller
 {
     public function index()

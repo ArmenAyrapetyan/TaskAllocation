@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\TaskRole;
 use App\Models\TaskStatus;
 use App\Models\TaskUser;
+use App\Services\Notifications;
 use Livewire\Component;
 
 class Detail extends Component
@@ -37,6 +38,7 @@ class Detail extends Component
             if ($this->task->status_id != TaskStatus::STATUS_WORKPROCCESS)
                 $this->task->status_id = TaskStatus::STATUS_WORKPROCCESS;
         }
+        Notifications::sendTaskNotify(auth()->id(), $this->task_id, 'Изменен статус');
         $this->task->save();
         $this->refreshTaskInfo();
     }

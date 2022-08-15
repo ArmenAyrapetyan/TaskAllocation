@@ -5,7 +5,6 @@ namespace App\Http\Livewire\Project;
 use App\Models\ProjectGroup;
 use App\Models\ProjectStatus;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class Index extends Component
 {

@@ -10,44 +10,38 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $first_name;
-    public $last_name;
-    public $post;
-    public $phone;
-    public $email;
-    public $telegram;
-    public $vk_url;
-    public $source_id;
-    public $group_id;
-    public $counterparty_id;
+    public $contact_data;
     public $sources;
     public $special_groups;
     public $counterpaties;
 
     protected $rules = [
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'post' => 'nullable',
-        'counterparty_id' => 'nullable',
-        'source_id' => 'required',
-        'group_id' => 'required',
-        'phone' => 'required|integer',
-        'email' => 'required|email',
+        'contact_data.first_name' => 'required',
+        'contact_data.last_name' => 'required',
+        'contact_data.post' => 'nullable',
+        'contact_data.counterparty_id' => 'nullable',
+        'contact_data.source_id' => 'required',
+        'contact_data.special_group_id' => 'required',
+        'contact_data.phone' => 'required|integer',
+        'contact_data.email' => 'required|email',
     ];
 
     protected $messages = [
-        'first_name.required' => 'Введите имя',
-        'last_name.required' => 'Введите фамилию',
-        'source_id.required' => 'Из какого ресурса контакт',
-        'group_id.required' => 'К какой группе относится контакт',
-        'phone.required' => 'Заполните номер телефона',
-        'phone.integer' => 'Телефон должен содержать только цифры',
-        'email.required' => 'Введите почту контакта',
-        'email.email' => 'Поле почта должно быть почтой',
+        'contact_data.first_name.required' => 'Введите имя',
+        'contact_data.last_name.required' => 'Введите фамилию',
+        'contact_data.source_id.required' => 'Из какого ресурса контакт',
+        'contact_data.special_group_id.required' => 'К какой группе относится контакт',
+        'contact_data.phone.required' => 'Заполните номер телефона',
+        'contact_data.phone.integer' => 'Телефон должен содержать только цифры',
+        'contact_data.email.required' => 'Введите почту контакта',
+        'contact_data.email.email' => 'Поле почта должно быть почтой',
     ];
 
     public function mount()
     {
+        $this->contact_data = [
+            'user_id' => auth()->id(),
+        ];
         $this->sources = Source::all();
         $this->special_groups = SpecialGroup::all();
         $this->counterpaties = Counterparty::all();
@@ -57,36 +51,11 @@ class Create extends Component
     {
         $this->validate();
 
-        $newContact = Contact::create([
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'post' => $this->post,
-            'source_id' => $this->source_id,
-            'special_group_id' => $this->group_id,
-            'user_id' => auth()->user()->id,
-            'phone' => $this->phone,
-            'email' => $this->email,
-            'telegram' => $this->telegram,
-            'vk_url' => $this->vk_url,
-            'counterparty_id' => $this->counterparty_id,
-        ]);
+        $newContact = Contact::create($this->contact_data);
 
-        $this->clearAll();
+        $this->contact_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshContact');
-    }
-
-    public function clearAll()
-    {
-        $this->first_name = null;
-        $this->last_name = null;
-        $this->post = null;
-        $this->source_id = null;
-        $this->group_id = null;
-        $this->phone = null;
-        $this->email = null;
-        $this->telegram = null;
-        $this->vk_url = null;
     }
 
     public function render()

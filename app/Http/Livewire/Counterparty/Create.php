@@ -9,39 +9,31 @@ use Livewire\Component;
 
 class Create extends Component
 {
+    public $counterparty_data;
     public $specialGroups;
     public $sources;
-    public $name;
-    public $phone;
-    public $email;
-    public $web_site;
-    public $vk;
-    public $telegram;
-    public $is_manufacturer;
-    public $special_group_id;
-    public $source_id;
 
     protected $rules = [
-        'name' => 'required',
-        'phone' => 'required|unique:counterparties,phone',
-        'email' => 'required|unique:counterparties,email',
-        'web_site' => 'nullable',
-        'vk' => 'nullable',
-        'telegram' => 'nullable',
-        'is_manufacturer' => 'required',
-        'special_group_id' => 'required',
-        'source_id' => 'required',
+        'counterparty_data.name' => 'required',
+        'counterparty_data.phone' => 'required|unique:counterparties,phone',
+        'counterparty_data.email' => 'required|unique:counterparties,email',
+        'counterparty_data.website_url' => 'nullable',
+        'counterparty_data.vk_url' => 'nullable',
+        'counterparty_data.telegram' => 'nullable',
+        'counterparty_data.is_manufacturer' => 'required',
+        'counterparty_data.special_group_id' => 'required',
+        'counterparty_data.source_id' => 'required',
     ];
 
     protected $messages = [
-        'name.required' => 'Вы не заполнили имя организации',
-        'phone.required' => 'Введите номер телефона организации',
-        'phone.unique' => 'Данный номер уже зарегистрирован',
-        'email.required' => 'Заполните почту организации',
-        'email.unique' => 'Почта уже зарегистрированна',
-        'is_manufacturer.required' => 'Организация является производителем?',
-        'special_group_id.required' => 'Выберите группу организации',
-        'source_id.required' => 'Из какого источника организация',
+        'counterparty_data.name.required' => 'Вы не заполнили имя организации',
+        'counterparty_data.phone.required' => 'Введите номер телефона организации',
+        'counterparty_data.phone.unique' => 'Данный номер уже зарегистрирован',
+        'counterparty_data.email.required' => 'Заполните почту организации',
+        'counterparty_data.email.unique' => 'Почта уже зарегистрированна',
+        'counterparty_data.is_manufacturer.required' => 'Организация является производителем?',
+        'counterparty_data.special_group_id.required' => 'Выберите группу организации',
+        'counterparty_data.source_id.required' => 'Из какого источника организация',
     ];
 
     public function mount()
@@ -52,18 +44,8 @@ class Create extends Component
 
     public function createCounterparty()
     {
-        Counterparty::create([
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'email' => $this->email,
-            'website_url' => $this->web_site,
-            'vk_url' => $this->vk,
-            'telegram' => $this->telegram,
-            'is_manufacturer' => $this->is_manufacturer,
-            'special_group_id' => $this->special_group_id,
-            'source_id' => $this->source_id,
-        ]);
-
+        Counterparty::create($this->counterparty_data);
+        $this->counterparty_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshCounterparty');
     }

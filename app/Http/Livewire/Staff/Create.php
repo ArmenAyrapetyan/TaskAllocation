@@ -9,7 +9,9 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $token, $rate_per_hour, $responce;
+    public $token;
+    public $rate_per_hour;
+    public $responce;
 
     protected $rules = [
         'rate_per_hour' => 'required|numeric',

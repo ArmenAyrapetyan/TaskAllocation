@@ -7,10 +7,10 @@
                         <label for="changeAvatar">
                             @if($user->avatar)
                                 <img src="{{asset($user->avatar->path)}}" alt="avatar" width="150" height="150"
-                                     class="rounded-circle img-fluid" style="object-fit: cover;">
+                                     class="rounded-circle" style="object-fit: cover;">
                             @else
                                 <img src="{{asset('storage/images/imguser.png')}}" alt="avatar" width="150" height="150"
-                                     class="rounded-circle img-fluid" style="object-fit: cover;">
+                                     class="rounded-circle" style="object-fit: cover;">
                             @endif
                         </label>
                         <h5 class="my-3">{{$user->full_name}}</h5>

@@ -11,52 +11,42 @@ use Livewire\Component;
 
 class Create extends Component
 {
+    public $task_data;
     public $projects;
     public $statuses;
-    public $name;
-    public $description;
-    public $time_planned;
-    public $date_start;
-    public $date_end;
-    public $project_id;
-    public $status_id;
 
     protected $rules = [
-        'name' => 'required',
-        'description' => 'required|max:600',
-        'time_planned' => 'nullable|integer|min:0',
-        'date_start' => 'required|date',
-        'date_end' => 'required|date',
-        'status_id' => 'required',
+        'task_data.name' => 'required',
+        'task_data.description' => 'required|max:600',
+        'task_data.time_planned' => 'nullable|integer|min:0',
+        'task_data.date_start' => 'required|date',
+        'task_data.date_end' => 'required|date',
+        'task_data.status_id' => 'required',
     ];
 
     protected $messages = [
-        'name.required' => 'Заполните имя задачи',
-        'description.required' => 'Напишите подробное описание задачи',
-        'time_planned.integer' => 'Запланированное время должно быть числом',
-        'time_planned.min' => 'Минимально запланированное время 0',
-        'date_start.required' => 'Заполните дату начала выполнения задачи',
-        'date_start.date' => 'Поле должно содержать дату',
-        'date_end.required' => 'Заполните дату конца выполнения задачи',
-        'date_end.date' => 'Поле должно содержать дату',
-        'status_id.required' => 'У задачи должен быть статус',
+        'task_data.name.required' => 'Заполните имя задачи',
+        'task_data.description.required' => 'Напишите подробное описание задачи',
+        'task_data.time_planned.integer' => 'Запланированное время должно быть числом',
+        'task_data.time_planned.min' => 'Минимально запланированное время 0',
+        'task_data.date_start.required' => 'Заполните дату начала выполнения задачи',
+        'task_data.date_start.date' => 'Поле должно содержать дату',
+        'task_data.date_end.required' => 'Заполните дату конца выполнения задачи',
+        'task_data.date_end.date' => 'Поле должно содержать дату',
+        'task_data.status_id.required' => 'У задачи должен быть статус',
     ];
 
     public function saveTask()
     {
         $this->validate();
 
-        $newTask = Task::create([
-            'name' => $this->name,
-            'description' => $this->description,
+        $this->task_data = [
             'project_id' => $this->project_id != null
                 ? $this->project_id
                 : null,
-            'status_id' => $this->status_id,
-            'time_planned' => $this->time_planned,
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
-        ]);
+        ];
+
+        $newTask = Task::create($this->task_data);
 
         TaskUser::create([
             'task_id' => $newTask->id,
@@ -64,20 +54,9 @@ class Create extends Component
             'task_role_id' => TaskRole::ROLE_CREATOR,
         ]);
 
+        $this->task_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshShow');
-        $this->clear();
-    }
-
-    public function clear()
-    {
-        $this->name = null;
-        $this->description = null;
-        $this->project_id = null;
-        $this->status_id = null;
-        $this->time_planned = null;
-        $this->date_start = null;
-        $this->date_end = null;
     }
 
     public function mount()
