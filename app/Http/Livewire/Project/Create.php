@@ -31,6 +31,16 @@ class Create extends Component
         'project_data.status_id.required' => 'Выберите статус проекта',
     ];
 
+    public function mount()
+    {
+        $this->project_data = [
+            'user_id' => auth()->id(),
+        ];
+        $this->counterparties = Counterparty::select('id', 'name')->get();
+        $this->groups = ProjectGroup::select('id', 'name')->get();
+        $this->statuses = ProjectStatus::select('id', 'name')->get();
+    }
+
     public function updated($input)
     {
         $this->validateOnly($input);
@@ -45,16 +55,6 @@ class Create extends Component
         $this->project_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshSort');
-    }
-
-    public function mount()
-    {
-        $this->project_data = [
-          'user_id' => auth()->id(),
-        ];
-        $this->counterparties = Counterparty::select('id', 'name')->get();
-        $this->groups = ProjectGroup::select('id', 'name')->get();
-        $this->statuses = ProjectStatus::select('id', 'name')->get();
     }
 
     public function render()

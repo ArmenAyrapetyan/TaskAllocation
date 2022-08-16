@@ -39,9 +39,6 @@ class Create extends Component
 
     public function mount()
     {
-        $this->contact_data = [
-            'user_id' => auth()->id(),
-        ];
         $this->sources = Source::all();
         $this->special_groups = SpecialGroup::all();
         $this->counterpaties = Counterparty::all();
@@ -50,6 +47,10 @@ class Create extends Component
     public function saveContact()
     {
         $this->validate();
+
+        $this->contact_data = [
+            'user_id' => auth()->id(),
+        ];
 
         $newContact = Contact::create($this->contact_data);
 

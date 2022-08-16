@@ -64,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function projects()
     {
-        return $this->hasMany(Project::class, 'user_id');
+        return $this->belongsToMany(Project::class, 'project_users');
     }
 
     public function contacts()
@@ -95,5 +95,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function accesses()
     {
         return $this->hasMany(AccessUser::class, 'user_id');
+    }
+
+    public function auditableTasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_users')
+            ->wherePivot('task_role_id', TaskRole::ROLE_AUDIT)
+            ->whereNotIn('status_id', [
+                TaskStatus::STATUS_COMPLETED,
+                TaskStatus::STATUS_DONE,
+                TaskStatus::STATUS_CANCELLED,
+            ])->get();
+    }
+
+    public function activeTasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_users')
+            ->wherePivot('task_role_id', [TaskRole::ROLE_EXECUTOR, TaskRole::ROLE_CREATOR])
+            ->whereNotIn('status_id', [
+                TaskStatus::STATUS_COMPLETED,
+                TaskStatus::STATUS_DONE,
+                TaskStatus::STATUS_CANCELLED,
+            ])->get();
     }
 }

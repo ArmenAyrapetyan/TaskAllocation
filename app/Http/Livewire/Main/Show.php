@@ -3,7 +3,10 @@
 namespace App\Http\Livewire\Main;
 
 use App\Models\Task;
+use App\Models\TaskRole;
 use App\Models\TaskStatus;
+use App\Models\TaskUser;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Show extends Component
@@ -14,24 +17,17 @@ class Show extends Component
 
     public function mount()
     {
+        $taskStatuses = [
+            TaskStatus::STATUS_CANCELLED,
+            TaskStatus::STATUS_COMPLETED,
+            TaskStatus::STATUS_DONE,
+        ];
+
         $this->new_tasks = Task::where('status_id', TaskStatus::STATUS_NEW)->get();
-        $active_tasks = auth()->user()->tasks;
-        foreach ($active_tasks as $key => $task){
-            if ($task->status_id == TaskStatus::STATUS_CANCELLED) $active_tasks->forget($key);
-            if ($task->status_id == TaskStatus::STATUS_DONE) $active_tasks->forget($key);
-            if ($task->status_id == TaskStatus::STATUS_COMPLETED) $active_tasks->forget($key);
-        }
-        $this->active_tasks = $active_tasks;
-        $audit_tasks = Task::where('status_id', '!=', TaskStatus::STATUS_DONE)
-            ->where('status_id', '!=', TaskStatus::STATUS_CANCELLED)
-            ->where('status_id', '!=', TaskStatus::STATUS_COMPLETED)
-            ->get();
-        foreach ($audit_tasks as $key => $task){
-            if ($task->audit_id != auth()->id()){
-                $audit_tasks->forget($key);
-            }
-        }
-        $this->audit_tasks = $audit_tasks;
+
+        $this->active_tasks = auth()->user()->activeTasks();
+
+        $this->audit_tasks = auth()->user()->auditableTasks();
     }
 
     public function render()

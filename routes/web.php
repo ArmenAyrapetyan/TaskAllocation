@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
 
     Route::prefix('contacts')->as('contact.')->group(function (){
         Route::get('show', [ContactController::class, 'index'])->name('show');
-        Route::get('show/{id}', [ContactController::class, 'detail'])->name('detail');
+        Route::get('show/{contact}', [ContactController::class, 'detail'])->name('detail');
     });
 
     Route::prefix('staff')->as('staff.')->group(function (){

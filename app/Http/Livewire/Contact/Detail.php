@@ -14,15 +14,15 @@ class Detail extends Component
       'refreshContactInfo'
     ];
 
-    public function refreshContactInfo()
-    {
-        $this->contact = Contact::find($this->contact_id);
-    }
-
     public function mount($id)
     {
         $this->contact_id = $id;
-        $this->contact = Contact::find($id);
+        $this->refreshContactInfo();
+    }
+
+    public function refreshContactInfo()
+    {
+        $this->contact = Contact::find($this->contact_id);
     }
 
     public function render()

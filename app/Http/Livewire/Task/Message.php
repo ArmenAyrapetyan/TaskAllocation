@@ -3,10 +3,12 @@
 namespace App\Http\Livewire\Task;
 
 use App\Models\Messages;
+use App\Models\Task;
 use Livewire\Component;
 
 class Message extends Component
 {
+    public $task;
     public $task_messages;
     public $message;
     public $taskId;
@@ -20,8 +22,13 @@ class Message extends Component
         'message.required' => 'Заполните сообщение для его отправки',
     ];
 
+    protected $listeners = [
+        'refreshMessages',
+    ];
+
     public function mount($id)
     {
+        $this->task = Task::find($id);
         $this->task_messages = Messages::where('task_id', $id)
             ->orderBy('created_at', 'desc')
             ->get();

@@ -55,6 +55,7 @@ class Detail extends Component
             'task_role_id' => TaskRole::ROLE_EXECUTOR,
         ]);
         $this->refreshTaskInfo();
+        $this->emit('refreshMessages');
     }
 
     public function render()

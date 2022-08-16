@@ -26,6 +26,7 @@ class Executorsadd extends Component
                 ->where('task_id', $this->task->id)
                 ->delete();
         }
+        $this->emit('refreshMessages');
     }
 
     public function refreshEmployeeInfo()
@@ -37,8 +38,7 @@ class Executorsadd extends Component
     public function mount($task_id)
     {
         $this->task = Task::find($task_id);
-
-        $this->users = User::whereNotIn('id', [$this->task->creator_id])->get();
+        $this->users = User::whereNotIn('id', [$this->task->creator_id, $this->task->auditId])->get();
     }
 
     public function render()

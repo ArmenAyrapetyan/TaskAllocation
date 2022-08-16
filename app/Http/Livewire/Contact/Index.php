@@ -19,9 +19,9 @@ class Index extends Component
         $this->emit('getAllContacts');
     }
 
-    public function sortContactsBy($id)
+    public function filterContactsByGroup($id)
     {
-        $this->emit('sortContactsByGroup', $id);
+        $this->emit('filterContactsByGroup', $id);
     }
 
     public function render()

@@ -8,7 +8,7 @@
         @foreach($contactsGroup as $group)
             <li class="nav-item list-group-item d-flex justify-content-between align-items-start"
                 role="presentation">
-                <button class="btn" wire:click="sortContactsBy({{$group->id}})">{{$group->name}}</button>
+                <button class="btn" wire:click="filterContactsByGroup({{$group->id}})">{{$group->name}}</button>
             </li>
         @endforeach
     </ul>

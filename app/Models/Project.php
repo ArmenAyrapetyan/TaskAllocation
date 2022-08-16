@@ -47,6 +47,6 @@ class Project extends AllAccess
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsToMany(User::class, 'project_users');
     }
 }

@@ -23,7 +23,6 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'description' => $this->faker->text(),
-            'user_id' => $this->faker->randomElement(User::select('id')->get()),
             'counterparty_id' => $this->faker->randomElement(Counterparty::select('id')->get()),
             'group_id' => $this->faker->randomElement(ProjectGroup::select('id')->get()),
             'status_id' => $this->faker->randomElement(ProjectStatus::select('id')->get()),

@@ -17,7 +17,7 @@ class Detail extends Component
     public function mount($id)
     {
         $this->counterparty_id = $id;
-        $this->counterparty = Counterparty::find($id);
+        $this->refreshCounterpartyInfo();
     }
 
     public function refreshCounterpartyInfo()

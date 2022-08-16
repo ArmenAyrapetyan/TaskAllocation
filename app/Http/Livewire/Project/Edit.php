@@ -8,7 +8,8 @@ use App\Models\ProjectGroup;
 use App\Models\ProjectStatus;
 use Livewire\Component;
 
-class Edit extends Component
+class
+Edit extends Component
 {
     public $project_data;
     public $project;
@@ -31,15 +32,6 @@ class Edit extends Component
         'project_data.status_id.required' => 'Выберите статус проекта',
     ];
 
-    public function editProject()
-    {
-        $this->validate();
-        $this->project->fill($this->project_data);
-        $this->project->save();
-        $this->dispatchBrowserEvent('closeModal');
-        $this->emit('refreshProjectInfo');
-    }
-
     public function mount($id)
     {
         $this->counterparties = Counterparty::select('id', 'name')->get();
@@ -47,6 +39,15 @@ class Edit extends Component
         $this->statuses = ProjectStatus::select('id', 'name')->get();
         $this->project = Project::find($id);
         $this->project_data = $this->project->toArray();
+    }
+
+    public function editProject()
+    {
+        $this->validate();
+        $this->project->fill($this->project_data);
+        $this->project->save();
+        $this->dispatchBrowserEvent('closeModal');
+        $this->emit('refreshProjectInfo');
     }
 
     public function render()

@@ -12,10 +12,15 @@ class Show extends Component
     public $idSort;
 
     protected $listeners = [
-        'sortContactsByGroup',
+        'filterContactsByGroup',
         'getAllContacts',
         'refreshContact',
     ];
+
+    public function mount()
+    {
+        $this->getAllContacts();
+    }
 
     public function refreshContact()
     {
@@ -24,18 +29,12 @@ class Show extends Component
             : $this->sortContactsByGroup($this->idSort);
     }
 
-    public function mount()
-    {
-        $this->isSortAll = true;
-        $this->contacts = Contact::where('user_id', auth()->user()->id)->get();
-    }
-
-    public function sortContactsByGroup($id)
+    public function filterContactsByGroup($id)
     {
         $this->idSort = $id;
         $this->isSortAll = false;
         $this->contacts = Contact::where('special_group_id', $id)
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', auth()->id())
             ->get();
     }
 
@@ -49,7 +48,7 @@ class Show extends Component
     public function getAllContacts()
     {
         $this->isSortAll = true;
-        $this->contacts = Contact::where('user_id', auth()->user()->id)->get();
+        $this->contacts = Contact::where('user_id', auth()->id())->get();
     }
 
     public function render()

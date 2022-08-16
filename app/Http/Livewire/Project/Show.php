@@ -18,6 +18,12 @@ class Show extends Component
         'refreshSort',
     ];
 
+    public function mount()
+    {
+        $this->projects = Project::orderBy('name')->get();
+        $this->isLastSortAll = true;
+    }
+
     public function refreshSort()
     {
         $this->isLastSortAll
@@ -36,12 +42,6 @@ class Show extends Component
     }
 
     public function getAllProjects()
-    {
-        $this->projects = Project::orderBy('name')->get();
-        $this->isLastSortAll = true;
-    }
-
-    public function mount()
     {
         $this->projects = Project::orderBy('name')->get();
         $this->isLastSortAll = true;

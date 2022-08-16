@@ -19,8 +19,7 @@ class Show extends Component
 
     public function mount()
     {
-        $this->isLastSortAll = true;
-        $this->counterparties = Counterparty::all();
+        $this->allCounterparties();
     }
 
     public function allCounterparties()

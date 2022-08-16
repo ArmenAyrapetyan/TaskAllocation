@@ -13,7 +13,7 @@ class Detail extends Component
     public function mount($id)
     {
         $this->project_id = $id;
-        $this->project = Project::find($id);
+        $this->refreshProjectInfo();
     }
 
     protected $listeners = [

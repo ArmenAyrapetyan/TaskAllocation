@@ -1,21 +1,24 @@
 <div class="m-3 p-2">
-    <div class="form-floating mb-3 mt-2">
+    @if($task->isUserInTask(auth()->id()))
+        <div class="form-floating mb-3 mt-2">
         <textarea wire:model="message" name="message" style="height: 100px;"
                   class="form-control @isset($message) @if($message != '') is-valid @else is-invalid @endif @endisset
-                  @error('message') is-invalid @enderror"
-                  id="message"></textarea>
-        <label for="message">Сообщение</label>
-    </div>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-primary" wire:click="createMessage">Отправить сообщение</button>
-    </div>
+                  @error('message') is-invalid @enderror" id="message"></textarea>
+            <label for="message">Сообщение</label>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary" wire:click="createMessage">Отправить сообщение</button>
+        </div>
+    @endif
     @foreach($task_messages as $msg)
         <div class="d-flex flex-row mt-1">
             <div class="image">
                 @if($msg->user->avatar)
-                    <img src="{{asset($msg->user->avatar->path)}}" style="object-fit: cover;" class="rounded-circle" width="40" height="40" alt="user avatar">
+                    <img src="{{asset($msg->user->avatar->path)}}" style="object-fit: cover;" class="rounded-circle"
+                         width="40" height="40" alt="user avatar">
                 @else
-                    <img src="{{asset('storage/images/imguser.png')}}" style="object-fit: cover;" class="rounded-circle" width="40" height="40" alt="user avatar">
+                    <img src="{{asset('storage/images/imguser.png')}}" style="object-fit: cover;" class="rounded-circle"
+                         width="40" height="40" alt="user avatar">
                 @endif
             </div>
 

@@ -11,12 +11,12 @@
 
     <div class="ms-3 mt-3">
         <p class="h3">
-            @if($project->user->avatar)
-                <img height="100" src="{{asset($project->user->avatar->path)}}" alt="user avatar">
+            @if($project->user->first()->avatar)
+                <img height="100" src="{{asset($project->user->first()->avatar->path)}}" alt="user avatar">
             @else
                 <img height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
             @endif
-            {{$project->user->full_name}}
+            {{$project->user->first()->full_name}}
         </p>
     </div>
 
@@ -58,7 +58,9 @@
                     <td>
                         @if($task->users)
                             @foreach($task->users as $user)
-                                <p>{{$user->role->name}} <a href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a></p>
+                                <p>{{$user->role->name}} <a
+                                        href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a>
+                                </p>
                             @endforeach
                         @endif
                     </td>
@@ -78,27 +80,29 @@
         </table>
     </div>
 
-    <div class="float-end me-2 mt-2 mb-3">
-        <!-- Кнопка-триггер модального окна -->
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Редактировать проект
-        </button>
+    @if($project->user->first()->id == auth()->id())
+        <div class="float-end me-2 mt-2 mb-3">
+            <!-- Кнопка-триггер модального окна -->
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Редактировать проект
+            </button>
 
-        <!-- Модальное окно -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Создание проекта</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                    </div>
-                    <div class="modal-body">
-                        @livewire('project.edit', ['id' => $project_id])
+            <!-- Модальное окно -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Создание проекта</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            @livewire('project.edit', ['id' => $project_id])
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    @endif
 </div>

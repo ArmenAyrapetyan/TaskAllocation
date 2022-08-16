@@ -59,7 +59,7 @@
                         {{ $project->status->name }}
                     </td>
                     <td>
-                        <a href="{{route('staff.detail', $project->user->id)}}">{{ $project->user->full_name }}</a>
+                        <a href="{{route('staff.detail', $project->user->first()->id)}}">{{ $project->user->first()->full_name }}</a>
                     </td>
                 </tr>
         @endforeach

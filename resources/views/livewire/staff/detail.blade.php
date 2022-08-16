@@ -38,26 +38,29 @@
         </div>
     </div>
 
-    <div class="float-end me-2 mt-2">
-        <!-- Кнопка-триггер модального окна -->
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Редактировать группы сотрудника
-        </button>
+    @if(auth()->user()->system_role_id == 1)
+        <div class="float-end me-2 mt-2">
+            <!-- Кнопка-триггер модального окна -->
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Редактировать группы сотрудника
+            </button>
 
-        <!-- Модальное окно -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Редактирование сотрудника</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                    </div>
-                    <div class="modal-body">
-                        @livewire('staff.edit', ['id' => $employee_id])
+            <!-- Модальное окно -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Редактирование сотрудника</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            @livewire('staff.edit', ['id' => $employee_id])
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 </div>
