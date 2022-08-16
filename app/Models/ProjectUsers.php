@@ -9,6 +9,11 @@ class ProjectUsers extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'project_id',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

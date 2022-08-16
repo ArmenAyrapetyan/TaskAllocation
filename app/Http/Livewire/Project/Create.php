@@ -6,6 +6,7 @@ use App\Models\Counterparty;
 use App\Models\Project;
 use App\Models\ProjectGroup;
 use App\Models\ProjectStatus;
+use App\Models\ProjectUsers;
 use Livewire\Component;
 
 class Create extends Component
@@ -33,9 +34,6 @@ class Create extends Component
 
     public function mount()
     {
-        $this->project_data = [
-            'user_id' => auth()->id(),
-        ];
         $this->counterparties = Counterparty::select('id', 'name')->get();
         $this->groups = ProjectGroup::select('id', 'name')->get();
         $this->statuses = ProjectStatus::select('id', 'name')->get();
@@ -50,7 +48,12 @@ class Create extends Component
     {
         $this->validate();
 
-        Project::create($this->project_data);
+        $project = Project::create($this->project_data);
+
+        ProjectUsers::create([
+            'user_id' => auth()->id(),
+            'project_id' => $project->id,
+        ]);
 
         $this->project_data = null;
         $this->dispatchBrowserEvent('closeModal');
