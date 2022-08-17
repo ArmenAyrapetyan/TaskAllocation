@@ -94,7 +94,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function accesses()
     {
-        return $this->hasMany(AccessUser::class, 'user_id');
+        return $this->morphMany(AccessUser::class, 'user_id');
     }
 
     public function auditableTasks()
