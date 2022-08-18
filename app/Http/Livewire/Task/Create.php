@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Models\AccessRole;
+use App\Models\AccessUser;
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\TaskRole;
 use App\Models\TaskStatus;
 use App\Models\TaskUser;
 use Livewire\Component;
@@ -40,18 +41,17 @@ class Create extends Component
     {
         $this->validate();
 
-        $this->task_data = [
-            'project_id' => $this->project_id != null
-                ? $this->project_id
-                : null,
-        ];
+        $this->task_data['project_id'] = $this->task_data['project_id'] != null
+                ? $this->task_data['project_id']
+                : null;
 
         $newTask = Task::create($this->task_data);
 
-        TaskUser::create([
-            'task_id' => $newTask->id,
-            'user_id' => auth()->user()->id,
-            'task_role_id' => TaskRole::ROLE_CREATOR,
+        AccessUser::create([
+            'user_id' => auth()->id(),
+            'role_id' => AccessRole::ROLE_CREATOR,
+            'accessable_id' => $newTask->id,
+            'accessable_type' => Task::class,
         ]);
 
         $this->task_data = null;

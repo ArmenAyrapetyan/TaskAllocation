@@ -2,8 +2,9 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Models\AccessRole;
+use App\Models\AccessUser;
 use App\Models\Task;
-use App\Models\TaskRole;
 use App\Models\TaskStatus;
 use App\Models\TaskUser;
 use App\Services\Notifications;
@@ -49,10 +50,11 @@ class Detail extends Component
             $this->task->status_id = TaskStatus::STATUS_WORKPROCCESS;
             $this->task->save();
         }
-        TaskUser::create([
-            'task_id' => $this->task_id,
+        AccessUser::create([
             'user_id' => auth()->id(),
-            'task_role_id' => TaskRole::ROLE_EXECUTOR,
+            'role_id' => AccessRole::ROLE_EXECUTOR,
+            'accessable_id' => $this->task->id,
+            'accessable_type' => Task::class,
         ]);
         $this->refreshTaskInfo();
         $this->emit('refreshMessages');

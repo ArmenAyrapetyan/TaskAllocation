@@ -60,7 +60,7 @@
                 <td>
                     @if($task->users)
                         @foreach($task->users as $user)
-                            <p>{{$user->role->name}} <a href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a></p>
+                            <p>{{$user->getRoleName($user->pivot->role_id)}} <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a></p>
                         @endforeach
                     @endif
                 </td>

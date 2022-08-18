@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="profile-image float-md-right m-1">
-                                        <img height="160" src="{{asset('storage/images/imguser.png')}}" alt=""> {{--  TODO переименуй ебучий файл арменин  --}}
+                                        <img height="160" src="{{asset('storage/images/imguser.png')}}" alt=""> {{--  TODO переименовать файл  --}}
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-12">

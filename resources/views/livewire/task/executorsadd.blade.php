@@ -1,4 +1,5 @@
 <div>
+    <p>Пользователи</p>
     @foreach($users as $user)
         <div class="mb-3 form-check">
             <input type="checkbox" @if($task->isUserInTask($user->id)) checked @endif

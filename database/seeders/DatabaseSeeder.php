@@ -28,9 +28,10 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             ProjectSeeder::class,
             TaskSeeder::class,
-            TaskUserSeeder::class,
             MessagesSeeder::class,
             ProjectUsersSeeder::class,
+            AccessUserSeeder::class,
+            AccessGroupSeeder::class,
         ]);
     }
 }

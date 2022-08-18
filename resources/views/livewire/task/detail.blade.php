@@ -21,13 +21,13 @@
     <div class="ms-3 mt-2">
         <p class="h3">
             @foreach($task->users as $user)
-                @if($user->task_role_id == 1)
-                    @if($user->user->avatar)
-                        <img width="100" height="100" style="object-fit: cover;" src="{{asset($user->user->avatar->path)}}" alt="user avatar">
+                @if($user->pivot->role_id == 1)
+                    @if($user->avatar)
+                        <img width="100" height="100" style="object-fit: cover;" src="{{asset($user->avatar->path)}}" alt="user avatar">
                     @else
                         <img width="100" height="100" style="object-fit: cover;" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
                     @endif
-                    <a href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a>
+                    <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a>
                 @endif
             @endforeach
         </p>
@@ -47,8 +47,8 @@
         <div class="list-group">
             @foreach($task->users as $user)
                 <a class="list-group-item list-group-item-action"
-                   href="{{route('staff.detail', $user->user->id)}}">{{$user->role->name}}
-                    - {{$user->user->full_name}}</a>
+                   href="{{route('staff.detail', $user->id)}}">{{$user->getRoleName($user->pivot->role_id)}}
+                    - {{$user->full_name}}</a>
             @endforeach
         </div>
     </div>

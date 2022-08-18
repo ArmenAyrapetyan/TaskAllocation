@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Models\AccessUser;
 use App\Models\Task;
 use Livewire\Component;
 
@@ -23,9 +24,9 @@ class Timer extends Component
 
     public function pushTime($user_id)
     {
-        if ($this->time_passed){
-            $user_time = $this->task->curUser($user_id);
-            if ($user_time){
+        if ($this->time_passed) {
+            $user_time = AccessUser::where('user_id', auth()->id())->where('accessable_type', Task::class)->where('accessable_id', $this->task->id)->first();
+            if ($user_time) {
                 $user_time->time_spend += round($this->time_passed / 60);
                 $user_time->save();
             }
@@ -36,7 +37,7 @@ class Timer extends Component
 
     public function goTimerActive()
     {
-        if (!$this->isTimerFirstGo){
+        if (!$this->isTimerFirstGo) {
             $this->isTimerFirstGo = true;
             $this->time = time();
         }

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class AccessRole extends Model
 {
     use HasFactory;
+
+    const ROLE_CREATOR = 1;
+    const ROLE_AUDIT = 2;
+    const ROLE_EXECUTOR = 3;
 }
