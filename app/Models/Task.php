@@ -22,63 +22,45 @@ class Task extends AllAccess
 
     public function creatorId(): Attribute
     {
-        $id = 0;
-        foreach ($this->users as $user) {
-            if ($user->role->id == TaskRole::ROLE_CREATOR) {
-                $id = $user->user->id;
-            }
-        }
         return Attribute::make(
-            get: fn($value) => $id
+            get: fn($value) => $this->users->where('pivot.role_id', AccessRole::ROLE_CREATOR)->first()->pivot->user_id
         );
     }
 
     public function auditId(): Attribute
     {
-        $id = 0;
-        foreach ($this->users as $user) {
-            if ($user->role->id == TaskRole::ROLE_AUDIT) {
-                $id = $user->user->id;
-            }
-        }
         return Attribute::make(
-            get: fn($value) => $id
+            get: fn($value) => $this->users->where('pivot.role_id', AccessRole::ROLE_AUDIT)->first()->pivot->user_id
         );
     }
 
     public function isUserInTask($id)
     {
-        foreach ($this->users as $user) {
-            if ($user->user->id == $id) {
-                return true;
-            }
-        }
+        if(in_array($id, $this->users->pluck('id')->toArray()))
+            return true;
         return false;
     }
 
     public function timeSpend()
     {
         $sumTime = 0;
-        $arrTime = DB::table('task_users')->where('task_id', $this->id)->pluck('time_spend')->toArray();
-        for ($i = 0; $i < count($arrTime); $i++){
-            $sumTime += $arrTime[$i];
+        for ($i = 0; $i < count($this->users->pluck('pivot.time_spend')); $i++){
+            $sumTime += $this->users->pluck('pivot.time_spend')[$i];
         }
         return $sumTime;
     }
 
     public function curUser($id)
     {
-        foreach ($this->users as $user) {
-            if ($user->user->id == $id) {
-                return $user;
-            }
-        }
-        return null;
+        return $this->morphToMany(User::class, 'accessable', 'access_users')
+            ->where('user_id', $id)
+            ->withPivot('role_id', 'time_spend');
     }
 
     public function users()
     {
-        return $this->hasMany(TaskUser::class, 'task_id');
+        return $this->morphToMany(User::class, 'accessable', 'access_users')
+            ->withPivot('role_id', 'time_spend');
     }
 
     public function status()

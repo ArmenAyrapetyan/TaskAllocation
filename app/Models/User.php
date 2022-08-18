@@ -64,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'project_users');
+        return $this->morphedByMany(Project::class, 'accessable', 'access_users');
     }
 
     public function contacts()
@@ -79,7 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'task_users');
+        return $this->morphedByMany(Task::class, 'accessable', 'access_users');
     }
 
     public function avatar()
@@ -94,13 +94,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function accesses()
     {
-        return $this->morphMany(AccessUser::class, 'user_id');
+        return $this->morphMany(AccessUser::class, 'accessable');
     }
 
     public function auditableTasks()
     {
-        return $this->belongsToMany(Task::class, 'task_users')
-            ->wherePivot('task_role_id', TaskRole::ROLE_AUDIT)
+        return $this->morphedByMany(Task::class, 'accessable', 'access_users')
+            ->withPivot('role_id')
+            ->wherePivot('role_id', AccessRole::ROLE_AUDIT)
             ->whereNotIn('status_id', [
                 TaskStatus::STATUS_COMPLETED,
                 TaskStatus::STATUS_DONE,
@@ -110,12 +111,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function activeTasks()
     {
-        return $this->belongsToMany(Task::class, 'task_users')
-            ->wherePivot('task_role_id', [TaskRole::ROLE_EXECUTOR, TaskRole::ROLE_CREATOR])
+        return $this->morphedByMany(Task::class, 'accessable', 'access_users')
+            ->withPivot('role_id')
+            ->wherePivot('role_id', [AccessRole::ROLE_EXECUTOR, AccessRole::ROLE_CREATOR])
             ->whereNotIn('status_id', [
                 TaskStatus::STATUS_COMPLETED,
                 TaskStatus::STATUS_DONE,
                 TaskStatus::STATUS_CANCELLED,
             ])->get();
+    }
+
+    public function getRoleName($id)
+    {
+        return AccessRole::find($id)->name;
     }
 }
