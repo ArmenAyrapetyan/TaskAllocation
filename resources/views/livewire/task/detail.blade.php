@@ -23,9 +23,11 @@
             @foreach($task->users as $user)
                 @if($user->pivot->role_id == 1)
                     @if($user->avatar)
-                        <img width="100" height="100" style="object-fit: cover;" src="{{asset($user->avatar->path)}}" alt="user avatar">
+                        <img width="100" height="100" style="object-fit: cover;" src="{{asset($user->avatar->path)}}"
+                             alt="user avatar">
                     @else
-                        <img width="100" height="100" style="object-fit: cover;" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
+                        <img width="100" height="100" style="object-fit: cover;"
+                             src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
                     @endif
                     <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a>
                 @endif
@@ -42,14 +44,31 @@
         @endif
     </div>
 
-    <p class="m-3">Участники:</p>
-    <div class="m-3 d-flex justify-content-start">
-        <div class="list-group">
-            @foreach($task->users as $user)
-                <a class="list-group-item list-group-item-action"
-                   href="{{route('staff.detail', $user->id)}}">{{$user->getRoleName($user->pivot->role_id)}}
-                    - {{$user->full_name}}</a>
-            @endforeach
+    <div class="container m-0 p-0">
+        <div class="row">
+            <div class="col">
+                <p class="m-3">Участники:</p>
+                <div class="m-3 d-flex justify-content-start">
+                    <div class="list-group">
+                        @foreach($task->users as $user)
+                            <a class="list-group-item list-group-item-action"
+                               href="{{route('staff.detail', $user->id)}}">{{$user->getRoleName($user->pivot->role_id)}}
+                                - {{$user->full_name}}</a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <p class="m-3">Группы:</p>
+                <div class="m-3 d-flex justify-content-start">
+                    <div class="list-group">
+                        @foreach($task->groups as $group)
+                            <a class="list-group-item list-group-item-action"
+                               href="#">{{$group->name}}</a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -97,14 +116,14 @@
                 <!-- Кнопка-триггер модального окна -->
                 <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop">
-                    Редактировать исполнителей
+                    Редактировать участников
                 </button>
 
                 <!-- Модальное окно -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                      tabindex="-1"
                      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="staticBackdropLabel">Доступные исполнители</h5>
