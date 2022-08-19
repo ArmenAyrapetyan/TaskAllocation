@@ -24,6 +24,7 @@ class AccessUserSeeder extends Seeder
         $input = [];
 
         $tasks = Task::pluck('id');
+        $projects = Project::pluck('id');
         $users = User::pluck('id');
         $roles = AccessRole::pluck('id');
         for ($i = 0; $i < count($tasks); $i++) {
@@ -35,6 +36,14 @@ class AccessUserSeeder extends Seeder
                     'accessable_type' => Task::class,
                 ];
             }
+        }
+        for ($i = 0; $i < count($projects); $i++) {
+            $input[] = [
+                'user_id' => Lorem::randomElement($users),
+                'role_id' => AccessRole::ROLE_CREATOR,
+                'accessable_id' => $projects[$i],
+                'accessable_type' => Project::class,
+            ];
         }
 
         DB::table('access_users')->insert($input);

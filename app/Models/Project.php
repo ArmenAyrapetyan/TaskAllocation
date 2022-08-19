@@ -45,7 +45,7 @@ class Project extends AllAccess
         return $this->belongsTo(Counterparty::class, 'counterparty_id', 'id');
     }
 
-    public function user()
+    public function users()
     {
         return $this->morphToMany(User::class, 'accessable', 'access_users');
     }
