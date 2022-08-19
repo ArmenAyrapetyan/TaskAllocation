@@ -4,10 +4,14 @@ namespace App\Http\Livewire\Task;
 
 use App\Models\Task;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Show extends Component
 {
-    public $tasks;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $isLastSortAll;
     public $statusBool;
     public $importId;
@@ -15,8 +19,7 @@ class Show extends Component
     public function mount()
     {
         $this->isLastSortAll = true;
-        $this->tasks = Task::all();
-        session()->put('curPage', 'task.index');
+        $this->refreshShow();
     }
 
     protected $listeners = [
@@ -27,41 +30,34 @@ class Show extends Component
 
     public function refreshShow()
     {
-        $this->isLastSortAll
-            ? $this->getAllTasks()
-            : $this->sortTasks($this->importId, $this->statusBool);
+        if($this->isLastSortAll)
+            return $this->getAllTasks();
+        else
+            return $this->sortTasks($this->importId, $this->statusBool);
     }
 
     public function getAllTasks()
     {
-        $this->tasks = Task::all();
         $this->isLastSortAll = true;
-        $this->statusBool = null;
-        $this->importId = null;
+        return Task::paginate(5);
     }
 
     public function sortTasks($id, $isStatus = false)
     {
-        if (!$isStatus){
-            $tasks = Task::has('project')->orderBy('project_id')->get();
-
-            foreach ($tasks as $key => $task) {
-                if ($task->project->group_id != $id) {
-                    $tasks->forget($key);
-                }
-            }
-            $this->tasks = $tasks;
-        }
-        else
-            $this->tasks = Task::where('status_id', $id)->get();
-
         $this->isLastSortAll = false;
         $this->statusBool = $isStatus;
         $this->importId = $id;
+
+        if (!$isStatus)
+            return Task::whereHas('project', function ($project){$project->where('group_id', $this->importId);})->paginate(5);
+        else
+            return Task::where('status_id', $id)->paginate(5);
     }
 
     public function render()
     {
-        return view('livewire.task.show');
+        return view('livewire.task.show', [
+            'tasks' => $this->refreshShow()
+        ]);
     }
 }

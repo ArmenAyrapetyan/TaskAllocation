@@ -54,5 +54,6 @@
                     @endif
                 </td>
         @endforeach
+        {{$counterparties->links()}}
     </table>
 </div>

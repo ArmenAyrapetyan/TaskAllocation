@@ -34,4 +34,5 @@
             </div>
         </div>
     @endforeach
+    {{$task_messages->links()}}
 </div>

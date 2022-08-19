@@ -4,10 +4,14 @@ namespace App\Http\Livewire\Counterparty;
 
 use App\Models\Counterparty;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Show extends Component
 {
-    public $counterparties;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $isLastSortAll;
     public $idForSort;
 
@@ -25,25 +29,28 @@ class Show extends Component
     public function allCounterparties()
     {
         $this->isLastSortAll = true;
-        $this->counterparties = Counterparty::all();
+        return Counterparty::paginate(10);
     }
 
     public function refreshCounterparty()
     {
-        $this->isLastSortAll
-            ? $this->allCounterparties()
-            : $this->sortCounterparty($this->idForSort);
+        if ($this->isLastSortAll)
+            return $this->allCounterparties();
+        else
+            return $this->sortCounterparty($this->idForSort);
     }
 
     public function sortCounterparty($id)
     {
         $this->isLastSortAll = false;
         $this->idForSort = $id;
-        $this->counterparties = Counterparty::where('special_group_id', $id)->get();
+        return Counterparty::where('special_group_id', $id)->paginate(10);
     }
 
     public function render()
     {
-        return view('livewire.counterparty.show');
+        return view('livewire.counterparty.show', [
+            'counterparties' => $this->refreshCounterparty()
+        ]);
     }
 }

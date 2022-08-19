@@ -4,10 +4,14 @@ namespace App\Http\Livewire\Contact;
 
 use App\Models\Contact;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Show extends Component
 {
-    public $contacts;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $isSortAll;
     public $idSort;
 
@@ -24,18 +28,19 @@ class Show extends Component
 
     public function refreshContact()
     {
-        $this->isSortAll
-            ? $this->getAllContacts()
-            : $this->sortContactsByGroup($this->idSort);
+        if ($this->isSortAll)
+            return $this->getAllContacts();
+        else
+            return $this->sortContactsByGroup($this->idSort);
     }
 
     public function filterContactsByGroup($id)
     {
         $this->idSort = $id;
         $this->isSortAll = false;
-        $this->contacts = Contact::where('special_group_id', $id)
+        return Contact::where('special_group_id', $id)
             ->where('user_id', auth()->id())
-            ->get();
+            ->paginate(10);
     }
 
     public function deleteContact($id)
@@ -48,11 +53,13 @@ class Show extends Component
     public function getAllContacts()
     {
         $this->isSortAll = true;
-        $this->contacts = Contact::where('user_id', auth()->id())->get();
+        return Contact::where('user_id', auth()->id())->paginate(10);
     }
 
     public function render()
     {
-        return view('livewire.contact.show');
+        return view('livewire.contact.show', [
+            'contacts' => $this->refreshContact()
+        ]);
     }
 }

@@ -2,41 +2,85 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Models\AccessGroup;
 use App\Models\AccessRole;
+use App\Models\AccessUser;
 use App\Models\Group;
 use App\Models\Task;
-use App\Models\TaskUser;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Executorsadd extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $task;
-    public $users;
+    public $task_id;
     public $groups;
-    public $whatRoleCreate;
 
-    public function exectAddOrDel($user_id)
+    public function mount($task_id)
     {
+        $this->task_id = $task_id;
+        $this->refreshInfo();
+    }
 
-        $this->emit('refreshMessages');
+    public function addGroupAsExecutor($group_id)
+    {
+        AccessGroup::create([
+            'group_id' => $group_id,
+            'role_id' => AccessRole::ROLE_EXECUTOR,
+            'accessable_id' => $this->task->id,
+            'accessable_type' => Task::class,
+        ]);
+        $this->refreshInfo();
+    }
+
+    public function addExecutor($user_id)
+    {
+        $this->saveAccess($user_id, AccessRole::ROLE_EXECUTOR);
+    }
+
+    public function addCreator($user_id)
+    {
+        $this->saveAccess($user_id, AccessRole::ROLE_CREATOR);
+    }
+
+    public function addAudit($user_id)
+    {
+        $this->saveAccess($user_id, AccessRole::ROLE_AUDIT);
+    }
+
+    public function saveAccess($user_id, $role_id)
+    {
+        AccessUser::create([
+            'user_id' => $user_id,
+            'role_id' => $role_id,
+            'accessable_id' => $this->task->id,
+            'accessable_type' => Task::class,
+        ]);
+        $this->refreshInfo();
+    }
+
+    public function refreshInfo()
+    {
+        $this->task = Task::find($this->task_id);
+        $this->groups = Group::all();
     }
 
     public function refreshEmployeeInfo()
     {
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshTaskInfo');
-    }
-
-    public function mount($task_id)
-    {
-        $this->task = Task::find($task_id);
-        $this->users = User::all();
-        $this->groups = Group::all();
+        $this->emit('refreshMessages');
     }
 
     public function render()
     {
-        return view('livewire.task.executorsadd');
+        return view('livewire.task.executorsadd', [
+            'users' => User::paginate(5),
+        ]);
     }
 }
