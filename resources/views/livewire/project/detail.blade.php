@@ -11,12 +11,12 @@
 
     <div class="ms-3 mt-3">
         <p class="h3">
-            @if($project->user->first()->avatar)
-                <img height="100" src="{{asset($project->user->first()->avatar->path)}}" alt="user avatar">
+            @if($project->users->first()->avatar)
+                <img height="100" src="{{asset($project->users->first()->avatar->path)}}" alt="user avatar">
             @else
                 <img height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
             @endif
-            {{$project->user->first()->full_name}}
+            {{$project->users->first()->full_name}}
         </p>
     </div>
 
@@ -80,7 +80,7 @@
         </table>
     </div>
 
-    @if($project->user->first()->id == auth()->id())
+    @if($project->users->first()->id == auth()->id())
         <div class="float-end me-2 mt-2 mb-3">
             <!-- Кнопка-триггер модального окна -->
             <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">

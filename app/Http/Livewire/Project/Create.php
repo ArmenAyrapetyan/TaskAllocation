@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Project;
 
+use App\Models\AccessRole;
+use App\Models\AccessUser;
 use App\Models\Counterparty;
 use App\Models\Project;
 use App\Models\ProjectGroup;
@@ -39,20 +41,17 @@ class Create extends Component
         $this->statuses = ProjectStatus::select('id', 'name')->get();
     }
 
-    public function updated($input)
-    {
-        $this->validateOnly($input);
-    }
-
     public function saveProject()
     {
         $this->validate();
 
         $project = Project::create($this->project_data);
 
-        ProjectUsers::create([
+        AccessUser::create([
             'user_id' => auth()->id(),
-            'project_id' => $project->id,
+            'role_id' => AccessRole::ROLE_CREATOR,
+            'accessable_id' => $project->id,
+            'accessable_type' => Project::class,
         ]);
 
         $this->project_data = null;

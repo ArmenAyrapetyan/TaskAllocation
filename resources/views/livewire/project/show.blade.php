@@ -39,29 +39,32 @@
             </th>
         </tr>
         @foreach($projects as $project)
-                <tr>
-                    <th scope="row">
-                        <a href="{{route('project.detail', $project->id)}}">
+            <tr>
+                <th scope="row">
+                    <a href="{{route('project.detail', $project->id)}}">
                         {{ $project->name }}
-                        </a>
-                    </th>
-                    <td>
-                        {{ $project->count_tasks }}
-                    </td>
-                    <td>
-                        @if($project->counterparty)
-                            <a href="{{route('counterparty.detail', $project->counterparty->id)}}">{{$project->counterparty->name}}</a>
-                        @else
-                            Нет
-                        @endif
-                    </td>
-                    <td>
-                        {{ $project->status->name }}
-                    </td>
-                    <td>
-                        <a href="{{route('staff.detail', $project->user->first()->id)}}">{{ $project->user->first()->full_name }}</a>
-                    </td>
-                </tr>
+                    </a>
+                </th>
+                <td>
+                    {{ $project->count_tasks }}
+                </td>
+                <td>
+                    @if($project->counterparty)
+                        <a href="{{route('counterparty.detail', $project->counterparty->id)}}">{{$project->counterparty->name}}</a>
+                    @else
+                        Нет
+                    @endif
+                </td>
+                <td>
+                    {{ $project->status->name }}
+                </td>
+                <td>
+                    @foreach($project->users as $user)
+                        <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a>
+                    @endforeach
+                </td>
+            </tr>
         @endforeach
+        {{$projects->links()}}
     </table>
 </div>
