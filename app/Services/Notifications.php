@@ -14,7 +14,7 @@ class Notifications
 
         foreach ($task->users as $user) {
             if (auth()->id() != $user->id) {
-                Notification::send($user->user, new TaskNotify([
+                Notification::send($user, new TaskNotify([
                     'user_id' => $user_id,
                     'task_id' => $task_id,
                     'message' => $message

@@ -30,7 +30,14 @@ class Task extends AllAccess
     public function auditId(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->users->where('pivot.role_id', AccessRole::ROLE_AUDIT)->first()->pivot->user_id
+            get: fn($value) => $this->users->where('pivot.role_id', AccessRole::ROLE_AUDIT)->pluck('id')->toArray(),
+        );
+    }
+
+    public function executorsId(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->users->where('pivot.role_id', AccessRole::ROLE_EXECUTOR)->pluck('id')->toArray(),
         );
     }
 
@@ -61,6 +68,12 @@ class Task extends AllAccess
     {
         return $this->morphToMany(User::class, 'accessable', 'access_users')
             ->withPivot('role_id', 'time_spend');
+    }
+
+    public function groups()
+    {
+        return $this->morphToMany(Group::class, 'accessable', 'access_groups')
+            ->withPivot('role_id');
     }
 
     public function status()
