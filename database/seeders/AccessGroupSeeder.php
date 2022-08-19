@@ -25,7 +25,7 @@ class AccessGroupSeeder extends Seeder
 
         $tasks = Task::pluck('id');
         $groups = Group::pluck('id');
-        $roles = AccessRole::pluck('id');
+        $roles = AccessRole::whereNotIn('id', [AccessRole::ROLE_CREATOR])->pluck('id');
         for ($i = 0; $i < count($tasks); $i++) {
             for ($j = 0; $j < count($roles); $j++) {
                 $input[] = [
