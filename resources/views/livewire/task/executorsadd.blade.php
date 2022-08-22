@@ -8,14 +8,14 @@
                         <p class="">{{$user->full_name}}</p>
                     </div>
                     <div class="col m-1">
-                        <button @if(in_array($user->id, $task->executors_id)) disabled @endif class="btn"
-                                wire:click="addExecutor({{$user->id}})">Сделать исполнителем
-                        </button>
-                        <button @if(in_array($user->id, $task->audit_id)) disabled @endif class="btn"
-                                wire:click="addAudit({{$user->id}})">Сделать аудитором
-                        </button>
                         <button @if($task->creator_id == $user->id) disabled @endif class="btn"
                                 wire:click="addCreator({{$user->id}})">Сделать постановщиком
+                        </button>
+                        <button @if(in_array($user->id, $task->audit_id) || $task->creator_id == $user->id) disabled @endif class="btn"
+                                wire:click="addAudit({{$user->id}})">Сделать аудитором
+                        </button>
+                        <button @if(in_array($user->id, $task->executors_id) || in_array($user->id, $task->audit_id) || $task->creator_id == $user->id)
+                                    disabled @endif class="btn" wire:click="addExecutor({{$user->id}})">Сделать исполнителем
                         </button>
                     </div>
                 </div>

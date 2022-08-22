@@ -55,12 +55,19 @@ class Executorsadd extends Component
 
     public function saveAccess($user_id, $role_id)
     {
-        AccessUser::create([
-            'user_id' => $user_id,
-            'role_id' => $role_id,
-            'accessable_id' => $this->task->id,
-            'accessable_type' => Task::class,
-        ]);
+        $relationUserTask = AccessUser::where('user_id', $user_id)->where('accessable_id', $this->task->id)
+            ->where('accessable_type', Task::class)->first();
+        if (!$relationUserTask){
+            AccessUser::create([
+                'user_id' => $user_id,
+                'role_id' => $role_id,
+                'accessable_id' => $this->task->id,
+                'accessable_type' => Task::class,
+            ]);
+        } else if ($relationUserTask->role_id > $role_id){
+            $relationUserTask->role_id = $role_id;
+            $relationUserTask->save();
+        }
         $this->refreshInfo();
     }
 
