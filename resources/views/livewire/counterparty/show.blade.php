@@ -20,40 +20,42 @@
         </div>
     </div>
 
-    <table class="table table-striped table-bordered ms-2">
-        <tr>
-            <th scope="col">
-                Название
-            </th>
-            <th scope="col">
-                Почта
-            </th>
-            <th scope="col">
-                Телефон
-            </th>
-            <th scope="col">
-                Производитель
-            </th>
-        </tr>
-        @foreach($counterparties as $counterparty)
+    <div class="ps-2">
+        <table class="table table-striped table-bordered">
             <tr>
-                <th scope="row">
-                    <a href="{{route('counterparty.detail', $counterparty->id)}}">{{$counterparty->name}}</a>
+                <th scope="col">
+                    Название
                 </th>
-                <td>
-                    <p>{{$counterparty->email}}</p>
-                </td>
-                <td>
-                    {{$counterparty->phone}}
-                </td>
-                <td>
-                    @if($counterparty->is_manufacturer)
-                        <p>Да</p>
-                    @else
-                        <p>Нет</p>
-                    @endif
-                </td>
-        @endforeach
-        {{$counterparties->links()}}
-    </table>
+                <th scope="col">
+                    Почта
+                </th>
+                <th scope="col">
+                    Телефон
+                </th>
+                <th scope="col">
+                    Производитель
+                </th>
+            </tr>
+            @foreach($counterparties as $counterparty)
+                <tr>
+                    <th scope="row">
+                        <a href="{{route('counterparty.detail', $counterparty->id)}}">{{$counterparty->name}}</a>
+                    </th>
+                    <td>
+                        <p>{{$counterparty->email}}</p>
+                    </td>
+                    <td>
+                        {{$counterparty->phone}}
+                    </td>
+                    <td>
+                        @if($counterparty->is_manufacturer)
+                            <p>Да</p>
+                        @else
+                            <p>Нет</p>
+                        @endif
+                    </td>
+            @endforeach
+            {{$counterparties->links()}}
+        </table>
+    </div>
 </div>
