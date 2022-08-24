@@ -36,13 +36,8 @@
         <p>{{$task->description}}</p>
     </div>
 
-    <div class="ms-3 mt-2">
-        <p class="h3">Времени по плану: {{$task->time_planned}} мин.
-            Времени было затраченно: {{$task->timeSpend()}} мин.</p>
-        @if($task->isUserInTask(auth()->id()))
-            @livewire('task.timer', ['task_id' => $task_id])
-        @endif
-    </div>
+    <p class="h3">Времени по плану: {{$task->time_planned}} мин.
+        Времени было затраченно: {{$task->timeSpend()}} мин.</p>
 
     <div class="container m-0 p-0">
         <div class="row">

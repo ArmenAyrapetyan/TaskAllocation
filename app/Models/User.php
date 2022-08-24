@@ -113,7 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->morphedByMany(Task::class, 'accessable', 'access_users')
             ->withPivot('role_id')
-            ->wherePivot('role_id', [AccessRole::ROLE_EXECUTOR, AccessRole::ROLE_CREATOR])
+            ->wherePivotIn('role_id', [AccessRole::ROLE_EXECUTOR, AccessRole::ROLE_CREATOR])
             ->whereNotIn('status_id', [
                 TaskStatus::STATUS_COMPLETED,
                 TaskStatus::STATUS_DONE,

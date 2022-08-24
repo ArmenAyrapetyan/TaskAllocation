@@ -35,6 +35,9 @@
                     </li>
                 </ul>
                 @auth
+                    <div class="">
+                        @livewire('task.timer')
+                    </div>
                     <div class="ms-3">
                         <nav class="nav text-align-center">
                             @if(auth()->user()->avatar)

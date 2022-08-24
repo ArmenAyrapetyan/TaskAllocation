@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             ProjectUsersSeeder::class,
             AccessUserSeeder::class,
             AccessGroupSeeder::class,
+            TimeSpendSeeder::class
         ]);
     }
 }

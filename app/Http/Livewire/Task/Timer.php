@@ -4,54 +4,64 @@ namespace App\Http\Livewire\Task;
 
 use App\Models\AccessUser;
 use App\Models\Task;
+use App\Models\TimeSpend;
 use Livewire\Component;
 
 class Timer extends Component
 {
-    public $time;
-    public $time_passed;
-    public $isTimerActive;
-    public $isTimerFirstGo;
     public $task;
+    public $task_id;
+    public $time_start;
+    public $message;
 
-    public function mount($task_id)
+    protected $rules = [
+        'task_id' => 'required'
+    ];
+
+    public function mount()
     {
-        $this->time_passed = null;
-        $this->isTimerActive = false;
-        $this->isTimerFirstGo = false;
-        $this->task = Task::find($task_id);
+        if (session()->has(['time_start', 'message', 'task_id'])){
+            $this->time_start = session()->get('time_start');
+            $this->task_id = session()->get('task_id');
+            $this->message = session()->get('message');
+        } else {
+            $this->time_start = null;
+        }
     }
 
-    public function pushTime($user_id)
+    public function timerGoAndStop()
     {
-        if ($this->time_passed) {
-            $user_time = AccessUser::where('user_id', auth()->id())->where('accessable_type', Task::class)->where('accessable_id', $this->task->id)->first();
+        $this->validate();
+        if (!$this->time_start) {
+            $this->time_start = time();
+            session()->put('time_start', $this->time_start);
+            session()->put('message', $this->message);
+            session()->put('task_id', $this->task_id);
+        } else {
+            $this->pushTime();
+            $this->time_start = null;
+        }
+    }
+
+    public function pushTime()
+    {
+        if ($this->time_start) {
+            $this->task = Task::find($this->task_id);
+            $user_time = AccessUser::where('user_id', auth()->id())
+                ->where('accessable_type', Task::class)->where('accessable_id', $this->task->id)->first();
             if ($user_time) {
-                $user_time->time_spend += round($this->time_passed / 60);
-                $user_time->save();
+                TimeSpend::create([
+                    'access_user_id' => $user_time->id,
+                    'message' => $this->task->name . ' - ' . $this->message,
+                    'time_spend' => time() - $this->time_start,
+                ]);
             }
         }
-        $this->time_passed = 0;
-        $this->emit('refreshTaskInfo');
-    }
-
-    public function goTimerActive()
-    {
-        if (!$this->isTimerFirstGo) {
-            $this->isTimerFirstGo = true;
-            $this->time = time();
-        }
-
-        $this->isTimerActive
-            ? $this->isTimerActive = false
-            : $this->isTimerActive = true;
+        session()->forget(['time_start', 'message', 'task_id']);
     }
 
     public function render()
     {
-        if ($this->isTimerActive) {
-            $this->time_passed = time() - $this->time;
-        }
         return view('livewire.task.timer');
     }
 }

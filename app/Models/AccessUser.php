@@ -11,7 +11,6 @@ class AccessUser extends Model
 
     protected $fillable = [
         'user_id',
-        'time_spend',
         'role_id',
         'accessable_id',
         'accessable_type',
@@ -25,5 +24,10 @@ class AccessUser extends Model
     public function role()
     {
         return $this->belongsTo(AccessRole::class, 'role_id', 'id');
+    }
+
+    public function times()
+    {
+        return $this->hasMany(TimeSpend::class, 'access_user_id', 'id');
     }
 }
