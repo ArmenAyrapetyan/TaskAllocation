@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Task;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Services\Notifications;
 use Livewire\Component;
 
 class Edit extends Component
@@ -41,6 +42,9 @@ class Edit extends Component
 
         $this->task->fill($this->task_data);
         $this->task->save();
+
+        $message = 'Изменена задача';
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
 
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshTaskInfo');

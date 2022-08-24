@@ -49,7 +49,7 @@
         <input wire:model="task_data.time_planned" name="task_data.time_planned" type="number"
                class="form-control @isset($task_data['time_planned']) is-valid @endisset @error('task_data.time_planned') is-invalid @enderror"
                id="floatingInput" min="0">
-        <label for="floatingInput">Сколько времени планируется затратить</label>
+        <label for="floatingInput">Сколько времени планируется затратить (мин.)</label>
         @error('task_data.time_planned')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>

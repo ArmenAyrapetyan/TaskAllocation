@@ -53,6 +53,8 @@ class Detail extends Component
             'accessable_id' => $this->task->id,
             'accessable_type' => Task::class,
         ]);
+        $message = 'Добавился исполнитель';
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
         $this->refreshTaskInfo();
         $this->emit('refreshMessages');
     }
