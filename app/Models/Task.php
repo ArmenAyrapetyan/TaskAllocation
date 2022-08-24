@@ -43,16 +43,15 @@ class Task extends AllAccess
 
     public function isUserInTask($id)
     {
-        if(in_array($id, $this->users->pluck('id')->toArray()))
-            return true;
-        return false;
+        return (bool) in_array($id, $this->users->pluck('id')->toArray());
     }
 
     public function timeSpend()
     {
         $sumTime = 0;
-        for ($i = 0; $i < count($this->users->pluck('pivot.time_spend')); $i++){
-            $sumTime += $this->users->pluck('pivot.time_spend')[$i];
+        $spended_times = TimeSpend::whereIn('access_user_id', $this->users->pluck('pivot.id'))->pluck('time_spend');
+        for ($i = 0; $i < count($spended_times); $i++){
+            $sumTime += $spended_times[$i];
         }
         return $sumTime;
     }
@@ -61,13 +60,13 @@ class Task extends AllAccess
     {
         return $this->morphToMany(User::class, 'accessable', 'access_users')
             ->where('user_id', $id)
-            ->withPivot('role_id', 'time_spend');
+            ->withPivot('role_id');
     }
 
     public function users()
     {
         return $this->morphToMany(User::class, 'accessable', 'access_users')
-            ->withPivot('role_id', 'time_spend');
+            ->withPivot('role_id', 'id');
     }
 
     public function groups()

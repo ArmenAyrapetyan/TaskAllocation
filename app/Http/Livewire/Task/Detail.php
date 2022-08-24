@@ -6,7 +6,6 @@ use App\Models\AccessRole;
 use App\Models\AccessUser;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Models\TaskUser;
 use App\Services\Notifications;
 use Livewire\Component;
 
@@ -14,11 +13,15 @@ class Detail extends Component
 {
     public $task;
     public $task_id;
+    public $status_id;
+    public $statuses;
 
     public function mount($id)
     {
         $this->task_id = $id;
+        $this->statuses = TaskStatus::select('id', 'name')->get();
         $this->task = Task::find($id);
+        $this->status_id = $this->task->status_id;
     }
 
     protected $listeners = [
@@ -30,18 +33,12 @@ class Detail extends Component
         $this->task = Task::find($this->task_id);
     }
 
-    public function modStatus($isModDesc)
+    public function modStatus()
     {
-        if ($isModDesc) {
-            if ($this->task->status_id != TaskStatus::STATUS_MODIFICATION)
-                $this->task->status_id = TaskStatus::STATUS_MODIFICATION;
-        } else {
-            if ($this->task->status_id != TaskStatus::STATUS_WORKPROCCESS)
-                $this->task->status_id = TaskStatus::STATUS_WORKPROCCESS;
-        }
-        Notifications::sendTaskNotify(auth()->id(), $this->task_id, 'Изменен статус');
+        $this->task->status_id = $this->status_id;
+        $message = 'У задачи ' . $this->task->name . ' был обновлен статус на ' . $this->task->status->name;
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
         $this->task->save();
-        $this->refreshTaskInfo();
     }
 
     public function takeExecutor()

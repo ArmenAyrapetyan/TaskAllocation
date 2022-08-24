@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Task;
 
 use App\Models\Messages;
 use App\Models\Task;
+use App\Services\Notifications;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -51,6 +52,7 @@ class Message extends Component
             'user_id' => auth()->user()->id,
             'task_id' => $this->taskId,
         ]);
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, 'Сообщение - ' . $this->message);
         $this->message = null;
         $this->refreshMessages();
     }

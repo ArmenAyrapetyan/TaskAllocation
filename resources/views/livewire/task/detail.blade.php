@@ -11,7 +11,16 @@
                     <a class="ms-1 me-1" href="{{route('counterparty.detail', $task->project->counterparty->id)}}">
                         {{$task->project->counterparty->name}}</a>
                 @endif
-                Статус: {{$task->status->name}}
+                Статус:
+                @if(!$task->isUserInTask(auth()->id()))
+                    {{$task->status->name}}
+                @else
+                    <select wire:change="modStatus" class="form-select-lg" name="status_id" wire:model="status_id">
+                        @foreach($statuses as $status)
+                            <option value="{{$status->id}}">{{$status->name}}</option>
+                        @endforeach
+                    </select>
+                @endif
             @else
                 Без проекта - {{ $task->name . ' ' . $task->status->name}}
             @endif
@@ -68,22 +77,6 @@
     </div>
 
     <div class="float-end me-2 mb-2">
-        @if(!$task->isUserInTask(auth()->id()))
-            <button type="button" class="btn btn-primary m-2" wire:click="takeExecutor">Взять на исполнение</button>
-        @else
-            @if($task->creator_id != auth()->id())
-                @if($task->status_id != 8)
-                    <button type="button" class="btn btn-primary m-2" wire:click="modStatus({{1}})">Требуется доработка
-                        описания
-                    </button>
-                @endif
-                @if($task->status_id != 2)
-                    <button type="button" class="btn btn-primary m-2" wire:click="modStatus({{0}})">В работу
-                    </button>
-                @endif
-            @endif
-        @endif
-
         @if($task->creator_id == auth()->id())
             <!-- Кнопка-триггер модального окна -->
             <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
