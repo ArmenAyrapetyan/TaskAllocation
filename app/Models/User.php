@@ -92,11 +92,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Group::class, 'user_groups');
     }
 
-    public function accesses()
-    {
-        return $this->morphMany(AccessUser::class, 'accessable');
-    }
-
     public function auditableTasks()
     {
         return $this->morphedByMany(Task::class, 'accessable', 'access_users')

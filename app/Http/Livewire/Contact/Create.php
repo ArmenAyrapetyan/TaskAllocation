@@ -48,9 +48,7 @@ class Create extends Component
     {
         $this->validate();
 
-        $this->contact_data = [
-            'user_id' => auth()->id(),
-        ];
+        $this->contact_data['user_id'] = auth()->id();
 
         $newContact = Contact::create($this->contact_data);
 
