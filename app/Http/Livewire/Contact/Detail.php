@@ -20,6 +20,12 @@ class Detail extends Component
         $this->refreshContactInfo();
     }
 
+    public function deleteContact()
+    {
+        $this->contact->delete();
+        return redirect()->route('contact.show');
+    }
+
     public function refreshContactInfo()
     {
         $this->contact = Contact::find($this->contact_id);
