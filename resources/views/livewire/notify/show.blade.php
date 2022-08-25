@@ -1,15 +1,15 @@
 <div>
     <div class="accordion m-3">
-        @foreach($notify as $not)
+        @foreach($notify as $key => $not)
             <div class="accordion-item">
                 <h4 class="accordion-header" id="headingOne">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne"
-                            aria-expanded="true" aria-controls="collapseOne">
+                            data-bs-target="#collapse{{$key}}"
+                            aria-expanded="true" aria-controls="collapse{{$key}}">
                         Событие в задаче: {{$tasks->where('id', $not->data['task_id'])->first()->name}}
                     </button>
                 </h4>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                <div id="collapse{{$key}}" class="accordion-collapse collapse" aria-labelledby="headingOne"
                      data-bs-parent="#accordionExample" style="">
                     <div class="accordion-body">
                         <div class="m-0 p-0">
