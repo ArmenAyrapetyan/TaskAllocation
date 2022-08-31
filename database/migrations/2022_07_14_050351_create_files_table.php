@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('path');
             $table->morphs('fileable');
-            $table->boolean('is_avatar')->default(false);
             $table->timestamps();
         });
     }

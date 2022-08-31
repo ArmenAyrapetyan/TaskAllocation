@@ -48,11 +48,7 @@ class Task extends AllAccess
 
     public function timeSpend()
     {
-        $sumTime = 0;
-        $spended_times = TimeSpend::whereIn('access_user_id', $this->users->pluck('pivot.id'))->pluck('time_spend');
-        for ($i = 0; $i < count($spended_times); $i++){
-            $sumTime += $spended_times[$i];
-        }
+        $sumTime = round(array_sum(TimeSpend::whereIn('access_user_id', $this->users->pluck('pivot.id'))->pluck('time_spend')->toArray())/60) ?? 0;
         return $sumTime;
     }
 

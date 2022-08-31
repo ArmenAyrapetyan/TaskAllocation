@@ -49,7 +49,7 @@ class Profile extends Component
         $files = [
             $this->avatar
         ];
-        FileStorage::saveFiles($files, $this->user->id, User::class, true);
+        FileStorage::saveFiles($files, $this->user->id, User::class);
         $this->refreshProfileInfo();
     }
 

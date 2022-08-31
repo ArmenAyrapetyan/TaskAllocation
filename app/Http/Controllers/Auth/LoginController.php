@@ -29,4 +29,9 @@ class LoginController extends Controller
             'success' => 'Выход выполнен успешно'
         ]);
     }
+
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 }

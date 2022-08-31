@@ -79,7 +79,7 @@ class Executorsadd extends Component
 
     public function refreshEmployeeInfo()
     {
-        $this->dispatchBrowserEvent('closeModal');
+        $this->dispatchBrowserEvent('closeModal2');
         $this->emit('refreshTaskInfo');
         $this->emit('refreshMessages');
     }

@@ -36,7 +36,7 @@ class RegisterController extends Controller
 
         if ($request->hasFile('images')){
             $files = $request->file('images');
-            FileStorage::saveFiles($files, $newUser->id, User::class, true);
+            FileStorage::saveFiles($files, $newUser->id, User::class);
         }
 
         $token->isActive = false;

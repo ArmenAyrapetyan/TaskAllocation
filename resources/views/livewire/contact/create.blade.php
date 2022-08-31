@@ -113,7 +113,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button wire:click="saveContact()" type="button" class="btn btn-primary">
+        <button wire:click="saveContact" type="button" class="btn btn-primary">
             Сохранить контакт
         </button>
     </div>

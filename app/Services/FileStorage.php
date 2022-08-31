@@ -13,7 +13,7 @@ class FileStorage
      * @param $isAvatar
      * @return bool is file has been saved
      */
-    public static function saveFiles($files, $id, $type, $isAvatar)
+    public static function saveFiles($files, $id, $type)
     {
         $isSaved = false;
 
@@ -51,5 +51,15 @@ class FileStorage
         Storage::delete($path);
         $isDelete = true;
         return $isDelete;
+    }
+
+    /**
+     * @param $path
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public static function download($path)
+    {
+        $path = str_replace('storage', 'public', $path);
+        return Storage::download($path);
     }
 }
