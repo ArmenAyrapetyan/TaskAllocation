@@ -31,7 +31,6 @@ class FileStorage
                 'path' => $path,
                 'fileable_id' => $id,
                 'fileable_type' => $type,
-                'is_avatar' => $isAvatar,
             ]);
 
             $isSaved = true;

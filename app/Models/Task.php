@@ -85,4 +85,9 @@ class Task extends AllAccess
     {
         return $this->hasMany(Messages::class, 'task_id');
     }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

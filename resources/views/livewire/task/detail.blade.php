@@ -99,30 +99,29 @@
                     </div>
                 </div>
             </div>
-        @else
-            @if($task->isUserInTask(auth()->id()))
-                <!-- Кнопка-триггер модального окна -->
-                <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop">
-                    Редактировать участников
-                </button>
+        @endif
+        @if($task->isUserInTask(auth()->id()))
+            <!-- Кнопка-триггер модального окна -->
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop2">
+                Редактировать участников
+            </button>
 
-                <!-- Модальное окно -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                     tabindex="-1"
-                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Доступные исполнители</h5>
-                            </div>
-                            <div class="modal-body">
-                                @livewire('task.executorsadd', ['task_id' => $task_id])
-                            </div>
+            <!-- Модальное окно -->
+            <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false"
+                 tabindex="-1"
+                 aria-labelledby="staticBackdrop2Label" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdrop2Label">Доступные исполнители</h5>
+                        </div>
+                        <div class="modal-body">
+                            @livewire('task.executorsadd', ['task_id' => $task_id])
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
         @endif
     </div>
 
