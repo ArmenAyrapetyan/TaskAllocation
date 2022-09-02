@@ -35,7 +35,7 @@
                     </li>
                 </ul>
                 @auth
-                    <div class="">
+                    <div>
                         @livewire('task.timer')
                     </div>
                     <div class="ms-3">

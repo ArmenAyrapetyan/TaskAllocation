@@ -48,4 +48,9 @@ class RegisterController extends Controller
         auth()->login($newUser);
         return redirect()->route('main');
     }
+
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
 }

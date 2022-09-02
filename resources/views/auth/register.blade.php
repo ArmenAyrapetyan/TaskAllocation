@@ -92,7 +92,7 @@
 
                                 <div class="col-md-6">
                                     <input id="phone" type="text"
-                                           class="phone form-control @error('phone') is-invalid @enderror" name="phone"
+                                           class="form-control @error('phone') is-invalid @enderror" name="phone"
                                            value="{{ old('phone') }}" autofocus>
 
                                     @error('phone')

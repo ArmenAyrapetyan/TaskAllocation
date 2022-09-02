@@ -29,4 +29,9 @@ class VerificationController extends Controller
 
         return redirect()->route('main');
     }
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 }
