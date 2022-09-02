@@ -52,7 +52,7 @@ class Timer extends Component
             if ($user_time) {
                 TimeSpend::create([
                     'access_user_id' => $user_time->id,
-                    'message' => $this->task->name . ' - ' . $this->message,
+                    'message' => $this->message ? : $this->task->name,
                     'time_spend' => time() - $this->time_start,
                 ]);
             }

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TimeDetailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -63,5 +64,6 @@ Route::middleware(['auth', 'verified'])->group(function (){
         Route::get('show', [StaffController::class, 'index'])->name('show');
         Route::get('show/{id}', [StaffController::class, 'detail'])->name('detail');
         Route::get('profile', [StaffController::class, 'profile'])->name('profile');
+        Route::get('time/detail/{id}', [TimeDetailController::class, 'userTimeDetail'])->name('time-detail');
     });
 });
