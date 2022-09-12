@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Task;
 
 use App\Models\AccessUser;
+use App\Models\ActiveTimers;
 use App\Models\Task;
 use App\Models\TimeSpend;
 use Livewire\Component;
@@ -13,6 +14,7 @@ class Timer extends Component
     public $task_id;
     public $time_start;
     public $message;
+    public $active_timer;
 
     protected $rules = [
         'task_id' => 'required'
@@ -20,10 +22,12 @@ class Timer extends Component
 
     public function mount()
     {
-        if (session()->has(['time_start', 'message', 'task_id'])){
-            $this->time_start = session()->get('time_start');
-            $this->task_id = session()->get('task_id');
-            $this->message = session()->get('message');
+        $user = auth()->user();
+        if ($user->activeTimer){
+            $this->active_timer = $user->activeTimer;
+            $this->time_start = $user->activeTimer->time_start;
+            $this->task_id = $user->activeTimer->task_id;
+            $this->message = $user->activeTimer->message;
         } else {
             $this->time_start = null;
         }
@@ -34,9 +38,12 @@ class Timer extends Component
         $this->validate();
         if (!$this->time_start) {
             $this->time_start = time();
-            session()->put('time_start', $this->time_start);
-            session()->put('message', $this->message);
-            session()->put('task_id', $this->task_id);
+            $this->active_timer = ActiveTimers::create([
+                'user_id' => auth()->id(),
+                'task_id' => $this->task_id,
+                'time_start' => $this->time_start,
+                'message' => $this->message ? : "Без сообщения",
+            ]);
         } else {
             $this->pushTime();
             $this->time_start = null;
@@ -57,7 +64,7 @@ class Timer extends Component
                 ]);
             }
         }
-        session()->forget(['time_start', 'message', 'task_id']);
+        $this->active_timer->delete();
     }
 
     public function render()

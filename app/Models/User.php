@@ -120,4 +120,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return AccessRole::find($id)->name;
     }
+
+    public function activeTimer()
+    {
+        return $this->hasOne(ActiveTimers::class, 'user_id', 'id');
+    }
 }

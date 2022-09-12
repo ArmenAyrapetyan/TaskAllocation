@@ -11,7 +11,7 @@
         </div>
         <div class="col">
             <label class="form-label">Трекнутое время</label>
-            <input type="text" class="form-control" wire:model="time_input">
+            <input type="text" class="time form-control" wire:model="time_input">
             <button class="m-1 float-end btn btn-primary" wire:click="editTime">Изменить</button>
         </div>
     </div>
