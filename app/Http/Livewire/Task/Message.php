@@ -2,14 +2,19 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Models\File;
 use App\Models\Messages;
 use App\Models\Task;
+use App\Services\FileStorage;
 use App\Services\Notifications;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Message extends Component
 {
+    use WithFileUploads;
+
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
@@ -18,6 +23,8 @@ class Message extends Component
     public $message;
     public $taskId;
     public $response;
+    public $files;
+    public bool $is_have_files;
 
     protected $rules = [
         'message' => 'required',
@@ -33,6 +40,8 @@ class Message extends Component
 
     public function mount($id)
     {
+        $this->files = null;
+        $this->is_have_files = false;
         $this->task = Task::find($id);
         $this->response = null;
         $this->taskId = $id;
@@ -47,11 +56,18 @@ class Message extends Component
 
     public function createMessage()
     {
-        Messages::create([
-            'text' => $this->message,
-            'user_id' => auth()->user()->id,
+        $text = $this->message ?? "Без сообщения";
+
+        $message = Messages::create([
+            'text' => $text,
+            'user_id' => auth()->id(),
             'task_id' => $this->taskId,
         ]);
+
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $message->id, Messages::class);
+
+        $this->files = null;
         Notifications::sendTaskNotify(auth()->id(), $this->task->id, 'Сообщение - ' . $this->message);
         $this->message = null;
         $this->refreshMessages();

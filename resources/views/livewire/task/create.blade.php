@@ -1,4 +1,9 @@
 <div>
+    <div class="mb-3 form-check form-switch d-flex justify-content-center">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" wire:model="is_have_files">
+        <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Добавить файлы в задачу?</label>
+    </div>
+
     <div class="form-floating mb-3">
         <input wire:model="task_data.name" name="task_data.name" type="text"
                class="form-control @isset($task_data['name']) @if($task_data['name'] != '') is-valid @else is-invalid @endif @endisset
@@ -22,7 +27,7 @@
     <div class="form-floating mb-3">
         <select wire:model="task_data.project_id" name="task_data.project_id"
                 class="form-control @isset($task_data['project_id']) is-valid @endisset @error('task_data.project_id') is-invalid @enderror">
-            <option selected="" value="">Выберите проект</option>
+            <option selected="" value="null">Выберите проект</option>
             @foreach($projects as $project)
                 <option value="{{ $project->id }}"> {{ $project->name }}</option>
             @endforeach
@@ -67,13 +72,27 @@
         <input wire:model="task_data.date_end" name="task_data.date_end" type="date"
                class="form-control @isset($task_data['date_end']) is-valid @endisset @error('task_data.date_end') is-invalid @enderror"
                id="floatingInput">
-        <label for="floatingInput">Дата конца выполнения задачи</label>
+        <label for="floatingInput">Дата конца выполнения задачэ</label>
         @error('task_data.date_end')
+        <div class="text-danger">{{ $message }}</div> @enderror
+    </div>
+
+    <div class="d-flex mb-3">
+        <input class="form-control" multiple @if(!$is_have_files) disabled @endif type="file" wire:model="files">
+
+        <div wire:loading wire:target="files" class="m-1 spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        @error('files')
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button @if(session('success'))  @endif wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить задачу</button>
+        <button @if($is_have_files) wire:key="active" wire:loading.attr="disabled"  wire:target="files" @endif
+        wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить
+            задачу
+        </button>
     </div>
 </div>

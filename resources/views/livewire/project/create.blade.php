@@ -1,4 +1,9 @@
 <div>
+    <div class="mb-3 form-check form-switch d-flex justify-content-center">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" wire:model="is_have_files">
+        <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Добавить файлы в проект?</label>
+    </div>
+
     <div class="form-floating mb-3">
         <input wire:model="project_data.name" name="project_data.name" type="text"
                class="form-control @isset($project_data['name']) @if($project_data['name'] != '') is-valid @else is-invalid @endif @endisset
@@ -59,9 +64,21 @@
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
+    <div class="d-flex mb-3">
+        <input class="form-control" multiple @if(!$is_have_files) disabled @endif type="file" wire:model="files">
+
+        <div wire:loading wire:target="files" class="m-1 spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        @error('files')
+        <div class="text-danger">{{ $message }}</div> @enderror
+    </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button wire:click="saveProject()" type="button" class="btn btn-primary">
+        <button @if($is_have_files) wire:key="active" wire:loading.attr="disabled"  wire:target="files" @endif
+            wire:click="saveProject()" type="button" class="btn btn-primary">
             Сохранить проект
         </button>
     </div>

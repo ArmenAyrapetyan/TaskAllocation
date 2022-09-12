@@ -8,15 +8,20 @@ use App\Models\Counterparty;
 use App\Models\Project;
 use App\Models\ProjectGroup;
 use App\Models\ProjectStatus;
-use App\Models\ProjectUsers;
+use App\Services\FileStorage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
     public $project_data;
     public $counterparties;
     public $statuses;
     public $groups;
+    public $files;
+    public bool $is_have_files;
 
     protected $rules = [
         'project_data.name' => 'required',
@@ -24,6 +29,7 @@ class Create extends Component
         'project_data.counterparty_id' => 'required',
         'project_data.group_id' => 'required',
         'project_data.status_id' => 'required',
+        'files.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,csv,xlsx,xls,docx,ppt,odt,ods,odp,txt',
     ];
 
     protected $messages = [
@@ -36,6 +42,8 @@ class Create extends Component
 
     public function mount()
     {
+        $this->files = null;
+        $this->is_have_files = false;
         $this->counterparties = Counterparty::select('id', 'name')->get();
         $this->groups = ProjectGroup::select('id', 'name')->get();
         $this->statuses = ProjectStatus::select('id', 'name')->get();
@@ -54,6 +62,10 @@ class Create extends Component
             'accessable_type' => Project::class,
         ]);
 
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $project->id, Project::class);
+
+        $this->files = null;
         $this->project_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshSort');

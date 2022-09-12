@@ -7,23 +7,32 @@ use App\Models\AccessUser;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use App\Models\TaskUser;
+use App\Services\FileStorage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
     public $task_data;
     public $projects;
     public $statuses;
+    public $files;
+    public bool $is_have_files;
 
-    protected $rules = [
-        'task_data.name' => 'required',
-        'task_data.description' => 'required|max:600',
-        'task_data.time_planned' => 'nullable|integer|min:0',
-        'task_data.date_start' => 'required|date',
-        'task_data.date_end' => 'required|date',
-        'task_data.status_id' => 'required',
-    ];
+    protected function rules()
+    {
+        return [
+            'task_data.name' => 'required',
+            'task_data.description' => 'required',
+            'task_data.time_planned' => 'nullable|integer|min:0',
+            'task_data.date_start' => 'required|date',
+            'task_data.date_end' => 'required|date',
+            'task_data.status_id' => 'required',
+            'files.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,csv,xlsx,xls,docx,ppt,odt,ods,odp,txt',
+        ];
+    }
 
     protected $messages = [
         'task_data.name.required' => 'Заполните имя задачи',
@@ -42,8 +51,8 @@ class Create extends Component
         $this->validate();
 
         $this->task_data['project_id'] = $this->task_data['project_id'] != null
-                ? $this->task_data['project_id']
-                : null;
+            ? $this->task_data['project_id']
+            : null;
 
         $newTask = Task::create($this->task_data);
 
@@ -54,6 +63,10 @@ class Create extends Component
             'accessable_type' => Task::class,
         ]);
 
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $newTask->id, Task::class);
+
+        $this->files = null;
         $this->task_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshShow');
@@ -61,6 +74,9 @@ class Create extends Component
 
     public function mount()
     {
+        $this->files = null;
+        $this->task_data['project_id'] = null;
+        $this->is_have_files = false;
         $this->projects = Project::all();
         $this->statuses = TaskStatus::all();
     }

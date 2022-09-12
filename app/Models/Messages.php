@@ -24,4 +24,9 @@ class Messages extends Model
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
     }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

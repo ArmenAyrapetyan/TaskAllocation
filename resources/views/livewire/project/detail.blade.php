@@ -22,7 +22,28 @@
 
     <div class="ms-3 mt-2">
         <p>Описание проекта:</p>
-        <p>{{$project->description}}</p>
+        @foreach(explode(' ', $project->description) as $word)
+            @if(is_numeric(strpos($word, 'http')))
+                <div class="d-none">
+                    {{preg_match("~<title>(.*)</title>~",file_get_contents($word), $title)}}
+                </div>
+                <a href="{{$word}}">{{$title[1]}}</a>
+            @else
+                {{$word}}
+            @endif
+        @endforeach
+        <div class="d-flex">
+            @foreach($project->files as $file)
+                @if(exif_imagetype($file->path))
+                    <img src="{{asset($file->path)}}" alt="image_task" width="200" height="200" style="object-fit: cover;"
+                         class="m-2 img-thumbnail">
+                @else
+                    <button wire:click="downloadFile('{{$file->path}}')" class="btn" style="width: 200px;height: 200px;">
+                        {{pathinfo($file->path)['extension']}}
+                    </button>
+                @endif
+            @endforeach
+        </div>
     </div>
 
     <div class="ms-2 mt-2 me-2">

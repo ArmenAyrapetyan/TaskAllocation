@@ -6,6 +6,7 @@ use App\Models\AccessRole;
 use App\Models\AccessUser;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Services\FileStorage;
 use App\Services\Notifications;
 use Livewire\Component;
 
@@ -57,6 +58,11 @@ class Detail extends Component
         Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
         $this->refreshTaskInfo();
         $this->emit('refreshMessages');
+    }
+
+    public function downloadFile($path)
+    {
+        return FileStorage::download($path);
     }
 
     public function render()

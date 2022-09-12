@@ -7,7 +7,22 @@
             <label for="message">Сообщение</label>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-primary" wire:click="createMessage">Отправить сообщение</button>
+            @if($is_have_files)
+                <div class="d-flex align-items-center">
+                    <input class="form-control" multiple @if(!$is_have_files) disabled @endif type="file" wire:model="files">
+                    <div wire:loading wire:target="files" class="m-1 spinner-grow text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    @error('files')
+                    <div class="text-danger">{{ $message }}</div> @enderror
+                </div>
+            @endif
+            <div class="form-check form-switch d-flex justify-content-center align-items-center">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" wire:model="is_have_files">
+                <label class="form-check-label ms-1" for="flexSwitchCheckChecked">Добавить файлы в задачу?</label>
+            </div>
+            <button @if($is_have_files) wire:key="active" wire:loading.attr="disabled"  wire:target="files" @endif
+                class="btn btn-primary" wire:click="createMessage">Отправить сообщение</button>
         </div>
     @endif
     @foreach($task_messages as $msg)
@@ -29,7 +44,28 @@
                 </span>
                 </div>
                 <div class="ps-1">
-                    <p>{{$msg->text}}</p>
+                    @foreach(explode(' ', $msg->text) as $word)
+                        @if(is_numeric(strpos($word, 'http')))
+                            <div class="d-none">
+                                {{preg_match("~<title>(.*)</title>~",file_get_contents($word), $title)}}
+                            </div>
+                            <a href="{{$word}}">{{$title[1]}}</a>
+                        @else
+                            {{$word}}
+                        @endif
+                    @endforeach
+                </div>
+                <div class="d-flex">
+                    @foreach($msg->files as $file)
+                        @if(exif_imagetype($file->path))
+                            <img src="{{asset($file->path)}}" alt="image_task" width="200" height="200" style="object-fit: cover;"
+                                 class="m-2 img-thumbnail">
+                        @else
+                            <button wire:click="downloadFile('{{$file->path}}')" class="btn" style="width: 200px;height: 200px;">
+                                {{pathinfo($file->path)['extension']}}
+                            </button>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
