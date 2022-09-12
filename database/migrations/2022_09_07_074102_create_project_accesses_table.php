@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('project_users', function (Blueprint $table) {
+        Schema::create('project_accesses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('project_id')->constrained('projects');
+            $table->text('information');
+            $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
+            $table->foreignId('counterparty_id')->nullable()->constrained('counterparties')->cascadeOnDelete();
+            $table->morphs('dictionariable');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_users');
+        Schema::dropIfExists('project_accesses');
     }
 };

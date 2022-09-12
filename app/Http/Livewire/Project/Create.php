@@ -26,7 +26,6 @@ class Create extends Component
     protected $rules = [
         'project_data.name' => 'required',
         'project_data.description' => 'required|max:600',
-        'project_data.counterparty_id' => 'required',
         'project_data.group_id' => 'required',
         'project_data.status_id' => 'required',
         'files.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,csv,xlsx,xls,docx,ppt,odt,ods,odp,txt',

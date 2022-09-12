@@ -37,9 +37,9 @@ class Detail extends Component
     public function modStatus()
     {
         $this->task->status_id = $this->status_id;
-        $message = 'У задачи ' . $this->task->name . ' был обновлен статус на ' . $this->task->status->name;
-        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
         $this->task->save();
+        $message = 'У задачи ' . $this->task->name . ' был обновлен статус на ' . TaskStatus::find($this->status_id)->name;
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
     }
 
     public function takeExecutor()

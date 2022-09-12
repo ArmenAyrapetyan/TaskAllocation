@@ -2,6 +2,6 @@
 
 @section('content')
 
-
+    @livewire('passwords.index')
 
 @endsection

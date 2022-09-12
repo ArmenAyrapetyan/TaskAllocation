@@ -29,10 +29,12 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             TaskSeeder::class,
             MessagesSeeder::class,
-            ProjectUsersSeeder::class,
             AccessUserSeeder::class,
             AccessGroupSeeder::class,
-            TimeSpendSeeder::class
+            TimeSpendSeeder::class,
+            DictionarySeeder::class,
+            SubDictionarySeeder::class,
+            ProjectAccessesSeeder::class
         ]);
     }
 }
