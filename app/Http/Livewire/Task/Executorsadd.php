@@ -52,7 +52,6 @@ class Executorsadd extends Component
     {
         $this->saveAccess($user_id, AccessRole::ROLE_AUDIT);
     }
-
     public function saveAccess($user_id, $role_id)
     {
         $relationUserTask = AccessUser::where('user_id', $user_id)->where('accessable_id', $this->task->id)

@@ -40,7 +40,7 @@ class Create extends Component
 
         $this->responce = "Токен активирован";
 
-        DisactivateRegisterToken::dispatch($newToken)->delay(now()->addMinutes(100));
+        DisactivateRegisterToken::dispatch($newToken)->delay(now()->addMinutes(120));
     }
 
     public function newToken()

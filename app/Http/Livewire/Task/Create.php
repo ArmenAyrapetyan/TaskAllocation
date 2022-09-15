@@ -44,6 +44,7 @@ class Create extends Component
         'task_data.date_end.required' => 'Заполните дату конца выполнения задачи',
         'task_data.date_end.date' => 'Поле должно содержать дату',
         'task_data.status_id.required' => 'У задачи должен быть статус',
+        'files.mimes' => 'Формат файлов не разрешен для отправки',
     ];
 
     public function saveTask()

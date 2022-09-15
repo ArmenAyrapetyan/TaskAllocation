@@ -53,20 +53,21 @@
             @endif
         @endforeach
 
-
-
-        <div class="d-flex">
+        <div class="row m-0">
             @foreach($task->files as $file)
-                @if(exif_imagetype($file->path))
-                    <img src="{{asset($file->path)}}" alt="image_task" width="200" height="200"
-                         style="object-fit: cover;"
-                         class="m-2 img-thumbnail">
-                @else
-                    <button wire:click="downloadFile('{{$file->path}}')" class="btn"
-                            style="width: 200px;height: 200px;">
-                        {{pathinfo($file->path)['extension']}}
-                    </button>
-                @endif
+                <div class="col m-1 w-100 h-100">
+                    <button class="float-end btn-close" wire:click="deleteFile({{$file}})"></button>
+                    @if(@exif_imagetype($file->path))
+                        <img src="{{asset($file->path)}}" alt="image_task" width="400" height="400"
+                             style="object-fit: cover; min-width: 200px; min-height: 200px"
+                             class="m-2 img-thumbnail">
+                    @else
+                        <button wire:click="downloadFile('{{$file->path}}')" class="btn border mt-auto d-block"
+                                style="min-width: 200px;min-height: 200px;">
+                            {{pathinfo($file->path)['extension']}}
+                        </button>
+                    @endif
+                </div>
             @endforeach
         </div>
     </div>

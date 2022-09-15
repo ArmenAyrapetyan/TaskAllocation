@@ -34,7 +34,7 @@
         @endforeach
         <div class="d-flex">
             @foreach($project->files as $file)
-                @if(exif_imagetype($file->path))
+                @if(@exif_imagetype($file->path))
                     <img src="{{asset($file->path)}}" alt="image_task" width="200" height="200" style="object-fit: cover;"
                          class="m-2 img-thumbnail">
                 @else

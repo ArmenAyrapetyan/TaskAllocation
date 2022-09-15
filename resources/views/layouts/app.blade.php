@@ -14,6 +14,7 @@
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://unpkg.com/imask"></script>
+    <link rel="stylesheet" href="{{ URL::asset('/css/style.css') }}">
     @livewireStyles
 </head>
 <body>

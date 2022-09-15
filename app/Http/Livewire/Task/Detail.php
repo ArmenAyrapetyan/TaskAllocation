@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Task;
 
 use App\Models\AccessRole;
 use App\Models\AccessUser;
+use App\Models\File;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Services\FileStorage;
@@ -63,6 +64,13 @@ class Detail extends Component
     public function downloadFile($path)
     {
         return FileStorage::download($path);
+    }
+
+    public function deleteFile(File $file)
+    {
+        FileStorage::fileDelete($file->path);
+        $file->delete();
+        $this->refreshTaskInfo();
     }
 
     public function render()

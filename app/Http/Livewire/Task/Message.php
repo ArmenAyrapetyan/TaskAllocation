@@ -54,6 +54,11 @@ class Message extends Component
             ->paginate(3);
     }
 
+    public function downloadFile($path)
+    {
+        return FileStorage::download($path);
+    }
+
     public function createMessage()
     {
         $text = $this->message ?? "Без сообщения";

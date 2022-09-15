@@ -7,8 +7,9 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-1 mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('notify.show')}}">Уведомления</a>
                     </li>
@@ -35,14 +36,14 @@
                     </li>
                 </ul>
                 @auth
-                    <div>
+                    <div class="ms-auto">
                         @livewire('task.timer')
                     </div>
                     <div class="ms-3">
                         <nav class="nav text-align-center">
                             @if(auth()->user()->avatar)
                                 <img src="{{asset(auth()->user()->avatar->path)}}" width="45" height="45"
-                                     style="object-fit: cover" class="mt-2 rounded-circle img-fluid">
+                                     style="object-fit: cover; min-width: 45px; min-height: 45px" class="mt-auto rounded-circle">
                             @else
                                 <img src="{{asset('storage/images/imguser.png')}}" width="45" height="45"
                                      style="object-fit: cover" class="mt-2 rounded-circle img-fluid">

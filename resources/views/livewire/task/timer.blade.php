@@ -1,6 +1,6 @@
 <div @if($time_start != null) wire:poll.1000ms @endif>
-    <input wire:model="message" name="message" @if($time_start != null) disabled @endif type="text">
-    <select @if($time_start != null) disabled @endif wire:model="task_id" name="task_id"
+    <input wire:model="message" style="width: 160px" name="message" @if($time_start != null) disabled @endif type="text">
+    <select style="width: 160px" @if($time_start != null) disabled @endif wire:model="task_id" name="task_id"
             class="form-select-sm me-1 is-invalid">
         <option value="">Выбор задачи</option>
         @foreach(auth()->user()->tasks as $task)

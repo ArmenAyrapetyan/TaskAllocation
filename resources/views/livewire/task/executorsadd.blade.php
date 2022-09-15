@@ -32,7 +32,8 @@
                         </p>
                     </div>
                     <div class="col m-1">
-                        <button class="btn">Сделать исполнителем</button>
+                        <button class="btn" @if(in_array($group->id, $task->groups->pluck('id')->toArray())) disabled @endif
+                                wire:click="addGroupAsExecutor({{$group->id}})">Сделать исполнителем</button>
                     </div>
                 </div>
             @endforeach
