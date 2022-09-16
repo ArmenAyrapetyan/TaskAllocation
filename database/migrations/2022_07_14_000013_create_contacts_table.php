@@ -20,8 +20,8 @@ return new class extends Migration {
             $table->foreignId('source_id')->constrained('sources')->cascadeOnDelete();
             $table->foreignId('special_group_id')->constrained('special_groups')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('phone');
-            $table->string('email');
+            $table->string('phone')->unique();
+            $table->string('email')->unique();
             $table->string('telegram')->nullable();
             $table->string('vk_url')->nullable();
             $table->foreignId('counterparty_id')->nullable()->constrained('counterparties')->cascadeOnDelete();

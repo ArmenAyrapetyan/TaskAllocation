@@ -90,7 +90,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button @if($is_have_files) wire:key="active" wire:loading.attr="disabled"  wire:target="files" @endif
+        <button @if($is_have_files) wire:key="active" wire:loading.attr="disabled" wire:target="files" @endif
         wire:click="saveTask()" type="button" class="btn btn-primary">Сохранить
             задачу
         </button>

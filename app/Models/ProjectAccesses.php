@@ -13,20 +13,17 @@ class ProjectAccesses extends Model
         'information',
         'dictionariable_type',
         'dictionariable_id',
+        'objectable_type',
+        'objectable_id',
     ];
 
-    public function projectAccessable()
+    public function dictionary()
     {
-        return $this->morphTo();
+        return $this->morphTo('dictionariable');
     }
 
-    public function project()
+    public function object()
     {
-        return $this->belongsTo(Project::class, 'project_id', 'id');
-    }
-
-    public function counterparty()
-    {
-        return $this->belongsTo(Counterparty::class, 'counterparty_id', 'id');
+        return $this->morphTo('objectable');
     }
 }

@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
 
     Route::prefix('password')->as('password.')->group(function (){
         Route::get('show', [PasswordController::class, 'index'])->name('show');
+        Route::get('detail/{id}', [PasswordController::class, 'detail'])->name('detail');
     });
 
     Route::prefix('contacts')->as('contact.')->group(function (){

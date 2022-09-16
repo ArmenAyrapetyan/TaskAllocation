@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('project_accesses', function (Blueprint $table) {
             $table->id();
             $table->text('information');
-            $table->foreignId('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
-            $table->foreignId('counterparty_id')->nullable()->constrained('counterparties')->cascadeOnDelete();
             $table->morphs('dictionariable');
+            $table->morphs('objectable');
             $table->timestamps();
         });
     }

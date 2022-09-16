@@ -60,9 +60,21 @@
         <div class="text-danger">{{ $message }}</div> @enderror
     </div>
 
+    <div class="d-flex mb-3">
+        <input class="form-control" multiple type="file" wire:model="files">
+
+        <div wire:loading wire:target="files" class="m-1 spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        @error('files')
+        <div class="text-danger">{{ $message }}</div> @enderror
+    </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button wire:click="editProject()" type="button" class="btn btn-primary">
+        <button wire:key="active" wire:loading.attr="disabled"  wire:target="files"
+            wire:click="editProject()" type="button" class="btn btn-primary">
             Изменить
         </button>
     </div>

@@ -6,13 +6,18 @@ use App\Models\Counterparty;
 use App\Models\Project;
 use App\Models\ProjectGroup;
 use App\Models\ProjectStatus;
+use App\Services\FileStorage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class
 Edit extends Component
 {
+    use WithFileUploads;
+
     public $project_data;
     public $project;
+    public $files;
     public $counterparties;
     public $statuses;
 
@@ -22,6 +27,7 @@ Edit extends Component
         'project_data.counterparty_id' => 'required',
         'project_data.group_id' => 'required',
         'project_data.status_id' => 'required',
+        'files.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,csv,xlsx,xls,docx,ppt,odt,ods,odp,txt',
     ];
 
     protected $messages = [
@@ -44,6 +50,10 @@ Edit extends Component
     public function editProject()
     {
         $this->validate();
+
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $this->project->id, Project::class);
+
         $this->project->fill($this->project_data);
         $this->project->save();
         $this->dispatchBrowserEvent('closeModal');

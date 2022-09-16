@@ -32,16 +32,23 @@
                 {{$word}}
             @endif
         @endforeach
-        <div class="d-flex">
+        <div class="row">
             @foreach($project->files as $file)
-                @if(@exif_imagetype($file->path))
-                    <img src="{{asset($file->path)}}" alt="image_task" width="200" height="200" style="object-fit: cover;"
-                         class="m-2 img-thumbnail">
-                @else
-                    <button wire:click="downloadFile('{{$file->path}}')" class="btn" style="width: 200px;height: 200px;">
-                        {{pathinfo($file->path)['extension']}}
-                    </button>
-                @endif
+                <div class="kakoi">
+                    @if(in_array(auth()->id(), $project->users->pluck('id')->toArray()))
+                        <button class="float-end btn-close" wire:click="deleteFile({{$file}})"></button>
+                    @endif
+                    @if(@exif_imagetype($file->path))
+                        <img src="{{asset($file->path)}}" alt="image_task" width="400" height="400"
+                             style="object-fit: cover; min-width: 200px; min-height: 200px"
+                             class="nibud m-2 img-thumbnail">
+                    @else
+                        <button wire:click="downloadFile('{{$file->path}}')" class="btn border mt-auto d-block"
+                                style="min-width: 200px;min-height: 200px;">
+                            {{pathinfo($file->path)['extension']}}
+                        </button>
+                    @endif
+                </div>
             @endforeach
         </div>
     </div>

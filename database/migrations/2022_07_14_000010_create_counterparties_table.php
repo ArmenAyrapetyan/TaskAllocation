@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('counterparties', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('website_url')->nullable();

@@ -59,6 +59,13 @@ class Message extends Component
         return FileStorage::download($path);
     }
 
+    public function deleteFile(File $file)
+    {
+        FileStorage::fileDelete($file->path);
+        $file->delete();
+        $this->refreshMessages();
+    }
+
     public function createMessage()
     {
         $text = $this->message ?? "Без сообщения";

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sub_dictionaries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->foreignId('dictionary_id')->constrained('dictionaries')->cascadeOnDelete();
             $table->timestamps();
         });

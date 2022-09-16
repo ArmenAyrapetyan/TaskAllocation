@@ -53,14 +53,16 @@
             @endif
         @endforeach
 
-        <div class="row m-0">
+        <div class="row">
             @foreach($task->files as $file)
-                <div class="col m-1 w-100 h-100">
-                    <button class="float-end btn-close" wire:click="deleteFile({{$file}})"></button>
+                <div class="kakoi">
+                    @if($task->creatorId == auth()->id())
+                        <button class="float-end btn-close" wire:click="deleteFile({{$file}})"></button>
+                    @endif
                     @if(@exif_imagetype($file->path))
                         <img src="{{asset($file->path)}}" alt="image_task" width="400" height="400"
                              style="object-fit: cover; min-width: 200px; min-height: 200px"
-                             class="m-2 img-thumbnail">
+                             class="m-2 img-thumbnail nibud">
                     @else
                         <button wire:click="downloadFile('{{$file->path}}')" class="btn border mt-auto d-block"
                                 style="min-width: 200px;min-height: 200px;">

@@ -5,15 +5,20 @@ namespace App\Http\Livewire\Task;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Services\FileStorage;
 use App\Services\Notifications;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
+    use WithFileUploads;
+
     public $task_data;
     public $task;
     public $projects;
     public $statuses;
+    public $files;
 
     protected $rules = [
         'task_data.name' => 'required',
@@ -22,6 +27,7 @@ class Edit extends Component
         'task_data.date_start' => 'required|date',
         'task_data.date_end' => 'required|date',
         'task_data.status_id' => 'required',
+        'files.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,csv,xlsx,xls,docx,ppt,odt,ods,odp,txt',
     ];
 
     protected $messages = [
@@ -42,6 +48,9 @@ class Edit extends Component
 
         $this->task->fill($this->task_data);
         $this->task->save();
+
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $this->task->id, Task::class);
 
         $message = 'Изменена задача';
         Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
