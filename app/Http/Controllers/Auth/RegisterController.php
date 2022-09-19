@@ -22,7 +22,7 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $token = RegisterToken::where('token', $request->register_token)->first();
+        $token = RegisterToken::where('token', bcrypt($request->register_token))->first();
 
         $newUser = User::create([
             'first_name' => $request->first_name,

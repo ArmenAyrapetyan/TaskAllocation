@@ -26,4 +26,9 @@ class ProjectAccesses extends Model
     {
         return $this->morphTo('objectable');
     }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

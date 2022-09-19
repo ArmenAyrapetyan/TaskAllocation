@@ -24,14 +24,16 @@ class Create extends Component
     public function mount()
     {
         $this->dictionaries = Dictionary::select('id', 'name')->orderBy('name')->get();
+        $this->refresh();
     }
 
     public function createDictionary()
     {
+        $this->validate();
+
         if ($this->dictionary_id > 0)
             SubDictionary::create([
                 'name' => $this->name,
-                'dictionary_id' => $this->dictionary_id,
             ]);
         else
             Dictionary::create([
@@ -39,6 +41,13 @@ class Create extends Component
             ]);
         $this->name = null;
         $this->dictionary_id = 0;
+    }
+
+    public function refresh()
+    {
+        $this->is_subdictionary = false;
+        $this->dictionary_id = 0;
+        $this->name = null;
     }
 
     public function render()

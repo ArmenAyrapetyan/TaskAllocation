@@ -1,10 +1,8 @@
 <div>
-    <!-- Кнопка-триггер модального окна -->
     <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Создать Токен
     </button>
 
-    <!-- Модальное окно -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -24,7 +22,7 @@
         <div class="row">
             @foreach($staff as $employee)
                 <div class="col-xl-6 col-lg-7 col-md-12">
-                    <div class="m-1 card profile-header">
+                    <div class="m-1 profile-header">
                         <div class="body">
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-12">

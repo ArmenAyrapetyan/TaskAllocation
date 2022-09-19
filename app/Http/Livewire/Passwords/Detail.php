@@ -2,21 +2,25 @@
 
 namespace App\Http\Livewire\Passwords;
 
+use App\Models\File;
 use App\Models\Project;
 use App\Models\ProjectAccesses;
 use App\Models\Task;
+use App\Services\FileStorage;
 use Livewire\Component;
 
 class Detail extends Component
 {
     public $info;
+    public $info_id;
     public $project;
     public $counterparty;
+    public $dictionary;
 
     public function mount($info_id)
     {
-        $this->info = ProjectAccesses::find($info_id);
-        $this->getInfo();
+        $this->info_id = $info_id;
+        $this->refreshView();
     }
 
     public function getInfo()
@@ -34,6 +38,25 @@ class Detail extends Component
                     $this->counterparty = $this->project->counterparty;
             }
         }
+    }
+
+    public function refreshView()
+    {
+        $this->info = ProjectAccesses::find($this->info_id);
+        $this->dictionary = $this->info->dictionary;
+        $this->getInfo();
+    }
+
+    public function deleteFile(File $file)
+    {
+        FileStorage::fileDelete($file->path);
+        $file->delete();
+        $this->refreshView();
+    }
+
+    public function downloadFile($path)
+    {
+        return FileStorage::download($path);
     }
 
     public function render()

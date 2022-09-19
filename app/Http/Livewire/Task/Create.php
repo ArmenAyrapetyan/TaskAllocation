@@ -30,7 +30,9 @@ class Create extends Component
             'task_data.date_start' => 'required|date',
             'task_data.date_end' => 'required|date',
             'task_data.status_id' => 'required',
-            'files.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,csv,xlsx,xls,docx,ppt,odt,ods,odp,txt',
+            'files.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,text/plain,
+        application/x-rar-compressed,application/zip,application/x-gzip,application/pdf,application/msword,
+        application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel',
         ];
     }
 

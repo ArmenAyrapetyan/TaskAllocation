@@ -33,7 +33,7 @@ class Create extends Component
         $this->validate();
 
         $newToken = RegisterToken::create([
-            'token' => $this->token,
+            'token' => bcrypt($this->token),
             'isActive' => true,
             'rate_per_hour' => $this->rate_per_hour,
         ]);
