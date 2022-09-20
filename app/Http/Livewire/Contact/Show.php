@@ -31,7 +31,7 @@ class Show extends Component
         if ($this->isSortAll)
             return $this->getAllContacts();
         else
-            return $this->sortContactsByGroup($this->idSort);
+            return $this->filterContactsByGroup($this->idSort);
     }
 
     public function filterContactsByGroup($id)

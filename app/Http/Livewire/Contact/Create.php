@@ -50,7 +50,7 @@ class Create extends Component
 
         $this->contact_data['user_id'] = auth()->id();
 
-        $newContact = Contact::create($this->contact_data);
+        Contact::create($this->contact_data);
 
         $this->contact_data = null;
         $this->dispatchBrowserEvent('closeModal');
