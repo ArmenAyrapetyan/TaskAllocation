@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Report;
 
-use App\Models\Task;
 use App\Services\ReportGenerate;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -24,13 +23,13 @@ class Index extends Component
     {
         switch ($this->report_type){
             case 'Task':
-                $this->emit('getTaskReport');
+                $this->emit('getTaskReport', $this->date_start, $this->date_end);
                 break;
             case 'Project':
-                dd(ReportGenerate::generateReportByProject());
+                $this->emit('getProjectReport');
                 break;
             case 'Staff':
-                dd(ReportGenerate::generateReportByStaff());
+                $this->emit('getStaffReport', $this->date_start, $this->date_end);
                 break;
         }
     }

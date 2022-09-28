@@ -21,6 +21,11 @@ class Show extends Component
         'refreshCounterparty'
     ];
 
+    public function booted()
+    {
+        $this->resetPage();
+    }
+
     public function mount()
     {
         $this->allCounterparties();
@@ -29,7 +34,8 @@ class Show extends Component
     public function allCounterparties()
     {
         $this->isLastSortAll = true;
-        return Counterparty::paginate(10);
+        return Counterparty::orderBy('name')
+            ->paginate(10);
     }
 
     public function refreshCounterparty()
@@ -44,7 +50,8 @@ class Show extends Component
     {
         $this->isLastSortAll = false;
         $this->idForSort = $id;
-        return Counterparty::where('special_group_id', $id)->paginate(10);
+        return Counterparty::where('special_group_id', $id)->orderBy('name')
+            ->paginate(10);
     }
 
     public function render()

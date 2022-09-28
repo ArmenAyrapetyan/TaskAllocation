@@ -25,6 +25,19 @@ class Project extends AllAccess
         );
     }
 
+    public function time()
+    {
+        $time_planned = 0;
+        $time_spend = 0;
+
+        foreach ($this->tasks as $task){
+            $time_planned += $task->time_planned;
+            $time_spend += $task->timeSpend();
+        }
+
+        return array($time_planned, $time_spend);
+    }
+
     public function files()
     {
         return $this->morphMany(File::class, 'fileable');

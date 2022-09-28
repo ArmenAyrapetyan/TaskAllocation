@@ -18,7 +18,7 @@ class SubDictionaryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(),
+            'name' => $this->faker->unique()->word(),
             'dictionary_id' => $this->faker->randomElement(Dictionary::pluck('id')),
         ];
     }

@@ -22,6 +22,11 @@ class Show extends Component
         'refreshSort',
     ];
 
+    public function booted()
+    {
+        $this->resetPage();
+    }
+
     public function mount()
     {
         $this->isLastSortAll = true;

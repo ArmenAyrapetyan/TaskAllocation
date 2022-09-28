@@ -1,10 +1,12 @@
 <div>
     <div class="d-flex align-items-center">
         <label class="m-1"> Дата начала
-            <input class="form-control" wire:model="date_start" type="date">
+            <input @if($report_type == "Project") disabled @endif
+            class="form-control" wire:model="date_start" type="date">
         </label>
         <label class="m-1"> Дата конца
-            <input class="form-control" wire:model="date_end" type="date">
+            <input @if($report_type == "Project") disabled @endif
+            class="form-control" wire:model="date_end" type="date">
         </label>
         <div class="form-check m-1">
             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="Task"
@@ -29,7 +31,7 @@
         </div>
         <button class="btn btn-primary m-1" wire:click="generateReport">Применить</button>
     </div>
-    <div class="">
+    <div>
         @switch($report_type)
             @case("Task")
                 @livewire('report.task')

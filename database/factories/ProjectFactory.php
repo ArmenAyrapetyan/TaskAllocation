@@ -21,7 +21,7 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(),
+            'name' => $this->faker->unique()->word(),
             'description' => $this->faker->text(),
             'counterparty_id' => $this->faker->randomElement(Counterparty::select('id')->get()),
             'group_id' => $this->faker->randomElement(ProjectGroup::select('id')->get()),

@@ -43,12 +43,13 @@ class Task extends AllAccess
 
     public function isUserInTask($id)
     {
-        return (bool) in_array($id, $this->users->pluck('id')->toArray());
+        return in_array($id, $this->users->pluck('id')->toArray());
     }
 
     public function timeSpend()
     {
-        $sumTime = round(array_sum(TimeSpend::whereIn('access_user_id', $this->users->pluck('pivot.id'))->pluck('time_spend')->toArray())/60) ?? 0;
+        $sumTime = number_format(array_sum(TimeSpend::whereIn('access_user_id', $this->users->pluck('pivot.id'))
+                ->pluck('time_spend')->toArray()) / 60, 2, '.', '') ?? 0;
         return $sumTime;
     }
 
@@ -89,5 +90,10 @@ class Task extends AllAccess
     public function files()
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function time()
+    {
+        return $this->hasManyThrough(TimeSpend::class, AccessUser::class, 'accessable_id', 'access_user_id');
     }
 }

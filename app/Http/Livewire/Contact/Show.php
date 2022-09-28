@@ -21,6 +21,11 @@ class Show extends Component
         'refreshContact',
     ];
 
+    public function booted()
+    {
+        $this->resetPage();
+    }
+
     public function mount()
     {
         $this->getAllContacts();
@@ -39,13 +44,15 @@ class Show extends Component
         $this->idSort = $id;
         $this->isSortAll = false;
         return Contact::where('special_group_id', $id)
+            ->orderBy('first_name')
             ->paginate(10);
     }
 
     public function getAllContacts()
     {
         $this->isSortAll = true;
-        return Contact::paginate(10);
+        return Contact::orderBy('first_name')
+            ->paginate(10);
     }
 
     public function render()

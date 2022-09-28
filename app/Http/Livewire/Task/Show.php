@@ -22,6 +22,11 @@ class Show extends Component
         $this->refreshShow();
     }
 
+    public function booted()
+    {
+        $this->resetPage();
+    }
+
     protected $listeners = [
         'getAllTasks',
         'sortTasks',
@@ -39,7 +44,8 @@ class Show extends Component
     public function getAllTasks()
     {
         $this->isLastSortAll = true;
-        return Task::paginate(5);
+        return Task::orderBy('name')
+            ->paginate(5);
     }
 
     public function sortTasks($id, $isStatus = false)
@@ -49,9 +55,11 @@ class Show extends Component
         $this->importId = $id;
 
         if (!$isStatus)
-            return Task::whereHas('project', function ($project){$project->where('group_id', $this->importId);})->paginate(5);
+            return Task::whereHas('project', function ($project){$project->where('group_id', $this->importId);})->orderBy('name')
+                ->paginate(5);
         else
-            return Task::where('status_id', $id)->paginate(5);
+            return Task::where('status_id', $id)->orderBy('name')
+                ->paginate(5);
     }
 
     public function render()

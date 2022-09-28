@@ -116,6 +116,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ])->get();
     }
 
+    public function userAccesses()
+    {
+        return $this->hasMany(AccessUser::class, 'user_id', 'id');
+    }
+
     public function getRoleName($id)
     {
         return AccessRole::find($id)->name;
