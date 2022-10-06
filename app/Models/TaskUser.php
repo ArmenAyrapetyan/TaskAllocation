@@ -12,6 +12,7 @@ class TaskUser extends Model
     protected $fillable = [
       'task_id',
       'user_id',
+      'time_spend',
       'task_role_id',
     ];
 

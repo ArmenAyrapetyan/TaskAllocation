@@ -64,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function projects()
     {
-        return $this->hasMany(Project::class, 'user_id');
+        return $this->morphedByMany(Project::class, 'accessable', 'access_users');
     }
 
     public function contacts()
@@ -79,7 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function tasks()
     {
-        return $this->hasMany(TaskUser::class, 'user_id');
+        return $this->morphedByMany(Task::class, 'accessable', 'access_users');
     }
 
     public function avatar()
@@ -92,8 +92,42 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Group::class, 'user_groups');
     }
 
-    public function accesses()
+    public function auditableTasks()
     {
-        return $this->hasMany(AccessUser::class, 'user_id');
+        return $this->morphedByMany(Task::class, 'accessable', 'access_users')
+            ->withPivot('role_id')
+            ->wherePivot('role_id', AccessRole::ROLE_AUDIT)
+            ->whereNotIn('status_id', [
+                TaskStatus::STATUS_COMPLETED,
+                TaskStatus::STATUS_DONE,
+                TaskStatus::STATUS_CANCELLED,
+            ])->get();
+    }
+
+    public function activeTasks()
+    {
+        return $this->morphedByMany(Task::class, 'accessable', 'access_users')
+            ->withPivot('role_id')
+            ->wherePivotIn('role_id', [AccessRole::ROLE_EXECUTOR, AccessRole::ROLE_CREATOR])
+            ->whereNotIn('status_id', [
+                TaskStatus::STATUS_COMPLETED,
+                TaskStatus::STATUS_DONE,
+                TaskStatus::STATUS_CANCELLED,
+            ])->get();
+    }
+
+    public function userAccesses()
+    {
+        return $this->hasMany(AccessUser::class, 'user_id', 'id');
+    }
+
+    public function getRoleName($id)
+    {
+        return AccessRole::find($id)->name;
+    }
+
+    public function activeTimer()
+    {
+        return $this->hasOne(ActiveTimers::class, 'user_id', 'id');
     }
 }

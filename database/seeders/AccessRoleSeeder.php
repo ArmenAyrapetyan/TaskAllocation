@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TaskRoleSeeder extends Seeder
+class AccessRoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class TaskRoleSeeder extends Seeder
      */
     public function run()
     {
-        $taskRoles = [];
+        $accessRoles = [];
 
         $nameRole = [
             'Постановщик',
@@ -24,13 +24,13 @@ class TaskRoleSeeder extends Seeder
         ];
 
         for ($i = 0; $i < 3; $i++){
-            $taskRoles[] = [
+            $accessRoles[] = [
                 'name' => $nameRole[$i],
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
         }
 
-        DB::table('task_roles')->insert($taskRoles);
+        DB::table('access_roles')->insert($accessRoles);
     }
 }

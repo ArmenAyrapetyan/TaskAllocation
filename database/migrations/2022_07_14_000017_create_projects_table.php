@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->longText('description');
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('counterparty_id')->nullable()->constrained('counterparties')->cascadeOnDelete();
             $table->foreignId('group_id')->constrained('project_groups')->cascadeOnDelete();
             $table->foreignId('status_id')->constrained('project_statuses')->cascadeOnDelete();

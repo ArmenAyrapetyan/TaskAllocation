@@ -20,58 +20,57 @@
         </div>
     </div>
 
-    <table class="table table-striped table-bordered ms-2">
-        <tr>
-            <th scope="col">
-                Название
-            </th>
-            <th scope="col">
-                Проект
-            </th>
-            <th scope="col">
-                Начало
-            </th>
-            <th scope="col">
-                Окончание
-            </th>
-            <th scope="col">
-                Участники
-            </th>
-            <th scope="col">
-                Затраченное время
-            </th>
-        </tr>
-        @foreach($tasks as $task)
+    <div class="ps-2">
+        <table class="table table-striped table-bordered">
             <tr>
-                <th scope="row">
-                    <a href="{{route('task.detail', $task->id)}}">{{$task->name}}</a>
+                <th scope="col">
+                    Название
                 </th>
-                <td>
-                    @if($task->project)
-                        <a href="{{route('project.detail', $task->project->id)}}">{{$task->project->name}}</a>
-                    @endif
-                </td>
-                <td>
-                    {{$task->date_start}}
-                </td>
-                <td>
-                    {{$task->date_end}}
-                </td>
-                <td>
-                    @if($task->users)
-                        @foreach($task->users as $user)
-                            <p>{{$user->role->name}} <a href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a></p>
-                        @endforeach
-                    @endif
-                </td>
-                <td>
-                    @if($task->time_spend)
-                        {{$task->time_spend . ' мин.'}}
-                    @else
-                        0 мин.
-                    @endif
-                </td>
+                <th scope="col">
+                    Проект
+                </th>
+                <th scope="col">
+                    Начало
+                </th>
+                <th scope="col">
+                    Окончание
+                </th>
+                <th scope="col">
+                    Участники
+                </th>
+                <th scope="col">
+                    Затраченное время
+                </th>
             </tr>
-        @endforeach
-    </table>
+            @foreach($tasks as $task)
+                <tr>
+                    <th scope="row">
+                        <a href="{{route('task.detail', $task->id)}}">{{$task->name}}</a>
+                    </th>
+                    <td>
+                        @if($task->project)
+                            <a href="{{route('project.detail', $task->project->id)}}">{{$task->project->name}}</a>
+                        @endif
+                    </td>
+                    <td>
+                        {{$task->date_start}}
+                    </td>
+                    <td>
+                        {{$task->date_end}}
+                    </td>
+                    <td>
+                        @if($task->users)
+                            @foreach($task->users as $user)
+                                <p>{{$user->getRoleName($user->pivot->role_id)}} <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a></p>
+                            @endforeach
+                        @endif
+                    </td>
+                    <td>
+                        {{$task->timeSpend()}} мин.
+                    </td>
+                </tr>
+            @endforeach
+            {{$tasks->links()}}
+        </table>
+    </div>
 </div>

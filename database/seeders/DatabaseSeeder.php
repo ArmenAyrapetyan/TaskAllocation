@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SystemRoleSeeder::class,
             GroupSeeder::class,
-            TaskRoleSeeder::class,
+            AccessRoleSeeder::class,
             SourceSeeder::class,
             SpecialGroupSeeder::class,
             ProjectGroupSeeder::class,
@@ -28,8 +28,13 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             ProjectSeeder::class,
             TaskSeeder::class,
-            TaskUserSeeder::class,
             MessagesSeeder::class,
+            AccessUserSeeder::class,
+            AccessGroupSeeder::class,
+            TimeSpendSeeder::class,
+            DictionarySeeder::class,
+            SubDictionarySeeder::class,
+            ProjectAccessesSeeder::class
         ]);
     }
 }

@@ -7,18 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class InvoicePaid extends Notification
+class TaskNotify extends Notification
 {
     use Queueable;
-
+    private $notify;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($notify)
     {
-        //
+        $this->notify = $notify;
     }
 
     /**
@@ -29,7 +29,7 @@ class InvoicePaid extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +55,10 @@ class InvoicePaid extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'user_id' => $this->notify['user_id'],
+            'task_id' => $this->notify['task_id'],
+            'task_name' => $this->notify['task_name'],
+            'message' => $this->notify['message'],
         ];
     }
 }

@@ -4,10 +4,14 @@ namespace App\Http\Livewire\Project;
 
 use App\Models\Project;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Show extends Component
 {
-    public $projects;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $isLastSortAll;
     public $statusBool;
     public $importId;
@@ -18,37 +22,45 @@ class Show extends Component
         'refreshSort',
     ];
 
-    public function refreshSort()
+    public function booted()
     {
-        $this->isLastSortAll
-            ? $this->getAllProjects()
-            : $this->checkProject($this->importId, $this->statusBool);
-    }
-
-    public function checkProject($id, $isStatus = false)
-    {
-        $isStatus
-            ? $this->projects = Project::where('status_id', $id)->orderBy('name')->get()
-            : $this->projects = Project::where('group_id', $id)->orderBy('name')->get();
-        $this->isLastSortAll = false;
-        $this->statusBool = $isStatus;
-        $this->importId = $id;
-    }
-
-    public function getAllProjects()
-    {
-        $this->projects = Project::orderBy('name')->get();
-        $this->isLastSortAll = true;
+        $this->resetPage();
     }
 
     public function mount()
     {
-        $this->projects = Project::orderBy('name')->get();
         $this->isLastSortAll = true;
+    }
+
+    public function refreshSort()
+    {
+        if ($this->isLastSortAll)
+            return $this->getAllProjects();
+        else
+            return $this->checkProject($this->importId, $this->statusBool);
+    }
+
+    public function checkProject($id, $isStatus = false)
+    {
+        $this->isLastSortAll = false;
+        $this->statusBool = $isStatus;
+        $this->importId = $id;
+        if ($isStatus)
+            return Project::where('status_id', $id)->orderBy('name')->paginate(20);
+        else
+            return Project::where('group_id', $id)->orderBy('name')->paginate(20);
+    }
+
+    public function getAllProjects()
+    {
+        $this->isLastSortAll = true;
+        return Project::orderBy('name')->paginate(20);
     }
 
     public function render()
     {
-        return view('livewire.project.show');
+        return view('livewire.project.show', [
+            'projects' => $this->refreshSort()
+        ]);
     }
 }

@@ -34,9 +34,14 @@ class Profile extends Component
         'avatar.required' => 'Вберите аватар'
     ];
 
-    public function changeAvatar()
+    public function updated()
     {
         $this->validate();
+        $this->changeAvatar();
+    }
+
+    public function changeAvatar()
+    {
         if ($this->user->avatar) {
             FileStorage::fileDelete($this->user->avatar->path);
             $this->user->avatar->delete();
@@ -44,7 +49,7 @@ class Profile extends Component
         $files = [
             $this->avatar
         ];
-        FileStorage::saveFiles($files, $this->user->id, User::class, true);
+        FileStorage::saveFiles($files, $this->user->id, User::class);
         $this->refreshProfileInfo();
     }
 

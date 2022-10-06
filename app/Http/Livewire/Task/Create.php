@@ -2,90 +2,84 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Models\AccessRole;
+use App\Models\AccessUser;
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\TaskRole;
 use App\Models\TaskStatus;
-use App\Models\TaskUser;
+use App\Services\FileStorage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
+    public $task_data;
     public $projects;
     public $statuses;
-    public $name;
-    public $description;
-    public $time_planned;
-    public $time_spend;
-    public $date_start;
-    public $date_end;
-    public $project_id;
-    public $status_id;
+    public $files;
+    public bool $is_have_files;
 
-    protected $rules = [
-        'name' => 'required',
-        'description' => 'required|max:600',
-        'time_planned' => 'nullable|integer|min:0',
-        'time_spend' => 'nullable|integer|min:0',
-        'date_start' => 'required|date',
-        'date_end' => 'required|date',
-        'status_id' => 'required',
-    ];
+    protected function rules()
+    {
+        return [
+            'task_data.name' => 'required',
+            'task_data.description' => 'required',
+            'task_data.time_planned' => 'nullable|integer|min:0',
+            'task_data.date_start' => 'required|date',
+            'task_data.date_end' => 'required|date',
+            'task_data.status_id' => 'required',
+            'files.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,text/plain,
+        application/x-rar-compressed,application/zip,application/x-gzip,application/pdf,application/msword,
+        application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel',
+        ];
+    }
 
     protected $messages = [
-        'name.required' => 'Заполните имя задачи',
-        'description.required' => 'Напишите подробное описание задачи',
-        'time_planned.integer' => 'Запланированное время должно быть числом',
-        'time_planned.min' => 'Минимально запланированное время 0',
-        'time_spend.integer' => 'Потраченное время должно быть числом',
-        'time_spend.min' => 'Минимально потраченное время 0',
-        'date_start.required' => 'Заполните дату начала выполнения задачи',
-        'date_start.date' => 'Поле должно содержать дату',
-        'date_end.required' => 'Заполните дату конца выполнения задачи',
-        'date_end.date' => 'Поле должно содержать дату',
-        'status_id.required' => 'У задачи должен быть статус',
+        'task_data.name.required' => 'Заполните имя задачи',
+        'task_data.description.required' => 'Напишите подробное описание задачи',
+        'task_data.time_planned.integer' => 'Запланированное время должно быть числом',
+        'task_data.time_planned.min' => 'Минимально запланированное время 0',
+        'task_data.date_start.required' => 'Заполните дату начала выполнения задачи',
+        'task_data.date_start.date' => 'Поле должно содержать дату',
+        'task_data.date_end.required' => 'Заполните дату конца выполнения задачи',
+        'task_data.date_end.date' => 'Поле должно содержать дату',
+        'task_data.status_id.required' => 'У задачи должен быть статус',
+        'files.mimes' => 'Формат файлов не разрешен для отправки',
     ];
 
     public function saveTask()
     {
         $this->validate();
 
-        $newTask = Task::create([
-            'name' => $this->name,
-            'description' => $this->description,
-            'project_id' => $this->project_id,
-            'status_id' => $this->status_id,
-            'time_planned' => $this->time_planned,
-            'time_spend' => $this->time_spend,
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
+        $this->task_data['project_id'] = $this->task_data['project_id'] != null
+            ? $this->task_data['project_id']
+            : null;
+
+        $newTask = Task::create($this->task_data);
+
+        AccessUser::create([
+            'user_id' => auth()->id(),
+            'role_id' => AccessRole::ROLE_CREATOR,
+            'accessable_id' => $newTask->id,
+            'accessable_type' => Task::class,
         ]);
 
-        TaskUser::create([
-            'task_id' => $newTask->id,
-            'user_id' => auth()->user()->id,
-            'task_role_id' => TaskRole::ROLE_CREATOR,
-        ]);
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $newTask->id, Task::class);
 
+        $this->files = null;
+        $this->task_data = null;
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshShow');
-        $this->clear();
-    }
-
-    public function clear()
-    {
-        $this->name = null;
-        $this->description = null;
-        $this->project_id = null;
-        $this->status_id = null;
-        $this->time_planned = null;
-        $this->time_spend = null;
-        $this->date_start = null;
-        $this->date_end = null;
     }
 
     public function mount()
     {
+        $this->files = null;
+        $this->task_data['project_id'] = null;
+        $this->is_have_files = false;
         $this->projects = Project::all();
         $this->statuses = TaskStatus::all();
     }

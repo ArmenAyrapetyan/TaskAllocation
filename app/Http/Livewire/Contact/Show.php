@@ -4,56 +4,61 @@ namespace App\Http\Livewire\Contact;
 
 use App\Models\Contact;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Show extends Component
 {
-    public $contacts;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $isSortAll;
     public $idSort;
 
     protected $listeners = [
-        'sortContactsByGroup',
+        'filterContactsByGroup',
         'getAllContacts',
         'refreshContact',
     ];
 
-    public function refreshContact()
+    public function booted()
     {
-        $this->isSortAll
-            ? $this->getAllContacts()
-            : $this->sortContactsByGroup($this->idSort);
+        $this->resetPage();
     }
 
     public function mount()
     {
-        $this->isSortAll = true;
-        $this->contacts = Contact::where('user_id', auth()->user()->id)->get();
+        $this->getAllContacts();
     }
 
-    public function sortContactsByGroup($id)
+    public function refreshContact()
+    {
+        if ($this->isSortAll)
+            return $this->getAllContacts();
+        else
+            return $this->filterContactsByGroup($this->idSort);
+    }
+
+    public function filterContactsByGroup($id)
     {
         $this->idSort = $id;
         $this->isSortAll = false;
-        $this->contacts = Contact::where('special_group_id', $id)
-            ->where('user_id', auth()->user()->id)
-            ->get();
-    }
-
-    public function deleteContact($id)
-    {
-        $contact = Contact::find($id);
-        $contact->delete();
-        $this->refreshContact();
+        return Contact::where('special_group_id', $id)
+            ->orderBy('first_name')
+            ->paginate(10);
     }
 
     public function getAllContacts()
     {
         $this->isSortAll = true;
-        $this->contacts = Contact::where('user_id', auth()->user()->id)->get();
+        return Contact::orderBy('first_name')
+            ->paginate(10);
     }
 
     public function render()
     {
-        return view('livewire.contact.show');
+        return view('livewire.contact.show', [
+            'contacts' => $this->refreshContact()
+        ]);
     }
 }

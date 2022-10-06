@@ -25,6 +25,24 @@ class Project extends AllAccess
         );
     }
 
+    public function time()
+    {
+        $time_planned = 0;
+        $time_spend = 0;
+
+        foreach ($this->tasks as $task){
+            $time_planned += $task->time_planned;
+            $time_spend += $task->timeSpend();
+        }
+
+        return array($time_planned, $time_spend);
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
+
     public function tasks()
     {
         return $this->hasMany(Task::class, 'project_id');
@@ -45,8 +63,8 @@ class Project extends AllAccess
         return $this->belongsTo(Counterparty::class, 'counterparty_id', 'id');
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->morphToMany(User::class, 'accessable', 'access_users');
     }
 }

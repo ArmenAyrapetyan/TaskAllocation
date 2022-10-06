@@ -22,7 +22,7 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $token = RegisterToken::where('token', $request->register_token)->first();
+        $token = RegisterToken::where('token', bcrypt($request->register_token))->first();
 
         $newUser = User::create([
             'first_name' => $request->first_name,
@@ -36,7 +36,7 @@ class RegisterController extends Controller
 
         if ($request->hasFile('images')){
             $files = $request->file('images');
-            FileStorage::saveFiles($files, $newUser->id, User::class, true);
+            FileStorage::saveFiles($files, $newUser->id, User::class);
         }
 
         $token->isActive = false;
@@ -47,5 +47,10 @@ class RegisterController extends Controller
 
         auth()->login($newUser);
         return redirect()->route('main');
+    }
+
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
     }
 }

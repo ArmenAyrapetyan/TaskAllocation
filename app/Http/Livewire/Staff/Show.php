@@ -5,7 +5,6 @@ namespace App\Http\Livewire\Staff;
 use App\Models\Group;
 use App\Models\User;
 use Livewire\Component;
-use function PHPUnit\Framework\isEmpty;
 
 class Show extends Component
 {
@@ -24,7 +23,7 @@ class Show extends Component
 
     public function getNewStaff()
     {
-        $users = User::all();
+        $users = User::orderBy('first_name')->get();
         foreach ($users as $key => $user){
             if (count($user->groups) != 0){
                 $users->forget($key);
@@ -35,7 +34,7 @@ class Show extends Component
 
     public function getAllStaff()
     {
-        $this->staff = User::all();
+        $this->staff = User::orderBy('first_name')->get();
     }
 
     public function getGroupStaff($id)

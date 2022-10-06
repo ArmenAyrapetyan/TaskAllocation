@@ -20,29 +20,30 @@
         </div>
     </div>
 
-    <table class="table table-striped table-bordered ms-2">
-        <tr>
-            <th scope="col">
-                Проект
-            </th>
-            <th scope="col">
-                Задач
-            </th>
-            <th scope="col">
-                Контрагент
-            </th>
-            <th scope="col">
-                Статус
-            </th>
-            <th scope="col">
-                Автор
-            </th>
-        </tr>
-        @foreach($projects as $project)
+    <div class="ps-2">
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th scope="col">
+                    Проект
+                </th>
+                <th scope="col">
+                    Задач
+                </th>
+                <th scope="col">
+                    Контрагент
+                </th>
+                <th scope="col">
+                    Статус
+                </th>
+                <th scope="col">
+                    Автор
+                </th>
+            </tr>
+            @foreach($projects as $project)
                 <tr>
                     <th scope="row">
                         <a href="{{route('project.detail', $project->id)}}">
-                        {{ $project->name }}
+                            {{ $project->name }}
                         </a>
                     </th>
                     <td>
@@ -52,16 +53,20 @@
                         @if($project->counterparty)
                             <a href="{{route('counterparty.detail', $project->counterparty->id)}}">{{$project->counterparty->name}}</a>
                         @else
-                            null
+                            Нет
                         @endif
                     </td>
                     <td>
                         {{ $project->status->name }}
                     </td>
                     <td>
-                        <a href="{{route('staff.detail', $project->user->id)}}">{{ $project->user->full_name }}</a>
+                        @foreach($project->users as $user)
+                            <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a>
+                        @endforeach
                     </td>
                 </tr>
-        @endforeach
-    </table>
+            @endforeach
+            {{$projects->links()}}
+        </table>
+    </div>
 </div>

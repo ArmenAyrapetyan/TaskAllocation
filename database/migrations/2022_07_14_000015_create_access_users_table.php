@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('access_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('role_id')->constrained('access_roles')->cascadeOnDelete();
             $table->morphs('accessable');
             $table->timestamps();
         });

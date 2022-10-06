@@ -1,10 +1,28 @@
 <div>
     <div class="mt-2 ms-2">
-        <p class="h2">
+        <p class="h3">
             @if($task->project)
-                {{ $task->project->name . ' - ' . $task->name . ' ' . $task->project->counterparty->name }}
+                Проект:
+                <a class="ms-1 me-1" href="{{route('project.detail', $task->project->id)}}">
+                    {{$task->project->name}}</a>
+                Задача: {{$task->name}}
+                @if($task->project->counterparty)
+                    Контрагент:
+                    <a class="ms-1 me-1" href="{{route('counterparty.detail', $task->project->counterparty->id)}}">
+                        {{$task->project->counterparty->name}}</a>
+                @endif
+                Статус:
+                @if(!$task->isUserInTask(auth()->id()))
+                    {{$task->status->name}}
+                @else
+                    <select wire:change="modStatus" class="form-select-lg" name="status_id" wire:model="status_id">
+                        @foreach($statuses as $status)
+                            <option value="{{$status->id}}">{{$status->name}}</option>
+                        @endforeach
+                    </select>
+                @endif
             @else
-                Без проекта - {{ $task->name }}
+                Без проекта - {{ $task->name . ' ' . $task->status->name}}
             @endif
         </p>
     </div>
@@ -12,52 +30,132 @@
     <div class="ms-3 mt-2">
         <p class="h3">
             @foreach($task->users as $user)
-                @if($user->task_role_id == 1)
-                    @if($user->user->avatar)
-                        <img width="100" height="100" src="{{asset($user->user->avatar->path)}}" alt="user avatar">
+                @if($user->pivot->role_id == 1)
+                    @if($user->avatar)
+                        <img width="100" height="100" style="object-fit: cover;" src="{{asset($user->avatar->path)}}"
+                             alt="user avatar">
                     @else
-                        <img width="100" height="100" src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
+                        <img width="100" height="100" style="object-fit: cover;"
+                             src="{{asset('storage/images/imguser.png')}}" alt="user avatar">
                     @endif
-                    <a href="{{route('staff.detail', $user->user->id)}}">{{$user->user->full_name}}</a>
+                    <a href="{{route('staff.detail', $user->id)}}">{{$user->full_name}}</a>
                 @endif
             @endforeach
         </p>
-        <p>{{$task->description}}</p>
-    </div>
+        @foreach(explode(' ', $task->description) as $word)
+            @if(is_numeric(strpos($word, 'http')))
+                <div class="d-none">
+                    {{preg_match("~<title>(.*)</title>~",file_get_contents($word), $title)}}
+                </div>
+                <a href="{{$word}}">{{$title[1]}}</a>
+            @else
+                {{$word}}
+            @endif
+        @endforeach
 
-    <div class="ms-3 mt-2">
-        <p>Участники:</p>
-        <div class="list-group">
-            @foreach($task->users as $user)
-                <a class="list-group-item list-group-item-action"
-                   href="{{route('staff.detail', $user->user->id)}}">{{$user->role->name}} - {{$user->user->full_name}}</a>
+        <div class="row">
+            @foreach($task->files as $file)
+                <div class="kakoi">
+                    @if($task->creatorId == auth()->id())
+                        <button class="float-end btn-close" wire:click="deleteFile({{$file}})"></button>
+                    @endif
+                    @if(@exif_imagetype($file->path))
+                        <img src="{{asset($file->path)}}" alt="image_task" width="400" height="400"
+                             style="object-fit: cover; min-width: 200px; min-height: 200px"
+                             class="m-2 img-thumbnail nibud">
+                    @else
+                        <button wire:click="downloadFile('{{$file->path}}')" class="btn border mt-auto d-block"
+                                style="min-width: 200px;min-height: 200px;">
+                            {{pathinfo($file->path)['extension']}}
+                        </button>
+                    @endif
+                </div>
             @endforeach
         </div>
     </div>
 
-    @livewire('task.message', ['id' => $task->id])
+    <p class="h3">Времени по плану: {{$task->time_planned}} мин.
+        Времени было затраченно: {{$task->timeSpend()}} мин.</p>
 
-    <div class="float-end me-2 mt-2">
-        <!-- Кнопка-триггер модального окна -->
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Редактировать задачу
-        </button>
-
-        <!-- Модальное окно -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Редактирование задачи</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+    <div class="container m-0 p-0">
+        <div class="row">
+            <div class="col">
+                <p class="m-3">Участники:</p>
+                <div class="m-3 d-flex justify-content-start">
+                    <div class="list-group">
+                        @foreach($task->users as $user)
+                            <a class="list-group-item list-group-item-action"
+                               href="{{route('staff.detail', $user->id)}}">{{$user->getRoleName($user->pivot->role_id)}}
+                                - {{$user->full_name}}</a>
+                        @endforeach
                     </div>
-                    <div class="modal-body">
-                        @livewire('task.edit', ['id' => $task_id])
+                </div>
+            </div>
+            <div class="col">
+                <p class="m-3">Группы:</p>
+                <div class="m-3 d-flex justify-content-start">
+                    <div class="list-group">
+                        @foreach($task->groups as $group)
+                            <a class="list-group-item list-group-item-action"
+                               href="#">{{$group->name}}</a>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
+    <div class="float-end me-2 mb-2">
+        @if($task->creator_id == auth()->id())
+            <!-- Кнопка-триггер модального окна -->
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Редактировать задачу
+            </button>
+
+            <!-- Модальное окно -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Редактирование задачи</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            @livewire('task.edit', ['id' => $task_id])
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if($task->isUserInTask(auth()->id()))
+            <!-- Кнопка-триггер модального окна -->
+            <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop2">
+                Редактировать участников
+            </button>
+
+            <!-- Модальное окно -->
+            <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false"
+                 tabindex="-1"
+                 aria-labelledby="staticBackdrop2Label" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdrop2Label">Доступные исполнители</h5>
+                        </div>
+                        <div class="modal-body">
+                            @livewire('task.executorsadd', ['task_id' => $task_id])
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            <button class="btn btn-primary" wire:click="takeExecutor">Взять на исполнение</button>
+        @endif
+    </div>
+
+    <p class="ms-3">Чат по задаче:</p>
+    @livewire('task.message', ['id' => $task->id])
 </div>

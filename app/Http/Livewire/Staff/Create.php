@@ -9,7 +9,9 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $token, $rate_per_hour, $responce;
+    public $token;
+    public $rate_per_hour;
+    public $responce;
 
     protected $rules = [
         'rate_per_hour' => 'required|numeric',
@@ -31,14 +33,14 @@ class Create extends Component
         $this->validate();
 
         $newToken = RegisterToken::create([
-            'token' => $this->token,
+            'token' => bcrypt($this->token),
             'isActive' => true,
             'rate_per_hour' => $this->rate_per_hour,
         ]);
 
         $this->responce = "Токен активирован";
 
-        DisactivateRegisterToken::dispatch($newToken)->delay(now()->addMinutes(100));
+        DisactivateRegisterToken::dispatch($newToken)->delay(now()->addMinutes(120));
     }
 
     public function newToken()

@@ -4,77 +4,61 @@ namespace App\Http\Livewire\Task;
 
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\TaskRole;
 use App\Models\TaskStatus;
-use App\Models\TaskUser;
+use App\Services\FileStorage;
+use App\Services\Notifications;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
+    use WithFileUploads;
+
+    public $task_data;
     public $task;
     public $projects;
     public $statuses;
-    public $name;
-    public $description;
-    public $time_planned;
-    public $time_spend;
-    public $date_start;
-    public $date_end;
-    public $project_id;
-    public $status_id;
+    public $files;
 
     protected $rules = [
-        'name' => 'required',
-        'description' => 'required|max:600',
-        'time_planned' => 'nullable|integer|min:0',
-        'time_spend' => 'nullable|integer|min:0',
-        'date_start' => 'required|date',
-        'date_end' => 'required|date',
-        'status_id' => 'required',
+        'task_data.name' => 'required',
+        'task_data.description' => 'required|max:600',
+        'task_data.time_planned' => 'nullable|integer|min:0',
+        'task_data.date_start' => 'required|date',
+        'task_data.date_end' => 'required|date',
+        'task_data.status_id' => 'required',
+        'files.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,text/plain,
+        application/x-rar-compressed,application/zip,application/x-gzip,application/pdf,application/msword,
+        application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel',
     ];
 
     protected $messages = [
-        'name.required' => 'Заполните имя задачи',
-        'description.required' => 'Напишите подробное описание задачи',
-        'time_planned.integer' => 'Запланированное время должно быть числом',
-        'time_planned.min' => 'Минимально запланированное время 0',
-        'time_spend.integer' => 'Потраченное время должно быть числом',
-        'time_spend.min' => 'Минимально потраченное время 0',
-        'date_start.required' => 'Заполните дату начала выполнения задачи',
-        'date_start.date' => 'Поле должно содержать дату',
-        'date_end.required' => 'Заполните дату конца выполнения задачи',
-        'date_end.date' => 'Поле должно содержать дату',
-        'status_id.required' => 'У задачи должен быть статус',
+        'task_data.name.required' => 'Заполните имя задачи',
+        'task_data.description.required' => 'Напишите подробное описание задачи',
+        'task_data.time_planned.integer' => 'Запланированное время должно быть числом',
+        'task_data.time_planned.min' => 'Минимально запланированное время 0',
+        'task_data.date_start.required' => 'Заполните дату начала выполнения задачи',
+        'task_data.date_start.date' => 'Поле должно содержать дату',
+        'task_data.date_end.required' => 'Заполните дату конца выполнения задачи',
+        'task_data.date_end.date' => 'Поле должно содержать дату',
+        'task_data.status_id.required' => 'У задачи должен быть статус',
     ];
 
     public function editTask()
     {
         $this->validate();
 
-        if ($this->task->nane != $this->name) $this->task->name = $this->name;
-        if ($this->task->description != $this->description) $this->task->description = $this->description;
-        if ($this->task->time_planned != $this->time_planned) $this->task->time_planned = $this->time_planned;
-        if ($this->task->time_spend != $this->time_spend) $this->task->time_spend = $this->time_spend;
-        if ($this->task->date_start != $this->date_start) $this->task->date_start = $this->date_start;
-        if ($this->task->date_end != $this->date_end) $this->task->date_end = $this->date_end;
-        if ($this->task->status_id != $this->status_id) $this->task->status_id = $this->status_id;
+        $this->task->fill($this->task_data);
         $this->task->save();
+
+        if ($this->files)
+            FileStorage::saveFiles($this->files, $this->task->id, Task::class);
+
+        $message = 'Изменена задача';
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $this->task->name, $message);
 
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshTaskInfo');
-        $this->clear();
-    }
-
-    public function clear()
-    {
-        $this->name = null;
-        $this->description = null;
-        $this->project_id = null;
-        $this->status_id = null;
-        $this->time_planned = null;
-        $this->time_spend = null;
-        $this->date_start = null;
-        $this->date_end = null;
     }
 
     public function mount($id)
@@ -82,14 +66,7 @@ class Edit extends Component
         $this->projects = Project::all();
         $this->statuses = TaskStatus::all();
         $this->task = Task::find($id);
-        $this->name = $this->task->name;
-        $this->description = $this->task->description;
-        $this->time_planned = $this->task->time_planned;
-        $this->time_spend = $this->task->time_spend;
-        $this->date_start = $this->task->date_start;
-        $this->date_end = $this->task->date_end;
-        $this->project_id = $this->task->project_id;
-        $this->status_id = $this->task->status_id;
+        $this->task_data = $this->task->toArray();
     }
 
     public function render()
