@@ -43,7 +43,8 @@
                         <nav class="nav text-align-center">
                             @if(auth()->user()->avatar)
                                 <img src="{{asset(auth()->user()->avatar->path)}}" width="45" height="45"
-                                     style="object-fit: cover; min-width: 45px; min-height: 45px" class="mt-auto rounded-circle">
+                                     style="object-fit: cover; min-width: 45px; min-height: 45px"
+                                     class="mt-auto rounded-circle">
                             @else
                                 <img src="{{asset('storage/images/imguser.png')}}" width="45" height="45"
                                      style="object-fit: cover" class="mt-2 rounded-circle img-fluid">
@@ -59,4 +60,9 @@
             </div>
         </div>
     </nav>
+    @auth
+        <div style="z-index: 2;position: fixed; bottom: 0; right: 10px">
+            @livewire('notify.notify')
+        </div>
+    @endauth
 </header>

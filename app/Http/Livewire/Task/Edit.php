@@ -55,7 +55,7 @@ class Edit extends Component
             FileStorage::saveFiles($this->files, $this->task->id, Task::class);
 
         $message = 'Изменена задача';
-        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $this->task->name, $message);
 
         $this->dispatchBrowserEvent('closeModal');
         $this->emit('refreshTaskInfo');

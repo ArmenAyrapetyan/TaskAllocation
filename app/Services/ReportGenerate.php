@@ -25,7 +25,6 @@ class ReportGenerate
         $result = new Collection();
         $all_result = new Collection();
         $all_time_spended = 0;
-        $all_time_planned = 0;
         $all_used_tasks = [];
 
         $users = User::select('id', 'first_name', 'last_name', 'third_name', 'rate_per_hour')->get();
@@ -57,8 +56,7 @@ class ReportGenerate
                 }
             }
             $result->push($arrayInfo);
-            $all_time_planned = array_sum(Task::whereIn('id', array_unique($all_used_tasks))->pluck('time_planned')->toArray());
-            $all_result->put('all_time_planned', $all_time_planned);
+            $all_result->put('all_time_planned', array_sum(Task::whereIn('id', array_unique($all_used_tasks))->pluck('time_planned')->toArray()));
             $all_result->put('all_time_spended', $all_time_spended);
             $all_result->put('result', $result);
         }
@@ -108,7 +106,7 @@ class ReportGenerate
     {
         $projects = $id_projects
             ? Project::whereIn('id', $id_projects)
-            : Project::where('status_id', '!=', ProjectStatus::STATUS_COMPLETE)->get();
+            : Project::all();
         return $projects;
     }
 }

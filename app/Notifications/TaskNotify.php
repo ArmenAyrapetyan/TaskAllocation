@@ -57,6 +57,7 @@ class TaskNotify extends Notification
         return [
             'user_id' => $this->notify['user_id'],
             'task_id' => $this->notify['task_id'],
+            'task_name' => $this->notify['task_name'],
             'message' => $this->notify['message'],
         ];
     }

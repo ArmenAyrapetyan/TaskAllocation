@@ -21,7 +21,7 @@ class Show extends Component
 
     public function getNoifyInfo()
     {
-        $this->notify = auth()->user()->unreadNotifications;
+        $this->notify = auth()->user()->notifications;
         $notifyInfo = [];
         foreach ($this->notify as $not) {
             $notifyInfo['users_id'][] = $not->data['user_id'];

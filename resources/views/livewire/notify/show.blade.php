@@ -36,10 +36,12 @@
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-4 d-flex flex-column align-items-end">
-                                    <button wire:click="markAsRead({{$not}})" type="button"
-                                            class="btn btn-primary m-1">
-                                        Прочитано
-                                    </button>
+                                    @if(!$not->read_at)
+                                        <button wire:click="markAsRead({{$not}})" type="button"
+                                                class="btn btn-primary m-1">
+                                            Прочитано
+                                        </button>
+                                    @endif
                                     <a href="{{route('task.detail', $tasks->where('id', $not->data['task_id'])->first()->id)}}">
                                         <button class="btn btn-primary m-1">Перейти к задаче</button>
                                     </a>

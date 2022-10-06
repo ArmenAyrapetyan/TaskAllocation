@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TaskAllocation</title>
 
+    <!-- PUSHER -->
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('136721bd092910ea63a0', {
+            cluster: 'eu'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function (data) {
+            window.livewire.emit(data['event'])
+        });
+
+        var notify = pusher.subscribe('notify-channel');
+        notify.bind('my-notify', function (data) {
+            window.livewire.emit(data['event'])
+        })
+    </script>
+
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -33,6 +54,17 @@
     window.addEventListener('closeModal2', event => {
         $("#staticBackdrop2").modal('hide');
     })
+    window.addEventListener('sendNotify', function (message) {
+        var not = new Notification("TaskAllocation", {
+            body: message
+        });
+
+        Notification.requestPermission().then(function (permission) {
+            if (permission = "granted") {
+                sendNotify();
+            } else Notification.requestPermission()
+        });
+    });
 </script>
 
 </body>

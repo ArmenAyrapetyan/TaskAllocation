@@ -151,6 +151,8 @@
                     </div>
                 </div>
             </div>
+        @else
+            <button class="btn btn-primary" wire:click="takeExecutor">Взять на исполнение</button>
         @endif
     </div>
 

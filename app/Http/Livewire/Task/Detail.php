@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Broadcasting\Notification;
 use App\Models\AccessRole;
 use App\Models\AccessUser;
 use App\Models\File;
@@ -39,8 +40,9 @@ class Detail extends Component
     {
         $this->task->status_id = $this->status_id;
         $this->task->save();
-        $message = 'У задачи ' . $this->task->name . ' был обновлен статус на ' . TaskStatus::find($this->status_id)->name;
-        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
+        $message = 'Обновлен статус на "' . TaskStatus::find($this->status_id)->name . '"';
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $this->task->name, $message);
+        event(new Notification('getNotify'));
     }
 
     public function takeExecutor()
@@ -56,7 +58,8 @@ class Detail extends Component
             'accessable_type' => Task::class,
         ]);
         $message = 'Добавился исполнитель';
-        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $message);
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $this->task->name, $message);
+        event(new Notification('getNotify'));
         $this->refreshTaskInfo();
         $this->emit('refreshMessages');
     }

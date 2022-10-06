@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Task;
 
+use App\Broadcasting\NewMessage;
+use App\Broadcasting\Notification;
 use App\Models\File;
 use App\Models\Messages;
 use App\Models\Task;
@@ -80,8 +82,10 @@ class Message extends Component
             FileStorage::saveFiles($this->files, $message->id, Messages::class);
 
         $this->files = null;
-        Notifications::sendTaskNotify(auth()->id(), $this->task->id, 'Сообщение - ' . $this->message);
+        Notifications::sendTaskNotify(auth()->id(), $this->task->id, $this->task->name,'Сообщение: ' . $this->message);
         $this->message = null;
+        event(new NewMessage('refreshMessages'));
+        event(new Notification('getNotify'));
         $this->refreshMessages();
     }
 
